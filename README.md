@@ -1,6 +1,6 @@
 # @coloop-ai/recall-sdk
 
-Type-safe client bindings for the Recall.ai meeting bot API. The SDK is generated from the individual endpoint specs that Recall.ai publishes in their reference documentation, merged into a single OpenAPI document, and bundled for npm distribution.
+Type-safe client bindings for the Recall.ai meeting bot API. The SDK is generated from the individual endpoint specs that Recall.ai publishes in their reference documentation, merged into a single OpenAPI document, and bundled for npm distribution. This library is community-maintained and not affiliated with or endorsed by Recall.ai—be sure to review their API terms before use.
 
 ## Usage
 
@@ -88,3 +88,7 @@ All OpenAPI operations remain available as standalone functions from `src/genera
 - `bun run lint`
 - `bun run tc`
 - `bun run test`
+
+## License
+
+Released under the MIT License. See `LICENSE` for details.
