@@ -36,6 +36,8 @@ import type {
   CalendarsRetrieveResponse,
 } from "./generated/types.gen";
 
+const DEFAULT_BASE_URL = "https://us-east-1.recall.ai";
+
 const toBearerToken = (apiKey: string) =>
   apiKey.startsWith("Bearer ") ? apiKey : `Bearer ${apiKey}`;
 
@@ -46,6 +48,10 @@ export interface RecallSdkOptions extends RecallSdkClientConfig {
    * Recall.ai API key. A `Bearer` prefix is added automatically when missing.
    */
   apiKey: string;
+  /**
+   * Base URL for the Recall.ai API. Defaults to https://us-east-1.recall.ai
+   */
+  baseUrl?: string;
   /**
    * Provide an existing client instance if you need custom wiring.
    * When omitted, a new client will be created for this SDK instance.
@@ -582,7 +588,11 @@ export class RecallSdk {
   public readonly calendar: CalendarModule;
 
   constructor({ apiKey, client, ...options }: RecallSdkOptions) {
-    const clientInstance = client ?? createClient();
+    const clientInstance =
+      client ??
+      createClient({
+        baseUrl: options.baseUrl ?? DEFAULT_BASE_URL,
+      });
     const authProvider = () => toBearerToken(apiKey);
     const { throwOnError, responseStyle, ...config } = options;
 
