@@ -1,6 +1,6 @@
 {
   "name": "@coloop-ai/recall-sdk",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Type-safe SDK for the Recall.ai meeting bot API, generated from the provider's endpoint references.",
   "license": "MIT",
   "type": "module",
