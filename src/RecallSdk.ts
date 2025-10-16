@@ -3,6 +3,10 @@ import { GeneratedRecallSdk } from "./generated/sdk.gen";
 import type { Options as GeneratedRequestOptions } from "./generated/sdk.gen";
 import type {
   BotCreateData,
+  BotDeleteMediaCreateData,
+  BotDestroyData,
+  BotListData,
+  BotPartialUpdateData,
   BotRetrieveData,
   CalendarEventsBotCreateData,
   CalendarEventsBotDestroyData,
@@ -46,6 +50,16 @@ type RequestConfig<
 class BotModule {
   constructor(private readonly sdk: GeneratedRecallSdk) {}
 
+  list<ThrowOnError extends boolean = false>(
+    query?: BotListData["query"],
+    options?: RequestConfig<BotListData, ThrowOnError>,
+  ) {
+    return this.sdk.botList<ThrowOnError>({
+      ...(options ?? {}),
+      ...(query ? { query } : {}),
+    });
+  }
+
   create<ThrowOnError extends boolean = false>(
     body: BotCreateData["body"],
     options?: RequestConfig<BotCreateData, ThrowOnError>,
@@ -62,6 +76,41 @@ class BotModule {
   ) {
     const id = typeof input === "string" ? input : input.botId;
     return this.sdk.botRetrieve<ThrowOnError>({
+      ...(options ?? {}),
+      path: { id },
+    });
+  }
+
+  update<ThrowOnError extends boolean = false>(
+    input: string | { botId: string },
+    body: BotPartialUpdateData["body"],
+    options?: RequestConfig<BotPartialUpdateData, ThrowOnError>,
+  ) {
+    const id = typeof input === "string" ? input : input.botId;
+    return this.sdk.botPartialUpdate<ThrowOnError>({
+      ...(options ?? {}),
+      path: { id },
+      ...(body ? { body } : {}),
+    });
+  }
+
+  delete<ThrowOnError extends boolean = false>(
+    input: string | { botId: string },
+    options?: RequestConfig<BotDestroyData, ThrowOnError>,
+  ) {
+    const id = typeof input === "string" ? input : input.botId;
+    return this.sdk.botDestroy<ThrowOnError>({
+      ...(options ?? {}),
+      path: { id },
+    });
+  }
+
+  deleteMedia<ThrowOnError extends boolean = false>(
+    input: string | { botId: string },
+    options?: RequestConfig<BotDeleteMediaCreateData, ThrowOnError>,
+  ) {
+    const id = typeof input === "string" ? input : input.botId;
+    return this.sdk.botDeleteMediaCreate<ThrowOnError>({
       ...(options ?? {}),
       path: { id },
     });

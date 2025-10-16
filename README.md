@@ -20,6 +20,13 @@ const bot = await recall.bot.create({
   bot_name: 'My Bot',
 });
 const refreshed = await recall.bot.retrieve(bot.id);
+const { data: bots } = await recall.bot.list({
+  status: ['ready', 'joining_call'],
+});
+
+await recall.bot.update(bot.id, {
+  metadata: { source: 'demo' },
+});
 
 const { data: events } = await recall.calendar.listEvents({
   start_time__gte: new Date().toISOString(),
@@ -36,7 +43,7 @@ if (events?.results?.length) {
 
 The `RecallSdk` class exposes grouped helpers:
 
-- `recall.bot` handles bot lifecycle (`create`, `retrieve`).
+- `recall.bot` handles bot lifecycle (`list`, `create`, `retrieve`, `update`, `delete`, `deleteMedia`).
 - `recall.calendar` aggregates calendar operations and is further split into:
   - top-level conveniences (`listEvents`, `retrieveEvent`, `scheduleBot`, `unscheduleBot`, `listCalendars`, `createCalendar`, `retrieveCalendar`, `updateCalendar`, `deleteCalendar`, `createCalendarAccessToken`);
   - nested `recall.calendar.events` / `recall.calendar.accounts` for more granular control if you prefer explicit modules.

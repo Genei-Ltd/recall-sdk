@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { BotCreateData, BotCreateErrors, BotCreateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses } from './types.gen';
+import type { BotCreateData, BotCreateErrors, BotCreateResponses, BotDeleteMediaCreateData, BotDeleteMediaCreateResponses, BotDestroyData, BotDestroyResponses, BotListData, BotListResponses, BotPartialUpdateData, BotPartialUpdateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -32,6 +32,27 @@ class _HeyApiClient {
 
 export class GeneratedRecallSdk extends _HeyApiClient {
     /**
+     * List Bots
+     *
+     * Get a list of all bots
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public botList<ThrowOnError extends boolean = false>(options?: Options<BotListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<BotListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/bot/',
+            ...options
+        });
+    }
+    
+    /**
      * Create Bot
      *
      * Create a new bot.
@@ -57,6 +78,27 @@ export class GeneratedRecallSdk extends _HeyApiClient {
     }
     
     /**
+     * Delete Scheduled Bot
+     *
+     * Deletes a bot. This can only be done on scheduled bots that have not yet joined a call.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public botDestroy<ThrowOnError extends boolean = false>(options: Options<BotDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<BotDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/bot/{id}/',
+            ...options
+        });
+    }
+    
+    /**
      * Retrieve Bot
      *
      * Get a bot instance.
@@ -73,6 +115,52 @@ export class GeneratedRecallSdk extends _HeyApiClient {
                 }
             ],
             url: '/api/v1/bot/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Update Scheduled Bot
+     *
+     * Update a Scheduled Bot.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public botPartialUpdate<ThrowOnError extends boolean = false>(options: Options<BotPartialUpdateData, ThrowOnError>) {
+        return (options.client ?? this._client).patch<BotPartialUpdateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/bot/{id}/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * Delete Bot Media
+     *
+     * Deletes bot media stored by Recall. This is irreversable.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public botDeleteMediaCreate<ThrowOnError extends boolean = false>(options: Options<BotDeleteMediaCreateData, ThrowOnError>) {
+        return (options.client ?? this._client).post<BotDeleteMediaCreateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/bot/{id}/delete_media/',
             ...options
         });
     }
