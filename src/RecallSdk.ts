@@ -39,7 +39,7 @@ import type {
 const DEFAULT_BASE_URL = "https://us-east-1.recall.ai";
 
 const toBearerToken = (apiKey: string) =>
-  apiKey.startsWith("Bearer ") ? apiKey : `Bearer ${apiKey}`;
+  apiKey.startsWith("Token ") ? apiKey : `Token ${apiKey}`;
 
 export type RecallSdkClientConfig = Partial<Omit<Config, "auth">>;
 
