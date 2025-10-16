@@ -18,270 +18,284 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
     meta?: Record<string, unknown>;
 };
 
-/**
- * Create Bot
- *
- * Create a new bot.
- *
- * This endpoint is rate limited to:
- * - 60 requests per min per workspace
- */
-export const botCreate = <ThrowOnError extends boolean = false>(options: Options<BotCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<BotCreateResponses, BotCreateErrors, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v1/bot/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
+class _HeyApiClient {
+    protected _client: Client = client;
+    
+    constructor(args?: {
+        client?: Client;
+    }) {
+        if (args?.client) {
+            this._client = args.client;
         }
-    });
-};
+    }
+}
 
-/**
- * Retrieve Bot
- *
- * Get a bot instance.
- *
- * This endpoint is rate limited to:
- * - 300 requests per min per workspace
- */
-export const botRetrieve = <ThrowOnError extends boolean = false>(options: Options<BotRetrieveData, ThrowOnError>) => {
-    return (options.client ?? client).get<BotRetrieveResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
+export class GeneratedRecallSdk extends _HeyApiClient {
+    /**
+     * Create Bot
+     *
+     * Create a new bot.
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public botCreate<ThrowOnError extends boolean = false>(options: Options<BotCreateData, ThrowOnError>) {
+        return (options.client ?? this._client).post<BotCreateResponses, BotCreateErrors, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/bot/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
             }
-        ],
-        url: '/api/v1/bot/{id}/',
-        ...options
-    });
-};
-
-/**
- * List Calendar Events
- *
- * Get a list of calendar events.
- *
- * This endpoint is rate limited to:
- * - 60 requests per min per workspace
- */
-export const calendarEventsList = <ThrowOnError extends boolean = false>(options?: Options<CalendarEventsListData, ThrowOnError>) => {
-    return (options?.client ?? client).get<CalendarEventsListResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
+        });
+    }
+    
+    /**
+     * Retrieve Bot
+     *
+     * Get a bot instance.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public botRetrieve<ThrowOnError extends boolean = false>(options: Options<BotRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<BotRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/bot/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * List Calendar Events
+     *
+     * Get a list of calendar events.
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public calendarEventsList<ThrowOnError extends boolean = false>(options?: Options<CalendarEventsListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<CalendarEventsListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendar-events/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Calendar Event
+     *
+     * Get a calendar event instance.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public calendarEventsRetrieve<ThrowOnError extends boolean = false>(options: Options<CalendarEventsRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<CalendarEventsRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendar-events/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Schedule Bot For Calendar Event
+     *
+     * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
+     *
+     * This endpoint is rate limited to:
+     * - 600 requests per min per workspace
+     */
+    public calendarEventsBotDestroy<ThrowOnError extends boolean = false>(options: Options<CalendarEventsBotDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<CalendarEventsBotDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendar-events/{id}/bot/',
+            ...options
+        });
+    }
+    
+    /**
+     * Schedule Bot For Calendar Event
+     *
+     * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
+     *
+     * This endpoint is rate limited to:
+     * - 600 requests per min per workspace
+     */
+    public calendarEventsBotCreate<ThrowOnError extends boolean = false>(options: Options<CalendarEventsBotCreateData, ThrowOnError>) {
+        return (options.client ?? this._client).post<CalendarEventsBotCreateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendar-events/{id}/bot/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
             }
-        ],
-        url: '/api/v2/calendar-events/',
-        ...options
-    });
-};
-
-/**
- * Retrieve Calendar Event
- *
- * Get a calendar event instance.
- *
- * This endpoint is rate limited to:
- * - 300 requests per min per workspace
- */
-export const calendarEventsRetrieve = <ThrowOnError extends boolean = false>(options: Options<CalendarEventsRetrieveData, ThrowOnError>) => {
-    return (options.client ?? client).get<CalendarEventsRetrieveResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
+        });
+    }
+    
+    /**
+     * List Calendars
+     *
+     * Get a list of calendars.
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public calendarsList<ThrowOnError extends boolean = false>(options?: Options<CalendarsListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<CalendarsListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendars/',
+            ...options
+        });
+    }
+    
+    /**
+     * Create Calendar
+     *
+     * Create a new calendar.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public calendarsCreate<ThrowOnError extends boolean = false>(options: Options<CalendarsCreateData, ThrowOnError>) {
+        return (options.client ?? this._client).post<CalendarsCreateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendars/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
             }
-        ],
-        url: '/api/v2/calendar-events/{id}/',
-        ...options
-    });
-};
-
-/**
- * Schedule Bot For Calendar Event
- *
- * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
- *
- * This endpoint is rate limited to:
- * - 600 requests per min per workspace
- */
-export const calendarEventsBotDestroy = <ThrowOnError extends boolean = false>(options: Options<CalendarEventsBotDestroyData, ThrowOnError>) => {
-    return (options.client ?? client).delete<CalendarEventsBotDestroyResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
+        });
+    }
+    
+    /**
+     * Delete Calendar
+     *
+     * Deletes a calendar. This will disconnect the calendar.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public calendarsDestroy<ThrowOnError extends boolean = false>(options: Options<CalendarsDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<CalendarsDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendars/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Calendar
+     *
+     * Get a calendar instance.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public calendarsRetrieve<ThrowOnError extends boolean = false>(options: Options<CalendarsRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<CalendarsRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendars/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Update Calendar
+     *
+     * Update an existing calendar.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public calendarsPartialUpdate<ThrowOnError extends boolean = false>(options: Options<CalendarsPartialUpdateData, ThrowOnError>) {
+        return (options.client ?? this._client).patch<CalendarsPartialUpdateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendars/{id}/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
             }
-        ],
-        url: '/api/v2/calendar-events/{id}/bot/',
-        ...options
-    });
-};
-
-/**
- * Schedule Bot For Calendar Event
- *
- * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
- *
- * This endpoint is rate limited to:
- * - 600 requests per min per workspace
- */
-export const calendarEventsBotCreate = <ThrowOnError extends boolean = false>(options: Options<CalendarEventsBotCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<CalendarEventsBotCreateResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v2/calendar-events/{id}/bot/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-/**
- * List Calendars
- *
- * Get a list of calendars.
- *
- * This endpoint is rate limited to:
- * - 60 requests per min per workspace
- */
-export const calendarsList = <ThrowOnError extends boolean = false>(options?: Options<CalendarsListData, ThrowOnError>) => {
-    return (options?.client ?? client).get<CalendarsListResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v2/calendars/',
-        ...options
-    });
-};
-
-/**
- * Create Calendar
- *
- * Create a new calendar.
- *
- * This endpoint is rate limited to:
- * - 300 requests per min per workspace
- */
-export const calendarsCreate = <ThrowOnError extends boolean = false>(options: Options<CalendarsCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<CalendarsCreateResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v2/calendars/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-/**
- * Delete Calendar
- *
- * Deletes a calendar. This will disconnect the calendar.
- *
- * This endpoint is rate limited to:
- * - 300 requests per min per workspace
- */
-export const calendarsDestroy = <ThrowOnError extends boolean = false>(options: Options<CalendarsDestroyData, ThrowOnError>) => {
-    return (options.client ?? client).delete<CalendarsDestroyResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v2/calendars/{id}/',
-        ...options
-    });
-};
-
-/**
- * Retrieve Calendar
- *
- * Get a calendar instance.
- *
- * This endpoint is rate limited to:
- * - 300 requests per min per workspace
- */
-export const calendarsRetrieve = <ThrowOnError extends boolean = false>(options: Options<CalendarsRetrieveData, ThrowOnError>) => {
-    return (options.client ?? client).get<CalendarsRetrieveResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v2/calendars/{id}/',
-        ...options
-    });
-};
-
-/**
- * Update Calendar
- *
- * Update an existing calendar.
- *
- * This endpoint is rate limited to:
- * - 300 requests per min per workspace
- */
-export const calendarsPartialUpdate = <ThrowOnError extends boolean = false>(options: Options<CalendarsPartialUpdateData, ThrowOnError>) => {
-    return (options.client ?? client).patch<CalendarsPartialUpdateResponses, unknown, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v2/calendars/{id}/',
-        ...options,
-        headers: {
-            'Content-Type': 'application/json',
-            ...options.headers
-        }
-    });
-};
-
-/**
- * Get Access Token
- *
- * Get the OAuth access token for this calendar account.
- *
- * This endpoint is rate limited to:
- * - 300 requests per min per workspace
- */
-export const calendarsAccessTokenCreate = <ThrowOnError extends boolean = false>(options: Options<CalendarsAccessTokenCreateData, ThrowOnError>) => {
-    return (options.client ?? client).post<CalendarsAccessTokenCreateResponses, CalendarsAccessTokenCreateErrors, ThrowOnError>({
-        security: [
-            {
-                name: 'Authorization',
-                type: 'apiKey'
-            }
-        ],
-        url: '/api/v2/calendars/{id}/access-token/',
-        ...options
-    });
-};
+        });
+    }
+    
+    /**
+     * Get Access Token
+     *
+     * Get the OAuth access token for this calendar account.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public calendarsAccessTokenCreate<ThrowOnError extends boolean = false>(options: Options<CalendarsAccessTokenCreateData, ThrowOnError>) {
+        return (options.client ?? this._client).post<CalendarsAccessTokenCreateResponses, CalendarsAccessTokenCreateErrors, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v2/calendars/{id}/access-token/',
+            ...options
+        });
+    }
+}

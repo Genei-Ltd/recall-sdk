@@ -1,2 +1,4 @@
 export * from "./generated/index";
-export * as recallClient from "./generated/client";
+export * as sdk from "./generated/client";
+export { RecallSdk } from "./RecallSdk";
+export type { RecallSdkClientConfig, RecallSdkOptions } from "./RecallSdk";

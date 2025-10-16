@@ -11,21 +11,41 @@ npm install @coloop-ai/recall-sdk
 ```
 
 ```ts
-import { botCreate, botRetrieve } from '@coloop-ai/recall-sdk';
-import { recallClient } from '@coloop-ai/recall-sdk';
+import { RecallSdk } from '@coloop-ai/recall-sdk';
 
-const client = recallClient.createClient({
-  baseUrl: 'https://api.recall.ai',
-  headers: {
-    Authorization: `Bearer ${process.env.RECALL_API_KEY!}`,
-  },
+const recall = new RecallSdk({ apiKey: process.env.RECALL_API_KEY! });
+
+const bot = await recall.bot.create({
+  meeting_url: 'https://zoom.us/j/123456789',
+  bot_name: 'My Bot',
+});
+const refreshed = await recall.bot.retrieve(bot.id);
+
+const { data: events } = await recall.calendar.listEvents({
+  start_time__gte: new Date().toISOString(),
 });
 
-const bot = await botCreate({ client, body: { meeting_url: 'https://zoom.us/j/123456789' } });
-const refreshed = await botRetrieve({ client, path: { id: bot.id } });
+if (events?.results?.length) {
+  await recall.calendar.scheduleBot(events.results[0].id, {
+    join_offset: 60,
+  });
+}
 ```
 
-All OpenAPI operations are available as functions exported from the root package. If you prefer to wire the HTTP client yourself, the lower-level helpers remain accessible via the `recallClient` namespace.
+### High-level API
+
+The `RecallSdk` class exposes grouped helpers:
+
+- `recall.bot` handles bot lifecycle (`create`, `retrieve`).
+- `recall.calendar` aggregates calendar operations and is further split into:
+  - top-level conveniences (`listEvents`, `retrieveEvent`, `scheduleBot`, `unscheduleBot`, `listCalendars`, `createCalendar`, `retrieveCalendar`, `updateCalendar`, `deleteCalendar`, `createCalendarAccessToken`);
+  - nested `recall.calendar.events` / `recall.calendar.accounts` for more granular control if you prefer explicit modules.
+
+Each method accepts lightweight arguments (`botId`, `eventId`, etc.) and forwards them to the generated client. You can still pass advanced request options (headers, response style, and so on) via an optional second parameter.
+
+### Generated helpers still available
+
+All OpenAPI operations remain available as standalone functions from `src/generated/**` if you prefer the auto-generated surface. You can also reach the underlying low-level HTTP client via the `sdk` namespace export.
 
 ## Code generation workflow
 
