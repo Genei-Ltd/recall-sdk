@@ -50,6 +50,14 @@ type RequestConfig<
 class BotModule {
   constructor(private readonly sdk: GeneratedRecallSdk) {}
 
+  /**
+   * List Bots
+   *
+   * Get a list of all bots.
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
   list<ThrowOnError extends boolean = false>(
     query?: BotListData["query"],
     options?: RequestConfig<BotListData, ThrowOnError>,
@@ -60,6 +68,14 @@ class BotModule {
     });
   }
 
+  /**
+   * Create Bot
+   *
+   * Create a new bot.
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
   create<ThrowOnError extends boolean = false>(
     body: BotCreateData["body"],
     options?: RequestConfig<BotCreateData, ThrowOnError>,
@@ -70,6 +86,14 @@ class BotModule {
     });
   }
 
+  /**
+   * Retrieve Bot
+   *
+   * Get a bot instance.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   retrieve<ThrowOnError extends boolean = false>(
     input: string | { botId: string },
     options?: RequestConfig<BotRetrieveData, ThrowOnError>,
@@ -81,6 +105,14 @@ class BotModule {
     });
   }
 
+  /**
+   * Update Scheduled Bot
+   *
+   * Update a Scheduled Bot.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   update<ThrowOnError extends boolean = false>(
     input: string | { botId: string },
     body: BotPartialUpdateData["body"],
@@ -94,6 +126,14 @@ class BotModule {
     });
   }
 
+  /**
+   * Delete Scheduled Bot
+   *
+   * Deletes a bot. This can only be done on scheduled bots that have not yet joined a call.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   delete<ThrowOnError extends boolean = false>(
     input: string | { botId: string },
     options?: RequestConfig<BotDestroyData, ThrowOnError>,
@@ -105,6 +145,14 @@ class BotModule {
     });
   }
 
+  /**
+   * Delete Bot Media
+   *
+   * Deletes bot media stored by Recall. This is irreversable.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   deleteMedia<ThrowOnError extends boolean = false>(
     input: string | { botId: string },
     options?: RequestConfig<BotDeleteMediaCreateData, ThrowOnError>,
@@ -120,6 +168,14 @@ class BotModule {
 class CalendarEventsModule {
   constructor(private readonly sdk: GeneratedRecallSdk) {}
 
+  /**
+   * List Calendar Events
+   *
+   * Get a list of calendar events.
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
   list<ThrowOnError extends boolean = false>(
     query?: CalendarEventsListData["query"],
     options?: RequestConfig<CalendarEventsListData, ThrowOnError>,
@@ -130,6 +186,14 @@ class CalendarEventsModule {
     });
   }
 
+  /**
+   * Retrieve Calendar Event
+   *
+   * Get a calendar event instance.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   retrieve<ThrowOnError extends boolean = false>(
     input: string | { eventId: string },
     options?: RequestConfig<CalendarEventsRetrieveData, ThrowOnError>,
@@ -141,6 +205,14 @@ class CalendarEventsModule {
     });
   }
 
+  /**
+   * Schedule Bot For Calendar Event
+   *
+   * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
+   *
+   * This endpoint is rate limited to:
+   * - 600 requests per min per workspace
+   */
   scheduleBot<ThrowOnError extends boolean = false>(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData["body"],
@@ -154,6 +226,14 @@ class CalendarEventsModule {
     });
   }
 
+  /**
+   * Schedule Bot For Calendar Event
+   *
+   * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
+   *
+   * This endpoint is rate limited to:
+   * - 600 requests per min per workspace
+   */
   unscheduleBot<ThrowOnError extends boolean = false>(
     input: string | { eventId: string },
     options?: RequestConfig<CalendarEventsBotDestroyData, ThrowOnError>,
@@ -169,6 +249,14 @@ class CalendarEventsModule {
 class CalendarAccountsModule {
   constructor(private readonly sdk: GeneratedRecallSdk) {}
 
+  /**
+   * List Calendars
+   *
+   * Get a list of calendars.
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
   list<ThrowOnError extends boolean = false>(
     query?: CalendarsListData["query"],
     options?: RequestConfig<CalendarsListData, ThrowOnError>,
@@ -179,6 +267,14 @@ class CalendarAccountsModule {
     });
   }
 
+  /**
+   * Create Calendar
+   *
+   * Create a new calendar.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   create<ThrowOnError extends boolean = false>(
     body: CalendarsCreateData["body"],
     options?: RequestConfig<CalendarsCreateData, ThrowOnError>,
@@ -189,6 +285,14 @@ class CalendarAccountsModule {
     });
   }
 
+  /**
+   * Retrieve Calendar
+   *
+   * Get a calendar instance.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   retrieve<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     options?: RequestConfig<CalendarsRetrieveData, ThrowOnError>,
@@ -200,6 +304,14 @@ class CalendarAccountsModule {
     });
   }
 
+  /**
+   * Update Calendar
+   *
+   * Update an existing calendar.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   update<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData["body"],
@@ -213,6 +325,14 @@ class CalendarAccountsModule {
     });
   }
 
+  /**
+   * Delete Calendar
+   *
+   * Deletes a calendar. This will disconnect the calendar.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   delete<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     options?: RequestConfig<CalendarsDestroyData, ThrowOnError>,
@@ -224,6 +344,14 @@ class CalendarAccountsModule {
     });
   }
 
+  /**
+   * Get Access Token
+   *
+   * Get the OAuth access token for this calendar account.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   createAccessToken<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     options?: RequestConfig<CalendarsAccessTokenCreateData, ThrowOnError>,
@@ -245,6 +373,14 @@ class CalendarModule {
     this.accounts = new CalendarAccountsModule(this.sdk);
   }
 
+  /**
+   * List Calendar Events
+   *
+   * Get a list of calendar events.
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
   listEvents<ThrowOnError extends boolean = false>(
     query?: CalendarEventsListData["query"],
     options?: RequestConfig<CalendarEventsListData, ThrowOnError>,
@@ -252,6 +388,14 @@ class CalendarModule {
     return this.events.list<ThrowOnError>(query, options);
   }
 
+  /**
+   * Retrieve Calendar Event
+   *
+   * Get a calendar event instance.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   retrieveEvent<ThrowOnError extends boolean = false>(
     input: string | { eventId: string },
     options?: RequestConfig<CalendarEventsRetrieveData, ThrowOnError>,
@@ -259,6 +403,14 @@ class CalendarModule {
     return this.events.retrieve<ThrowOnError>(input, options);
   }
 
+  /**
+   * Schedule Bot For Calendar Event
+   *
+   * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
+   *
+   * This endpoint is rate limited to:
+   * - 600 requests per min per workspace
+   */
   scheduleBot<ThrowOnError extends boolean = false>(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData["body"],
@@ -267,6 +419,14 @@ class CalendarModule {
     return this.events.scheduleBot<ThrowOnError>(input, body, options);
   }
 
+  /**
+   * Schedule Bot For Calendar Event
+   *
+   * Schedule a bot for a calendar event. This endpoint will return the updated calendar event in response.
+   *
+   * This endpoint is rate limited to:
+   * - 600 requests per min per workspace
+   */
   unscheduleBot<ThrowOnError extends boolean = false>(
     input: string | { eventId: string },
     options?: RequestConfig<CalendarEventsBotDestroyData, ThrowOnError>,
@@ -274,6 +434,14 @@ class CalendarModule {
     return this.events.unscheduleBot<ThrowOnError>(input, options);
   }
 
+  /**
+   * List Calendars
+   *
+   * Get a list of calendars.
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
   listCalendars<ThrowOnError extends boolean = false>(
     query?: CalendarsListData["query"],
     options?: RequestConfig<CalendarsListData, ThrowOnError>,
@@ -281,6 +449,14 @@ class CalendarModule {
     return this.accounts.list<ThrowOnError>(query, options);
   }
 
+  /**
+   * Create Calendar
+   *
+   * Create a new calendar.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   createCalendar<ThrowOnError extends boolean = false>(
     body: CalendarsCreateData["body"],
     options?: RequestConfig<CalendarsCreateData, ThrowOnError>,
@@ -288,6 +464,14 @@ class CalendarModule {
     return this.accounts.create<ThrowOnError>(body, options);
   }
 
+  /**
+   * Retrieve Calendar
+   *
+   * Get a calendar instance.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   retrieveCalendar<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     options?: RequestConfig<CalendarsRetrieveData, ThrowOnError>,
@@ -295,6 +479,14 @@ class CalendarModule {
     return this.accounts.retrieve<ThrowOnError>(input, options);
   }
 
+  /**
+   * Update Calendar
+   *
+   * Update an existing calendar.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   updateCalendar<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData["body"],
@@ -303,6 +495,14 @@ class CalendarModule {
     return this.accounts.update<ThrowOnError>(input, body, options);
   }
 
+  /**
+   * Delete Calendar
+   *
+   * Deletes a calendar. This will disconnect the calendar.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   deleteCalendar<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     options?: RequestConfig<CalendarsDestroyData, ThrowOnError>,
@@ -310,6 +510,14 @@ class CalendarModule {
     return this.accounts.delete<ThrowOnError>(input, options);
   }
 
+  /**
+   * Get Access Token
+   *
+   * Get the OAuth access token for this calendar account.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
   createCalendarAccessToken<ThrowOnError extends boolean = false>(
     input: string | { calendarId: string },
     options?: RequestConfig<CalendarsAccessTokenCreateData, ThrowOnError>,
