@@ -3,21 +3,37 @@ import { GeneratedRecallSdk } from "./generated/sdk.gen";
 import type { Options as GeneratedRequestOptions } from "./generated/sdk.gen";
 import type {
   BotCreateData,
+  BotCreateResponse,
   BotDeleteMediaCreateData,
+  BotDeleteMediaCreateResponse,
   BotDestroyData,
+  BotDestroyResponse,
   BotListData,
+  BotListResponse,
   BotPartialUpdateData,
+  BotPartialUpdateResponse,
   BotRetrieveData,
+  BotRetrieveResponse,
   CalendarEventsBotCreateData,
+  CalendarEventsBotCreateResponse,
   CalendarEventsBotDestroyData,
+  CalendarEventsBotDestroyResponse,
   CalendarEventsListData,
+  CalendarEventsListResponse,
   CalendarEventsRetrieveData,
+  CalendarEventsRetrieveResponse,
   CalendarsAccessTokenCreateData,
+  CalendarsAccessTokenCreateResponse,
   CalendarsCreateData,
+  CalendarsCreateResponse,
   CalendarsDestroyData,
+  CalendarsDestroyResponse,
   CalendarsListData,
+  CalendarsListResponse,
   CalendarsPartialUpdateData,
+  CalendarsPartialUpdateResponse,
   CalendarsRetrieveData,
+  CalendarsRetrieveResponse,
 } from "./generated/types.gen";
 
 const toBearerToken = (apiKey: string) =>
@@ -44,8 +60,10 @@ type RequestConfig<
     query?: Record<string, unknown>;
     url: string;
   },
-  ThrowOnError extends boolean,
-> = Omit<GeneratedRequestOptions<TData, ThrowOnError>, "body" | "path" | "query">;
+> = Omit<
+  GeneratedRequestOptions<TData, true>,
+  "body" | "path" | "query" | "throwOnError" | "responseStyle"
+>;
 
 class BotModule {
   constructor(private readonly sdk: GeneratedRecallSdk) {}
@@ -58,14 +76,16 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  list<ThrowOnError extends boolean = false>(
+  async list(
     query?: BotListData["query"],
-    options?: RequestConfig<BotListData, ThrowOnError>,
-  ) {
-    return this.sdk.botList<ThrowOnError>({
+    options?: RequestConfig<BotListData>,
+  ): Promise<BotListResponse> {
+    const result = await this.sdk.botList<true>({
       ...(options ?? {}),
       ...(query ? { query } : {}),
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -76,14 +96,16 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  create<ThrowOnError extends boolean = false>(
+  async create(
     body: BotCreateData["body"],
-    options?: RequestConfig<BotCreateData, ThrowOnError>,
-  ) {
-    return this.sdk.botCreate<ThrowOnError>({
+    options?: RequestConfig<BotCreateData>,
+  ): Promise<BotCreateResponse> {
+    const result = await this.sdk.botCreate<true>({
       ...(options ?? {}),
       body,
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -94,15 +116,17 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  retrieve<ThrowOnError extends boolean = false>(
+  async retrieve(
     input: string | { botId: string },
-    options?: RequestConfig<BotRetrieveData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<BotRetrieveData>,
+  ): Promise<BotRetrieveResponse> {
     const id = typeof input === "string" ? input : input.botId;
-    return this.sdk.botRetrieve<ThrowOnError>({
+    const result = await this.sdk.botRetrieve<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -113,17 +137,19 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  update<ThrowOnError extends boolean = false>(
+  async update(
     input: string | { botId: string },
     body: BotPartialUpdateData["body"],
-    options?: RequestConfig<BotPartialUpdateData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<BotPartialUpdateData>,
+  ): Promise<BotPartialUpdateResponse> {
     const id = typeof input === "string" ? input : input.botId;
-    return this.sdk.botPartialUpdate<ThrowOnError>({
+    const result = await this.sdk.botPartialUpdate<true>({
       ...(options ?? {}),
       path: { id },
       ...(body ? { body } : {}),
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -134,15 +160,17 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  delete<ThrowOnError extends boolean = false>(
+  async delete(
     input: string | { botId: string },
-    options?: RequestConfig<BotDestroyData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<BotDestroyData>,
+  ): Promise<BotDestroyResponse> {
     const id = typeof input === "string" ? input : input.botId;
-    return this.sdk.botDestroy<ThrowOnError>({
+    const result = await this.sdk.botDestroy<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -153,15 +181,17 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  deleteMedia<ThrowOnError extends boolean = false>(
+  async deleteMedia(
     input: string | { botId: string },
-    options?: RequestConfig<BotDeleteMediaCreateData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<BotDeleteMediaCreateData>,
+  ): Promise<BotDeleteMediaCreateResponse> {
     const id = typeof input === "string" ? input : input.botId;
-    return this.sdk.botDeleteMediaCreate<ThrowOnError>({
+    const result = await this.sdk.botDeleteMediaCreate<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 }
 
@@ -176,14 +206,16 @@ class CalendarEventsModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  list<ThrowOnError extends boolean = false>(
+  async list(
     query?: CalendarEventsListData["query"],
-    options?: RequestConfig<CalendarEventsListData, ThrowOnError>,
-  ) {
-    return this.sdk.calendarEventsList<ThrowOnError>({
+    options?: RequestConfig<CalendarEventsListData>,
+  ): Promise<CalendarEventsListResponse> {
+    const result = await this.sdk.calendarEventsList<true>({
       ...(options ?? {}),
       ...(query ? { query } : {}),
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -194,15 +226,17 @@ class CalendarEventsModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  retrieve<ThrowOnError extends boolean = false>(
+  async retrieve(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsRetrieveData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<CalendarEventsRetrieveData>,
+  ): Promise<CalendarEventsRetrieveResponse> {
     const id = typeof input === "string" ? input : input.eventId;
-    return this.sdk.calendarEventsRetrieve<ThrowOnError>({
+    const result = await this.sdk.calendarEventsRetrieve<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -213,17 +247,19 @@ class CalendarEventsModule {
    * This endpoint is rate limited to:
    * - 600 requests per min per workspace
    */
-  scheduleBot<ThrowOnError extends boolean = false>(
+  async scheduleBot(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData["body"],
-    options?: RequestConfig<CalendarEventsBotCreateData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<CalendarEventsBotCreateData>,
+  ): Promise<CalendarEventsBotCreateResponse> {
     const id = typeof input === "string" ? input : input.eventId;
-    return this.sdk.calendarEventsBotCreate<ThrowOnError>({
+    const result = await this.sdk.calendarEventsBotCreate<true>({
       ...(options ?? {}),
       path: { id },
       body,
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -234,15 +270,17 @@ class CalendarEventsModule {
    * This endpoint is rate limited to:
    * - 600 requests per min per workspace
    */
-  unscheduleBot<ThrowOnError extends boolean = false>(
+  async unscheduleBot(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsBotDestroyData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<CalendarEventsBotDestroyData>,
+  ): Promise<CalendarEventsBotDestroyResponse> {
     const id = typeof input === "string" ? input : input.eventId;
-    return this.sdk.calendarEventsBotDestroy<ThrowOnError>({
+    const result = await this.sdk.calendarEventsBotDestroy<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 }
 
@@ -257,14 +295,16 @@ class CalendarAccountsModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  list<ThrowOnError extends boolean = false>(
+  async list(
     query?: CalendarsListData["query"],
-    options?: RequestConfig<CalendarsListData, ThrowOnError>,
-  ) {
-    return this.sdk.calendarsList<ThrowOnError>({
+    options?: RequestConfig<CalendarsListData>,
+  ): Promise<CalendarsListResponse> {
+    const result = await this.sdk.calendarsList<true>({
       ...(options ?? {}),
       ...(query ? { query } : {}),
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -275,14 +315,16 @@ class CalendarAccountsModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  create<ThrowOnError extends boolean = false>(
+  async create(
     body: CalendarsCreateData["body"],
-    options?: RequestConfig<CalendarsCreateData, ThrowOnError>,
-  ) {
-    return this.sdk.calendarsCreate<ThrowOnError>({
+    options?: RequestConfig<CalendarsCreateData>,
+  ): Promise<CalendarsCreateResponse> {
+    const result = await this.sdk.calendarsCreate<true>({
       ...(options ?? {}),
       body,
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -293,15 +335,17 @@ class CalendarAccountsModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  retrieve<ThrowOnError extends boolean = false>(
+  async retrieve(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsRetrieveData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<CalendarsRetrieveData>,
+  ): Promise<CalendarsRetrieveResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
-    return this.sdk.calendarsRetrieve<ThrowOnError>({
+    const result = await this.sdk.calendarsRetrieve<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -312,17 +356,19 @@ class CalendarAccountsModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  update<ThrowOnError extends boolean = false>(
+  async update(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData["body"],
-    options?: RequestConfig<CalendarsPartialUpdateData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<CalendarsPartialUpdateData>,
+  ): Promise<CalendarsPartialUpdateResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
-    return this.sdk.calendarsPartialUpdate<ThrowOnError>({
+    const result = await this.sdk.calendarsPartialUpdate<true>({
       ...(options ?? {}),
       path: { id },
       body,
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -333,15 +379,17 @@ class CalendarAccountsModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  delete<ThrowOnError extends boolean = false>(
+  async delete(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsDestroyData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<CalendarsDestroyData>,
+  ): Promise<CalendarsDestroyResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
-    return this.sdk.calendarsDestroy<ThrowOnError>({
+    const result = await this.sdk.calendarsDestroy<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 
   /**
@@ -352,15 +400,17 @@ class CalendarAccountsModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  createAccessToken<ThrowOnError extends boolean = false>(
+  async createAccessToken(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsAccessTokenCreateData, ThrowOnError>,
-  ) {
+    options?: RequestConfig<CalendarsAccessTokenCreateData>,
+  ): Promise<CalendarsAccessTokenCreateResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
-    return this.sdk.calendarsAccessTokenCreate<ThrowOnError>({
+    const result = await this.sdk.calendarsAccessTokenCreate<true>({
       ...(options ?? {}),
       path: { id },
+      throwOnError: true,
     });
+    return result.data;
   }
 }
 
@@ -381,11 +431,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  listEvents<ThrowOnError extends boolean = false>(
+  listEvents(
     query?: CalendarEventsListData["query"],
-    options?: RequestConfig<CalendarEventsListData, ThrowOnError>,
-  ) {
-    return this.events.list<ThrowOnError>(query, options);
+    options?: RequestConfig<CalendarEventsListData>,
+  ): Promise<CalendarEventsListResponse> {
+    return this.events.list(query, options);
   }
 
   /**
@@ -396,11 +446,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  retrieveEvent<ThrowOnError extends boolean = false>(
+  retrieveEvent(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsRetrieveData, ThrowOnError>,
-  ) {
-    return this.events.retrieve<ThrowOnError>(input, options);
+    options?: RequestConfig<CalendarEventsRetrieveData>,
+  ): Promise<CalendarEventsRetrieveResponse> {
+    return this.events.retrieve(input, options);
   }
 
   /**
@@ -411,12 +461,12 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 600 requests per min per workspace
    */
-  scheduleBot<ThrowOnError extends boolean = false>(
+  scheduleBot(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData["body"],
-    options?: RequestConfig<CalendarEventsBotCreateData, ThrowOnError>,
-  ) {
-    return this.events.scheduleBot<ThrowOnError>(input, body, options);
+    options?: RequestConfig<CalendarEventsBotCreateData>,
+  ): Promise<CalendarEventsBotCreateResponse> {
+    return this.events.scheduleBot(input, body, options);
   }
 
   /**
@@ -427,11 +477,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 600 requests per min per workspace
    */
-  unscheduleBot<ThrowOnError extends boolean = false>(
+  unscheduleBot(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsBotDestroyData, ThrowOnError>,
-  ) {
-    return this.events.unscheduleBot<ThrowOnError>(input, options);
+    options?: RequestConfig<CalendarEventsBotDestroyData>,
+  ): Promise<CalendarEventsBotDestroyResponse> {
+    return this.events.unscheduleBot(input, options);
   }
 
   /**
@@ -442,11 +492,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  listCalendars<ThrowOnError extends boolean = false>(
+  listCalendars(
     query?: CalendarsListData["query"],
-    options?: RequestConfig<CalendarsListData, ThrowOnError>,
-  ) {
-    return this.accounts.list<ThrowOnError>(query, options);
+    options?: RequestConfig<CalendarsListData>,
+  ): Promise<CalendarsListResponse> {
+    return this.accounts.list(query, options);
   }
 
   /**
@@ -457,11 +507,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  createCalendar<ThrowOnError extends boolean = false>(
+  createCalendar(
     body: CalendarsCreateData["body"],
-    options?: RequestConfig<CalendarsCreateData, ThrowOnError>,
-  ) {
-    return this.accounts.create<ThrowOnError>(body, options);
+    options?: RequestConfig<CalendarsCreateData>,
+  ): Promise<CalendarsCreateResponse> {
+    return this.accounts.create(body, options);
   }
 
   /**
@@ -472,11 +522,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  retrieveCalendar<ThrowOnError extends boolean = false>(
+  retrieveCalendar(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsRetrieveData, ThrowOnError>,
-  ) {
-    return this.accounts.retrieve<ThrowOnError>(input, options);
+    options?: RequestConfig<CalendarsRetrieveData>,
+  ): Promise<CalendarsRetrieveResponse> {
+    return this.accounts.retrieve(input, options);
   }
 
   /**
@@ -487,12 +537,12 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  updateCalendar<ThrowOnError extends boolean = false>(
+  updateCalendar(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData["body"],
-    options?: RequestConfig<CalendarsPartialUpdateData, ThrowOnError>,
-  ) {
-    return this.accounts.update<ThrowOnError>(input, body, options);
+    options?: RequestConfig<CalendarsPartialUpdateData>,
+  ): Promise<CalendarsPartialUpdateResponse> {
+    return this.accounts.update(input, body, options);
   }
 
   /**
@@ -503,11 +553,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  deleteCalendar<ThrowOnError extends boolean = false>(
+  deleteCalendar(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsDestroyData, ThrowOnError>,
-  ) {
-    return this.accounts.delete<ThrowOnError>(input, options);
+    options?: RequestConfig<CalendarsDestroyData>,
+  ): Promise<CalendarsDestroyResponse> {
+    return this.accounts.delete(input, options);
   }
 
   /**
@@ -518,11 +568,11 @@ class CalendarModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  createCalendarAccessToken<ThrowOnError extends boolean = false>(
+  createCalendarAccessToken(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsAccessTokenCreateData, ThrowOnError>,
-  ) {
-    return this.accounts.createAccessToken<ThrowOnError>(input, options);
+    options?: RequestConfig<CalendarsAccessTokenCreateData>,
+  ): Promise<CalendarsAccessTokenCreateResponse> {
+    return this.accounts.createAccessToken(input, options);
   }
 }
 
@@ -531,13 +581,16 @@ export class RecallSdk {
   public readonly bot: BotModule;
   public readonly calendar: CalendarModule;
 
-  constructor({ apiKey, client, ...config }: RecallSdkOptions) {
+  constructor({ apiKey, client, ...options }: RecallSdkOptions) {
     const clientInstance = client ?? createClient();
     const authProvider = () => toBearerToken(apiKey);
+    const { throwOnError, responseStyle, ...config } = options;
 
     clientInstance.setConfig({
       ...config,
       auth: authProvider,
+      responseStyle: responseStyle ?? "fields",
+      throwOnError: throwOnError ?? true,
     });
 
     this._sdk = new GeneratedRecallSdk({ client: clientInstance });
