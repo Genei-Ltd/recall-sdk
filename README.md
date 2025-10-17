@@ -60,6 +60,8 @@ The `RecallSdk` automatically adds the `Token` prefix to your API key when missi
   - Calendar events: `listEvents`, `retrieveEvent`, `scheduleBot`, `unscheduleBot`.
   - Calendar accounts: `listCalendars`, `createCalendar`, `retrieveCalendar`, `updateCalendar`, `deleteCalendar`, `createCalendarAccessToken`.
   - Nested modules (`recall.calendar.events` and `recall.calendar.accounts`) expose the same methods if you prefer an explicit namespace.
+- `recall.recording` – work with meeting recordings (`list`, `retrieve`, `delete`, `createTranscript`).
+- `recall.transcript` – inspect transcript artifacts (`list`, `retrieve`, `delete`).
 
 Every helper takes lightweight identifiers (`botId`, `eventId`, `calendarId`, etc.) with optional request bodies or query objects that match the generated TypeScript types.
 

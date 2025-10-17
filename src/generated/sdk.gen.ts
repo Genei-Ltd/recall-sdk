@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { BotCreateData, BotCreateErrors, BotCreateResponses, BotDeleteMediaCreateData, BotDeleteMediaCreateResponses, BotDestroyData, BotDestroyResponses, BotListData, BotListResponses, BotPartialUpdateData, BotPartialUpdateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses } from './types.gen';
+import type { BotCreateData, BotCreateErrors, BotCreateResponses, BotDeleteMediaCreateData, BotDeleteMediaCreateResponses, BotDestroyData, BotDestroyResponses, BotListData, BotListResponses, BotPartialUpdateData, BotPartialUpdateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses, RecordingCreateTranscriptCreateData, RecordingCreateTranscriptCreateResponses, RecordingDestroyData, RecordingDestroyResponses, RecordingListData, RecordingListResponses, RecordingRetrieveData, RecordingRetrieveResponses, TranscriptDestroyData, TranscriptDestroyResponses, TranscriptListData, TranscriptListResponses, TranscriptRetrieveData, TranscriptRetrieveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -383,6 +383,143 @@ export class GeneratedRecallSdk extends _HeyApiClient {
                 }
             ],
             url: '/api/v2/calendars/{id}/access-token/',
+            ...options
+        });
+    }
+    
+    /**
+     * List Recordings
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public recordingList<ThrowOnError extends boolean = false>(options?: Options<RecordingListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<RecordingListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/recording/',
+            ...options
+        });
+    }
+    
+    /**
+     * Delete Recording
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public recordingDestroy<ThrowOnError extends boolean = false>(options: Options<RecordingDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<RecordingDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/recording/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Recording
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public recordingRetrieve<ThrowOnError extends boolean = false>(options: Options<RecordingRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<RecordingRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/recording/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Create Async Transcript
+     *
+     * This endpoint is rate limited to:
+     * - 5 requests per min per bot
+     */
+    public recordingCreateTranscriptCreate<ThrowOnError extends boolean = false>(options: Options<RecordingCreateTranscriptCreateData, ThrowOnError>) {
+        return (options.client ?? this._client).post<RecordingCreateTranscriptCreateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/recording/{id}/create_transcript/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * List Transcript
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public transcriptList<ThrowOnError extends boolean = false>(options?: Options<TranscriptListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<TranscriptListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/transcript/',
+            ...options
+        });
+    }
+    
+    /**
+     * Delete Transcript
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public transcriptDestroy<ThrowOnError extends boolean = false>(options: Options<TranscriptDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<TranscriptDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/transcript/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Transcript
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public transcriptRetrieve<ThrowOnError extends boolean = false>(options: Options<TranscriptRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<TranscriptRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/transcript/{id}/',
             ...options
         });
     }

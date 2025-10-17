@@ -3613,6 +3613,141 @@ export type PatchedCalendar = {
     readonly updated_at?: string;
 };
 
+export type BotMinimal = {
+    readonly id: string;
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type DesktopSdkUploadMinimal = {
+    readonly id: string;
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type PaginatedRecordingList = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<Recording>;
+};
+
+export type RealtimeEndpointMinimal = {
+    readonly id: string;
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type Recording = {
+    readonly id: string;
+    readonly created_at: string;
+    readonly started_at: string | null;
+    readonly completed_at: string | null;
+    status: RecordingStatus;
+    media_shortcuts: RecordingShortcuts;
+    readonly realtime_endpoints: Array<RealtimeEndpointMinimal>;
+    bot: BotMinimal | null;
+    desktop_sdk_upload: DesktopSdkUploadMinimal | null;
+    readonly expires_at: string;
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type RecallaiAsyncTranscription = {
+    /**
+     * Must be `en` in low latency mode. Docs: https://docs.recall.ai/docs/recallai-transcription
+     *
+     * * `auto` - auto
+     * * `bg` - bg
+     * * `ca` - ca
+     * * `cs` - cs
+     * * `da` - da
+     * * `de` - de
+     * * `el` - el
+     * * `en` - en
+     * * `en_au` - en_au
+     * * `en_uk` - en_uk
+     * * `en_us` - en_us
+     * * `es` - es
+     * * `et` - et
+     * * `fi` - fi
+     * * `fr` - fr
+     * * `hi` - hi
+     * * `hu` - hu
+     * * `id` - id
+     * * `it` - it
+     * * `ja` - ja
+     * * `ko` - ko
+     * * `lt` - lt
+     * * `lv` - lv
+     * * `ms` - ms
+     * * `nl` - nl
+     * * `no` - no
+     * * `pl` - pl
+     * * `pt` - pt
+     * * `ro` - ro
+     * * `ru` - ru
+     * * `sk` - sk
+     * * `sv` - sv
+     * * `th` - th
+     * * `tr` - tr
+     * * `uk` - uk
+     * * `vi` - vi
+     * * `zh` - zh
+     */
+    language_code?: LanguageCodeEnum;
+    /**
+     * List of text strings to find/replace in the transcript.
+     */
+    spelling?: Array<RecallaiSpellingEntry>;
+    /**
+     * Increases the chances that these terms appear in the transcript over some sound-alikes.
+     */
+    key_terms?: Array<string>;
+    filter_profanity?: boolean;
+};
+
+export type RecordingCreateTranscriptArtifact = {
+    [key: string]: unknown;
+};
+
+export type RecordingCreateTranscriptArtifactProvider = {
+    recallai_async?: RecallaiAsyncTranscription;
+};
+
+export type RecordingCreateTranscriptDiarization = {
+    use_separate_streams_when_available?: boolean;
+};
+
+export type RecordingMinimal = {
+    readonly id: string;
+    metadata: {
+        [key: string]: string | null;
+    } | null;
+};
+
+export type TranscriptArtifact = {
+    readonly id: string;
+    recording: RecordingMinimal;
+    readonly created_at: string;
+    status: ArtifactStatus;
+    metadata: {
+        [key: string]: string | null;
+    };
+    data: TranscriptArtifactData;
+    diarization: TranscriptArtifactDiarization | null;
+    provider: TranscriptArtifactProvider;
+};
+
+export type PaginatedTranscriptArtifactList = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<TranscriptArtifact>;
+};
+
 export type AudioMixedArtifactShortcutWritable = {
     metadata: {
         [key: string]: string | null;
@@ -4536,6 +4671,884 @@ export type PatchedCalendarWritable = {
     oauth_email?: string;
 };
 
+export type BotMinimalWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type DesktopSdkUploadMinimalWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type RealtimeEndpointMinimalWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type RecordingWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type RecordingCreateTranscriptArtifactWritable = {
+    metadata?: {
+        [key: string]: string | null;
+    };
+    diarization?: RecordingCreateTranscriptDiarization;
+    provider: RecordingCreateTranscriptArtifactProviderWritable;
+};
+
+export type RecordingCreateTranscriptArtifactProviderWritable = {
+    /**
+     * The parameters for creating a transcript
+     */
+    assembly_ai_async?: {
+        /**
+         * The language of your audio file. Possible values are found in [Supported Languages](https://www.assemblyai.com/docs/concepts/supported-languages).
+         * The default value is 'en_us'.
+         *
+         */
+        language_code?: 'en' | 'en_au' | 'en_uk' | 'en_us' | 'es' | 'fr' | 'de' | 'it' | 'pt' | 'nl' | 'af' | 'sq' | 'am' | 'ar' | 'hy' | 'as' | 'az' | 'ba' | 'eu' | 'be' | 'bn' | 'bs' | 'br' | 'bg' | 'my' | 'ca' | 'zh' | 'hr' | 'cs' | 'da' | 'et' | 'fo' | 'fi' | 'gl' | 'ka' | 'el' | 'gu' | 'ht' | 'ha' | 'haw' | 'he' | 'hi' | 'hu' | 'is' | 'id' | 'ja' | 'jw' | 'kn' | 'kk' | 'km' | 'ko' | 'lo' | 'la' | 'lv' | 'ln' | 'lt' | 'lb' | 'mk' | 'mg' | 'ms' | 'ml' | 'mt' | 'mi' | 'mr' | 'mn' | 'ne' | 'no' | 'nn' | 'oc' | 'pa' | 'ps' | 'fa' | 'pl' | 'ro' | 'ru' | 'sa' | 'sr' | 'sn' | 'sd' | 'si' | 'sk' | 'sl' | 'so' | 'su' | 'sw' | 'sv' | 'tl' | 'tg' | 'ta' | 'tt' | 'te' | 'th' | 'bo' | 'tr' | 'tk' | 'uk' | 'ur' | 'uz' | 'vi' | 'cy' | 'yi' | 'yo' | string | null;
+        /**
+         * Enable [Automatic language detection](https://www.assemblyai.com/docs/models/speech-recognition#automatic-language-detection), either true or false.
+         */
+        language_detection?: boolean;
+        /**
+         * The confidence threshold for the automatically detected language.
+         * An error will be returned if the language confidence is below this threshold.
+         * Defaults to 0.
+         *
+         */
+        language_confidence_threshold?: number;
+        /**
+         * The speech model to use for the transcription. When `null`, the "best" model is used.
+         */
+        speech_model?: 'best' | 'nano' | 'slam-1' | 'universal' | string | null;
+        /**
+         * Enable Automatic Punctuation, can be true or false
+         */
+        punctuate?: boolean;
+        /**
+         * Enable Text Formatting, can be true or false
+         */
+        format_text?: boolean;
+        /**
+         * Transcribe Filler Words, like "umm", in your media file; can be true or false
+         */
+        disfluencies?: boolean;
+        /**
+         * Enable [Multichannel](https://www.assemblyai.com/docs/models/speech-recognition#multichannel-transcription) transcription, can be true or false.
+         */
+        multichannel?: boolean;
+        /**
+         * Enable [Dual Channel](https://www.assemblyai.com/docs/models/speech-recognition#dual-channel-transcription) transcription, can be true or false.
+         *
+         * @deprecated
+         */
+        dual_channel?: boolean;
+        /**
+         * The URL to which we send webhook requests.
+         * We sends two different types of webhook requests.
+         * One request when a transcript is completed or failed, and one request when the redacted audio is ready if redact_pii_audio is enabled.
+         *
+         */
+        webhook_url?: string;
+        /**
+         * The header name to be sent with the transcript completed or failed webhook requests
+         */
+        webhook_auth_header_name?: string | null;
+        /**
+         * The header value to send back with the transcript completed or failed webhook requests for added security
+         */
+        webhook_auth_header_value?: string | null;
+        /**
+         * Enable Key Phrases, either true or false
+         */
+        auto_highlights?: boolean;
+        /**
+         * The point in time, in milliseconds, to begin transcribing in your media file
+         */
+        audio_start_from?: number;
+        /**
+         * The point in time, in milliseconds, to stop transcribing in your media file
+         */
+        audio_end_at?: number;
+        /**
+         * The list of custom vocabulary to boost transcription probability for
+         *
+         * @deprecated
+         */
+        word_boost?: Array<string>;
+        /**
+         * How much to boost specified words
+         */
+        boost_param?: 'low' | 'default' | 'high';
+        /**
+         * Filter profanity from the transcribed text, can be true or false
+         */
+        filter_profanity?: boolean;
+        /**
+         * Redact PII from the transcribed text using the Redact PII model, can be true or false
+         */
+        redact_pii?: boolean;
+        /**
+         * Generate a copy of the original media file with spoken PII "beeped" out, can be true or false. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+         */
+        redact_pii_audio?: boolean;
+        /**
+         * Controls the filetype of the audio created by redact_pii_audio. Currently supports mp3 (default) and wav. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+         */
+        redact_pii_audio_quality?: 'mp3' | 'wav';
+        /**
+         * The list of PII Redaction policies to enable. See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+         */
+        redact_pii_policies?: Array<'account_number' | 'banking_information' | 'blood_type' | 'credit_card_cvv' | 'credit_card_expiration' | 'credit_card_number' | 'date' | 'date_interval' | 'date_of_birth' | 'drivers_license' | 'drug' | 'duration' | 'email_address' | 'event' | 'filename' | 'gender_sexuality' | 'healthcare_number' | 'injury' | 'ip_address' | 'language' | 'location' | 'marital_status' | 'medical_condition' | 'medical_process' | 'money_amount' | 'nationality' | 'number_sequence' | 'occupation' | 'organization' | 'passport_number' | 'password' | 'person_age' | 'person_name' | 'phone_number' | 'physical_attribute' | 'political_affiliation' | 'religion' | 'statistics' | 'time' | 'url' | 'us_social_security_number' | 'username' | 'vehicle_id' | 'zodiac_sign'>;
+        /**
+         * The replacement logic for detected PII, can be "entity_type" or "hash". See [PII redaction](https://www.assemblyai.com/docs/models/pii-redaction) for more details.
+         */
+        redact_pii_sub?: 'entity_name' | 'hash' | string | null;
+        /**
+         * Enable [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization), can be true or false
+         */
+        speaker_labels?: boolean;
+        /**
+         * Tells the speaker label model how many speakers it should attempt to identify, up to 10. See [Speaker diarization](https://www.assemblyai.com/docs/models/speaker-diarization) for more details.
+         */
+        speakers_expected?: number | null;
+        /**
+         * Enable [Content Moderation](https://www.assemblyai.com/docs/models/content-moderation), can be true or false
+         */
+        content_safety?: boolean;
+        /**
+         * The confidence threshold for the Content Moderation model. Values must be between 25 and 100.
+         */
+        content_safety_confidence?: number;
+        /**
+         * Enable [Topic Detection](https://www.assemblyai.com/docs/models/topic-detection), can be true or false
+         */
+        iab_categories?: boolean;
+        /**
+         * Customize how words are spelled and formatted using to and from values
+         */
+        custom_spelling?: Array<{
+            /**
+             * Words or phrases to replace
+             */
+            from: Array<string>;
+            /**
+             * Word to replace with
+             */
+            to: string;
+        }>;
+        /**
+         * <Warning>`keyterms_prompt` is only supported when the `speech_model` is specified as `slam-1`</Warning>
+         * Improve accuracy with up to 1000 domain-specific words or phrases (maximum 6 words per phrase).
+         *
+         */
+        keyterms_prompt?: Array<string>;
+        /**
+         * This parameter does not currently have any functionality attached to it.
+         *
+         * @deprecated
+         */
+        prompt?: string;
+        /**
+         * Enable [Sentiment Analysis](https://www.assemblyai.com/docs/models/sentiment-analysis), can be true or false
+         */
+        sentiment_analysis?: boolean;
+        /**
+         * Enable [Auto Chapters](https://www.assemblyai.com/docs/models/auto-chapters), can be true or false
+         */
+        auto_chapters?: boolean;
+        /**
+         * Enable [Entity Detection](https://www.assemblyai.com/docs/models/entity-detection), can be true or false
+         */
+        entity_detection?: boolean;
+        /**
+         * Reject audio files that contain less than this fraction of speech.
+         * Valid values are in the range [0, 1] inclusive.
+         *
+         */
+        speech_threshold?: number | null;
+        /**
+         * Enable [Summarization](https://www.assemblyai.com/docs/models/summarization), can be true or false
+         */
+        summarization?: boolean;
+        /**
+         * The model to summarize the transcript
+         */
+        summary_model?: 'informative' | 'conversational' | 'catchy';
+        /**
+         * The type of summary
+         */
+        summary_type?: 'bullets' | 'bullets_verbose' | 'gist' | 'headline' | 'paragraph';
+        /**
+         * Enable custom topics, either true or false
+         *
+         * @deprecated
+         */
+        custom_topics?: boolean;
+        /**
+         * The list of custom topics
+         */
+        topics?: Array<string>;
+    };
+    deepgram_async?: {
+        custom_topic?: string | Array<string>;
+        custom_topic_mode?: 'extended' | 'strict';
+        custom_intent?: string | Array<string>;
+        custom_intent_mode?: 'extended' | 'strict';
+        detect_entities?: boolean;
+        detect_language?: boolean | Array<string>;
+        diarize?: boolean;
+        dictation?: boolean;
+        encoding?: 'linear16' | 'flac' | 'mulaw' | 'amr-nb' | 'amr-wb' | 'opus' | 'speex' | 'g729';
+        extra?: string | Array<string>;
+        filler_words?: boolean;
+        intents?: boolean;
+        keyterm?: Array<string>;
+        keywords?: string | Array<string>;
+        language?: 'bg' | 'ca' | 'zh' | 'zh-CN' | 'zh-TW' | 'zh-HK' | 'zh-Hans' | 'zh-Hant' | 'cs' | 'da' | 'da-DK' | 'nl' | 'nl-BE' | 'en' | 'en-US' | 'en-AU' | 'en-GB' | 'en-NZ' | 'en-IN' | 'et' | 'fi' | 'fr' | 'fr-CA' | 'de' | 'de-CH' | 'el' | 'hi' | 'hi-Latn' | 'hu' | 'id' | 'it' | 'ja' | 'ko' | 'ko-KR' | 'lv' | 'lt' | 'ms' | 'multi' | 'no' | 'pl' | 'pt' | 'pt-BR' | 'pt-PT' | 'ro' | 'ru' | 'sk' | 'es' | 'es-419' | 'es-LATAM' | 'sv' | 'sv-SE' | 'taq' | 'th' | 'th-TH' | 'tr' | 'uk' | 'vi';
+        measurements?: boolean;
+        mip_opt_out?: boolean;
+        model?: 'nova-3' | 'nova-3-general' | 'nova-3-medical' | 'nova-2' | 'nova-2-general' | 'nova-2-meeting' | 'nova-2-finance' | 'nova-2-conversationalai' | 'nova-2-voicemail' | 'nova-2-video' | 'nova-2-medical' | 'nova-2-drivethru' | 'nova-2-automotive' | 'nova' | 'nova-general' | 'nova-phonecall' | 'nova-medical' | 'enhanced' | 'enhanced-general' | 'enhanced-meeting' | 'enhanced-phonecall' | 'enhanced-finance' | 'base' | 'meeting' | 'phonecall' | 'finance' | 'conversationalai' | 'voicemail' | 'video' | string;
+        multichannel?: boolean;
+        numerals?: boolean;
+        paragraphs?: boolean;
+        profanity_filter?: boolean;
+        punctuate?: boolean;
+        redact?: string | Array<'pci' | 'pii' | 'numbers'>;
+        replace?: string | Array<string>;
+        search?: string | Array<string>;
+        sentiment?: boolean;
+        smart_format?: boolean;
+        summarize?: 'v1' | 'v2' | 'true' | 'false';
+        tag?: string | Array<string>;
+        topics?: boolean;
+        utterances?: boolean;
+        utt_split?: number;
+        version?: 'latest' | string;
+    };
+    gladia_v2_async?: {
+        /**
+         * **[Deprecated]** Context to feed the transcription model with for possible better accuracy
+         *
+         * @deprecated
+         */
+        context_prompt?: string;
+        /**
+         * **[Beta]** Can be either boolean to enable custom_vocabulary for this audio or an array with specific vocabulary list to feed the transcription model with
+         */
+        custom_vocabulary?: boolean;
+        /**
+         * **[Beta]** Custom vocabulary configuration, if `custom_vocabulary` is enabled
+         */
+        custom_vocabulary_config?: {
+            /**
+             * Specific vocabulary list to feed the transcription model with. Each item can be a string or an object with the following properties: value, intensity, pronunciations, language.
+             */
+            vocabulary: Array<{
+                /**
+                 * The text used to replace in the transcription.
+                 */
+                value: string;
+                /**
+                 * The global intensity of the feature.
+                 */
+                intensity?: number;
+                /**
+                 * The pronunciations used in the transcription.
+                 */
+                pronunciations?: Array<string>;
+                /**
+                 * Specify the language in which it will be pronounced when sound comparison occurs. Default to transcription language.
+                 */
+                language?: string;
+            } | string>;
+            /**
+             * Default intensity for the custom vocabulary
+             */
+            default_intensity?: number;
+        };
+        /**
+         * **[Deprecated]** Use `language_config` instead. Detect the language from the given audio
+         *
+         * @deprecated
+         */
+        detect_language?: boolean;
+        /**
+         * **[Deprecated]** Use `language_config` instead.Detect multiple languages in the given audio
+         *
+         * @deprecated
+         */
+        enable_code_switching?: boolean;
+        /**
+         * **[Deprecated]** Use `language_config` instead. Specify the configuration for code switching
+         *
+         * @deprecated
+         */
+        code_switching_config?: {
+            /**
+             * Specify the languages you want to use when detecting multiple languages
+             */
+            languages?: Array<'af' | 'sq' | 'am' | 'ar' | 'hy' | 'as' | 'az' | 'ba' | 'eu' | 'be' | 'bn' | 'bs' | 'br' | 'bg' | 'ca' | 'zh' | 'hr' | 'cs' | 'da' | 'nl' | 'en' | 'et' | 'fo' | 'fi' | 'fr' | 'gl' | 'ka' | 'de' | 'el' | 'gu' | 'ht' | 'ha' | 'haw' | 'he' | 'hi' | 'hu' | 'is' | 'id' | 'it' | 'ja' | 'jv' | 'kn' | 'kk' | 'km' | 'ko' | 'lo' | 'la' | 'lv' | 'ln' | 'lt' | 'lb' | 'mk' | 'mg' | 'ms' | 'ml' | 'mt' | 'mi' | 'mr' | 'mn' | 'mymr' | 'ne' | 'no' | 'nn' | 'oc' | 'ps' | 'fa' | 'pl' | 'pt' | 'pa' | 'ro' | 'ru' | 'sa' | 'sr' | 'sn' | 'sd' | 'si' | 'sk' | 'sl' | 'so' | 'es' | 'su' | 'sw' | 'sv' | 'tl' | 'tg' | 'ta' | 'tt' | 'te' | 'th' | 'bo' | 'tr' | 'tk' | 'uk' | 'ur' | 'uz' | 'vi' | 'cy' | 'yi' | 'yo' | 'jp'>;
+        };
+        /**
+         * **[Deprecated]** Use `language_config` instead. Set the spoken language for the given audio (ISO 639 standard)
+         *
+         * @deprecated
+         */
+        language?: 'af' | 'sq' | 'am' | 'ar' | 'hy' | 'as' | 'az' | 'ba' | 'eu' | 'be' | 'bn' | 'bs' | 'br' | 'bg' | 'ca' | 'zh' | 'hr' | 'cs' | 'da' | 'nl' | 'en' | 'et' | 'fo' | 'fi' | 'fr' | 'gl' | 'ka' | 'de' | 'el' | 'gu' | 'ht' | 'ha' | 'haw' | 'he' | 'hi' | 'hu' | 'is' | 'id' | 'it' | 'ja' | 'jv' | 'kn' | 'kk' | 'km' | 'ko' | 'lo' | 'la' | 'lv' | 'ln' | 'lt' | 'lb' | 'mk' | 'mg' | 'ms' | 'ml' | 'mt' | 'mi' | 'mr' | 'mn' | 'mymr' | 'ne' | 'no' | 'nn' | 'oc' | 'ps' | 'fa' | 'pl' | 'pt' | 'pa' | 'ro' | 'ru' | 'sa' | 'sr' | 'sn' | 'sd' | 'si' | 'sk' | 'sl' | 'so' | 'es' | 'su' | 'sw' | 'sv' | 'tl' | 'tg' | 'ta' | 'tt' | 'te' | 'th' | 'bo' | 'tr' | 'tk' | 'uk' | 'ur' | 'uz' | 'vi' | 'cy' | 'yi' | 'yo' | 'jp';
+        /**
+         * **[Deprecated]** Use `callback`/`callback_config` instead. Callback URL we will do a `POST` request to with the result of the transcription
+         *
+         * @deprecated
+         */
+        callback_url?: string;
+        /**
+         * Enable callback for this transcription. If true, the `callback_config` property will be used to customize the callback behaviour
+         */
+        callback?: boolean;
+        /**
+         * Customize the callback behaviour (url and http method)
+         */
+        callback_config?: {
+            /**
+             * The URL to be called with the result of the transcription
+             */
+            url: string;
+            /**
+             * The HTTP method to be used. Allowed values are `POST` or `PUT` (default: `POST`)
+             */
+            method?: 'POST' | 'PUT';
+        };
+        /**
+         * Enable subtitles generation for this transcription
+         */
+        subtitles?: boolean;
+        /**
+         * Configuration for subtitles generation if `subtitles` is enabled
+         */
+        subtitles_config?: {
+            formats?: Array<'srt' | 'vtt'>;
+            /**
+             * Minimum duration of a subtitle in seconds
+             */
+            minimum_duration?: number;
+            /**
+             * Maximum duration of a subtitle in seconds
+             */
+            maximum_duration?: number;
+            /**
+             * Maximum number of characters per row in a subtitle
+             */
+            maximum_characters_per_row?: number;
+            /**
+             * Maximum number of rows per caption
+             */
+            maximum_rows_per_caption?: number;
+            /**
+             * Style of the subtitles. Compliance mode refers to : https://loc.gov/preservation/digital/formats//fdd/fdd000569.shtml#:~:text=SRT%20files%20are%20basic%20text,alongside%2C%20example%3A%20%22MyVideo123
+             */
+            style?: 'default' | 'compliance';
+        };
+        /**
+         * Enable speaker recognition (diarization) for this audio
+         */
+        diarization?: boolean;
+        /**
+         * Speaker recognition configuration, if `diarization` is enabled
+         */
+        diarization_config?: {
+            /**
+             * Exact number of speakers in the audio
+             */
+            number_of_speakers?: number;
+            /**
+             * Minimum number of speakers in the audio
+             */
+            min_speakers?: number;
+            /**
+             * Maximum number of speakers in the audio
+             */
+            max_speakers?: number;
+            /**
+             * **[Alpha]** Use enhanced diarization for this audio
+             */
+            enhanced?: boolean;
+        };
+        /**
+         * **[Beta]** Enable translation for this audio
+         */
+        translation?: boolean;
+        /**
+         * **[Beta]** Translation configuration, if `translation` is enabled
+         */
+        translation_config?: {
+            target_languages: Array<'af' | 'sq' | 'am' | 'ar' | 'hy' | 'as' | 'ast' | 'az' | 'ba' | 'eu' | 'be' | 'bn' | 'bs' | 'br' | 'bg' | 'my' | 'ca' | 'ceb' | 'zh' | 'hr' | 'cs' | 'da' | 'nl' | 'en' | 'et' | 'fo' | 'fi' | 'fr' | 'fy' | 'ff' | 'gd' | 'gl' | 'lg' | 'ka' | 'de' | 'el' | 'gu' | 'ht' | 'ha' | 'haw' | 'he' | 'hi' | 'hu' | 'is' | 'ig' | 'ilo' | 'id' | 'ga' | 'it' | 'ja' | 'jp' | 'jv' | 'kn' | 'kk' | 'km' | 'ko' | 'lo' | 'la' | 'lv' | 'ln' | 'lt' | 'lb' | 'mk' | 'mg' | 'ms' | 'ml' | 'mt' | 'mi' | 'mr' | 'mo' | 'mn' | 'mymr' | 'ne' | 'no' | 'nn' | 'oc' | 'or' | 'pa' | 'ps' | 'fa' | 'pl' | 'pt' | 'ro' | 'ru' | 'sa' | 'sr' | 'sn' | 'sd' | 'si' | 'sk' | 'sl' | 'so' | 'es' | 'su' | 'sw' | 'ss' | 'sv' | 'tl' | 'tg' | 'ta' | 'tt' | 'te' | 'th' | 'bo' | 'tn' | 'tr' | 'tk' | 'uk' | 'ur' | 'uz' | 'vi' | 'cy' | 'wo' | 'xh' | 'yi' | 'yo' | 'zu'>;
+            /**
+             * Model you want the translation model to use to translate
+             */
+            model?: 'base' | 'enhanced';
+            /**
+             * Align translated utterances with the original ones
+             */
+            match_original_utterances?: boolean;
+            /**
+             * Whether to apply lipsync to the translated transcription.
+             */
+            lipsync?: boolean;
+            /**
+             * Enables or disables context-aware translation features that allow the model to adapt translations based on provided context.
+             */
+            context_adaptation?: boolean;
+            /**
+             * Context information to improve translation accuracy
+             */
+            context?: string;
+            /**
+             * Forces the translation to use informal language forms when available in the target language.
+             */
+            informal?: boolean;
+        };
+        /**
+         * **[Beta]** Enable summarization for this audio
+         */
+        summarization?: boolean;
+        /**
+         * **[Beta]** Summarization configuration, if `summarization` is enabled
+         */
+        summarization_config?: {
+            /**
+             * The type of summarization to apply
+             */
+            type?: 'general' | 'bullet_points' | 'concise';
+        };
+        /**
+         * **[Alpha]** Enable moderation for this audio
+         */
+        moderation?: boolean;
+        /**
+         * **[Alpha]** Enable named entity recognition for this audio
+         */
+        named_entity_recognition?: boolean;
+        /**
+         * **[Alpha]** Enable chapterization for this audio
+         */
+        chapterization?: boolean;
+        /**
+         * **[Alpha]** Enable names consistency for this audio
+         */
+        name_consistency?: boolean;
+        /**
+         * **[Alpha]** Enable custom spelling for this audio
+         */
+        custom_spelling?: boolean;
+        /**
+         * **[Alpha]** Enable structured data extraction for this audio
+         */
+        structured_data_extraction?: boolean;
+        /**
+         * **[Alpha]** Structured data extraction configuration, if `structured_data_extraction` is enabled
+         */
+        structured_data_extraction_config?: {
+            /**
+             * The list of classes to extract from the audio transcription
+             */
+            classes: Array<Array<string>>;
+        };
+        /**
+         * **[Alpha]** Enable sentiment analysis for this audio
+         */
+        sentiment_analysis?: boolean;
+        /**
+         * **[Alpha]** Enable audio to llm processing for this audio
+         */
+        audio_to_llm?: boolean;
+        /**
+         * **[Alpha]** Audio to llm configuration, if `audio_to_llm` is enabled
+         */
+        audio_to_llm_config?: {
+            /**
+             * The list of prompts applied on the audio transcription
+             */
+            prompts: Array<Array<string>>;
+        };
+        /**
+         * Enable sentences for this audio
+         */
+        sentences?: boolean;
+        /**
+         * **[Alpha]** Allows to change the output display_mode for this audio. The output will be reordered, creating new utterances when speakers overlapped
+         */
+        display_mode?: boolean;
+        /**
+         * **[Alpha]** Use enhanced punctuation for this audio
+         */
+        punctuation_enhanced?: boolean;
+        /**
+         * Specify the language configuration
+         */
+        language_config?: {
+            /**
+             * If one language is set, it will be used for the transcription. Otherwise, language will be auto-detected by the model.
+             */
+            languages?: Array<'af' | 'sq' | 'am' | 'ar' | 'hy' | 'as' | 'az' | 'ba' | 'eu' | 'be' | 'bn' | 'bs' | 'br' | 'bg' | 'ca' | 'zh' | 'hr' | 'cs' | 'da' | 'nl' | 'en' | 'et' | 'fo' | 'fi' | 'fr' | 'gl' | 'ka' | 'de' | 'el' | 'gu' | 'ht' | 'ha' | 'haw' | 'he' | 'hi' | 'hu' | 'is' | 'id' | 'it' | 'ja' | 'jv' | 'kn' | 'kk' | 'km' | 'ko' | 'lo' | 'la' | 'lv' | 'ln' | 'lt' | 'lb' | 'mk' | 'mg' | 'ms' | 'ml' | 'mt' | 'mi' | 'mr' | 'mn' | 'mymr' | 'ne' | 'no' | 'nn' | 'oc' | 'ps' | 'fa' | 'pl' | 'pt' | 'pa' | 'ro' | 'ru' | 'sa' | 'sr' | 'sn' | 'sd' | 'si' | 'sk' | 'sl' | 'so' | 'es' | 'su' | 'sw' | 'sv' | 'tl' | 'tg' | 'ta' | 'tt' | 'te' | 'th' | 'bo' | 'tr' | 'tk' | 'uk' | 'ur' | 'uz' | 'vi' | 'cy' | 'yi' | 'yo' | 'jp'>;
+            /**
+             * If true, language will be auto-detected on each utterance. Otherwise, language will be auto-detected on first utterance and then used for the rest of the transcription. If one language is set, this option will be ignored.
+             */
+            code_switching?: boolean;
+        };
+    };
+    recallai_async?: RecallaiAsyncTranscription;
+    rev_async?: {
+        /**
+         * Optional metadata for the job
+         */
+        metadata?: string | null;
+        /**
+         * Optional setting for the number of Seconds after job completion
+         * when the job should be auto-deleted
+         */
+        delete_after?: string | null;
+        /**
+         * Optional language setting for foreign languages
+         */
+        language?: string | null;
+        /**
+         * Optional setting for turning on/off diarization.
+         * If not set, we will assume the value is false.
+         */
+        skip_diarization?: boolean | null;
+        /**
+         * Optional setting for turning on/off postprocessing.
+         * If not set, we will assume the value is false.
+         */
+        skip_postprocessing?: boolean | null;
+        /**
+         * Optional setting for passing in custom vocabularies.
+         */
+        custom_vocabularies?: Array<{
+            phrases: Array<string>;
+        }> | null;
+        /**
+         * The id of the prebuilt custom vocabulary job
+         */
+        custom_vocabulary_id?: string | null;
+        /**
+         * If true, only exact phrases submitted in the Rev.Ai.Api.Models.SubmitJobOptions.CustomVocabularies option will be used as custom vocabulary,
+         * i.e. phrases will not be split into individual words for processing.
+         * Defaults to true if Rev.Ai.Api.Models.SubmitJobOptions.CustomVocabularies is set.
+         */
+        strict_custom_vocabulary?: boolean | null;
+        /**
+         * Optional setting for disabling punctuation.
+         * If unset, the value is assumed to be false.
+         */
+        skip_punctuation?: boolean | null;
+        /**
+         * Optional setting for removing disfluencies
+         * If unset the value is assumed to be false
+         */
+        remove_disfluencies?: boolean | null;
+        /**
+         * Optional setting for removing atmospherics
+         * If unset the value is assumed to be false
+         */
+        remove_atmospherics?: boolean | null;
+        /**
+         * Optional setting for removing profanities
+         * If unset the value is assumed to be false
+         */
+        filter_profanity?: boolean | null;
+        /**
+         * Optional setting for adding data classification labels
+         * If unset the value is assumed to be false
+         */
+        add_data_labels?: boolean | null;
+        /**
+         * Optional setting for redacting certain data labels
+         * If unset the value is assumed to be false
+         */
+        enable_redaction?: boolean | null;
+        /**
+         * Optional speaker channels count used to indicate how many individual channels
+         * to transcribe for a given audio
+         */
+        speaker_channels_count?: number | null;
+        /**
+         * Optional count of speakers in the audio to improve diarization accuracy
+         */
+        speakers_count?: number | null;
+        /**
+         * Optional count of alternatives to generate
+         */
+        alternatives_count?: number | null;
+        deletion_length_penalty?: number | null;
+        /**
+         * Optional chunk size to be sent to Revspeech for processing
+         */
+        chunk_size?: string | null;
+        transcriber?: 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 | 16 | 17;
+        /**
+         * Instructs Revver to transcribe audio with all details including disfluencies and other verbal interactions
+         * such as laughter
+         */
+        verbatim?: boolean | null;
+        /**
+         * Whether human order should be rushed at a greater cost to the customer
+         */
+        rush?: boolean | null;
+        /**
+         * Specific segments of the file to be transcribed by a human
+         */
+        segments_to_transcribe?: Array<{
+            start: string;
+            end: string;
+        }> | null;
+        /**
+         * Whether human order is test mode and should return a dummy transcript
+         */
+        test_mode?: boolean | null;
+        /**
+         * Speaker names for human transcription
+         */
+        speaker_names?: Array<{
+            display_name?: string;
+        }> | null;
+        /**
+         * Whether to predict topics while performing speech rec
+         */
+        predict_topics?: boolean | null;
+        /**
+         * Returns the top n words of a transcript. Defaults to 0
+         */
+        top_nwords?: number | null;
+        /**
+         * Whether improved alignment should be used with transcription
+         */
+        forced_alignment?: boolean | null;
+        /**
+         * Whether transcription should be done with fusion
+         */
+        enable_fusion?: boolean | null;
+        domain?: 0 | 1;
+        /**
+         * If set adds one second of silence to the audio at the end
+         */
+        apply_duration_padding?: boolean | null;
+        diarization_type?: 0 | 10 | 20;
+        /**
+         * Summarization options.
+         */
+        summarization_config?: {
+            /**
+             * User defined prompt.
+             */
+            prompt?: string | null;
+            /**
+             * Summarization model options for Rev.ai API
+             */
+            model?: 0 | 1;
+            /**
+             * Summarization formatting options.
+             */
+            type?: 0 | 1;
+        };
+        /**
+         * Caption options.
+         */
+        captions_config?: {
+            [key: string]: never;
+        };
+        /**
+         * Options for translation as part of Async job request
+         */
+        translation_config?: {
+            /**
+             * Target languages
+             */
+            target_languages?: Array<{
+                /**
+                 * Defines the type of models supported to translated the content
+                 */
+                model?: 0 | 1;
+                /**
+                 * Target language
+                 */
+                language: string;
+            }>;
+        };
+    };
+    /**
+     * JSON object that contains various groups of job configuration
+     * parameters. Based on the value of `type`, a type-specific object
+     * such as `transcription_config` is required to be present to
+     * specify all configuration settings or parameters needed to
+     * process the job inputs as expected.
+     *
+     * If the results of the job are to be forwarded on completion,
+     * `notification_config` can be provided with a list of callbacks
+     * to be made; no assumptions should be made about the order in
+     * which they will occur.
+     *
+     * Customer specific job details or metadata can be supplied in
+     * `tracking`, and this information will be available where
+     * possible in the job results and in callbacks.
+     *
+     */
+    speechmatics_async?: {
+        alignment_config?: {
+            language: string;
+        };
+        transcription_config?: {
+            /**
+             * Language model to process the audio input, normally specified as an ISO language code
+             */
+            language: string;
+            /**
+             * Request a specialized model based on 'language' but optimized for a particular field, e.g. "finance" or "medical".
+             */
+            domain?: string;
+            /**
+             * Language locale to be used when generating the transcription output, normally specified as an ISO language code
+             */
+            output_locale?: string;
+            operating_point?: 'standard' | 'enhanced';
+            /**
+             * List of custom words or phrases that should be recognized. Alternative pronunciations can be specified to aid recognition.
+             */
+            additional_vocab?: Array<{
+                content: string;
+                sounds_like?: Array<string>;
+            }>;
+            /**
+             * Control punctuation settings.
+             */
+            punctuation_overrides?: {
+                /**
+                 * Ranges between zero and one. Higher values will produce more punctuation. The default is 0.5.
+                 */
+                sensitivity?: number;
+                /**
+                 * The punctuation marks which the client is prepared to accept in transcription output, or the special value 'all' (the default). Unsupported marks are ignored. This value is used to guide the transcription process.
+                 */
+                permitted_marks?: Array<string>;
+            };
+            /**
+             * Specify whether speaker or channel labels are added to the transcript.
+             * The default is `none`.
+             * - **none**: no speaker or channel labels are added.
+             * - **speaker**: speaker attribution is performed based on acoustic matching;
+             * all input channels are mixed into a single stream for processing.
+             * - **channel**: multiple input channels are processed individually and collated
+             * into a single transcript.
+             */
+            diarization?: 'none' | 'speaker' | 'channel';
+            /**
+             * Transcript labels to use when using collating separate input channels.
+             */
+            channel_diarization_labels?: Array<string>;
+            /**
+             * Include additional 'entity' objects in the transcription results (e.g. dates, numbers) and their original spoken form. These entities are interleaved with other types of results. The concatenation of these words is represented as a single entity with the concatenated written form present in the 'content' field. The entities contain a 'spoken_form' field, which can be used in place of the corresponding 'word' type results, in case a spoken form is preferred to a written form. They also contain a 'written_form', which can be used instead of the entity, if you want a breakdown of the words without spaces. They can still contain non-breaking spaces and other special whitespace characters, as they are considered part of the word for the formatting output. In case of a written_form, the individual word times are estimated and might not be accurate if the order of the words in the written form does not correspond to the order they were actually spoken (such as 'one hundred million dollars' and '$100 million').
+             */
+            enable_entities?: boolean;
+            /**
+             * Whether or not to enable flexible endpointing and allow the entity to continue to be spoken.
+             */
+            max_delay_mode?: 'fixed' | 'flexible';
+            /**
+             * Configuration for applying filtering to the transcription
+             */
+            transcript_filtering_config?: {
+                /**
+                 * If true, words that are identified as disfluencies will be removed from the transcript. If false (default), they are tagged in the transcript as 'disfluency'.
+                 */
+                remove_disfluencies?: boolean;
+                /**
+                 * A list of replacements to apply to the transcript. Each replacement is a pair of strings, where the first string is the pattern to be replaced and the second string is the replacement text.
+                 */
+                replacements?: Array<{
+                    from: string;
+                    to: string;
+                }>;
+            };
+            /**
+             * Configuration for speaker diarization
+             */
+            speaker_diarization_config?: {
+                /**
+                 * If true, the algorithm will prefer to stay with the current active speaker if it is a close enough match, even if other speakers may be closer.  This is useful for cases where we can flip incorrectly between similar speakers during a single speaker section."
+                 */
+                prefer_current_speaker?: boolean;
+                /**
+                 * Controls how sensitive the algorithm is in terms of keeping similar speakers separate, as opposed to combining them into a single speaker.  Higher values will typically lead to more speakers, as the degree of difference between speakers in order to allow them to remain distinct will be lower.  A lower value for this parameter will conversely guide the algorithm towards being less sensitive in terms of retaining similar speakers, and as such may lead to fewer speakers overall.  The default is 0.5.
+                 */
+                speaker_sensitivity?: number;
+            };
+        };
+        tracking?: {
+            /**
+             * The title of the job.
+             */
+            title?: string;
+            /**
+             * External system reference.
+             */
+            reference?: string;
+            tags?: Array<string>;
+        };
+        output_config?: {
+            /**
+             * Parameters that override default values of srt conversion. max_line_length: sets maximum count of characters per subtitle line including white space. max_lines: sets maximum count of lines in a subtitle section.
+             */
+            srt_overrides?: {
+                max_line_length?: number;
+                max_lines?: number;
+            };
+        };
+        translation_config?: {
+            target_languages: Array<string>;
+        };
+        language_identification_config?: {
+            expected_languages?: Array<string>;
+            /**
+             * Action to take if all of the predicted languages are below the confidence threshold
+             */
+            low_confidence_action?: 'allow' | 'reject' | 'use_default_language';
+            default_language?: string;
+        };
+        summarization_config?: {
+            content_type?: 'auto' | 'informative' | 'conversational';
+            summary_length?: 'brief' | 'detailed';
+            summary_type?: 'paragraphs' | 'bullets';
+        };
+        topic_detection_config?: {
+            topics?: Array<string>;
+        };
+        audio_events_config?: {
+            types?: Array<string>;
+        };
+    };
+};
+
+export type RecordingMinimalWritable = {
+    metadata: {
+        [key: string]: string | null;
+    } | null;
+};
+
+export type TranscriptArtifactWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
 export type BotListData = {
     body?: never;
     path?: never;
@@ -4889,3 +5902,155 @@ export type CalendarsAccessTokenCreateResponses = {
 };
 
 export type CalendarsAccessTokenCreateResponse = CalendarsAccessTokenCreateResponses[keyof CalendarsAccessTokenCreateResponses];
+
+export type RecordingListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        bot_id?: string;
+        created_at_after?: string;
+        created_at_before?: string;
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+        desktop_sdk_upload_id?: string;
+        /**
+         * * `processing` - Processing
+         * * `paused` - Paused
+         * * `done` - Done
+         * * `failed` - Failed
+         */
+        status_code?: 'done' | 'failed' | 'paused' | 'processing';
+    };
+    url: '/api/v1/recording/';
+};
+
+export type RecordingListResponses = {
+    200: PaginatedRecordingList;
+};
+
+export type RecordingListResponse = RecordingListResponses[keyof RecordingListResponses];
+
+export type RecordingDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this recording.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/recording/{id}/';
+};
+
+export type RecordingDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type RecordingDestroyResponse = RecordingDestroyResponses[keyof RecordingDestroyResponses];
+
+export type RecordingRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this recording.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/recording/{id}/';
+};
+
+export type RecordingRetrieveResponses = {
+    200: Recording;
+};
+
+export type RecordingRetrieveResponse = RecordingRetrieveResponses[keyof RecordingRetrieveResponses];
+
+export type RecordingCreateTranscriptCreateData = {
+    body: RecordingCreateTranscriptArtifactWritable;
+    path: {
+        /**
+         * A UUID string identifying this recording.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/recording/{id}/create_transcript/';
+};
+
+export type RecordingCreateTranscriptCreateResponses = {
+    200: TranscriptArtifact;
+};
+
+export type RecordingCreateTranscriptCreateResponse = RecordingCreateTranscriptCreateResponses[keyof RecordingCreateTranscriptCreateResponses];
+
+export type TranscriptListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created_at_after?: string;
+        created_at_before?: string;
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+        recording_id?: string;
+        /**
+         * * `processing` - Processing
+         * * `done` - Done
+         * * `failed` - Failed
+         */
+        status_code?: 'done' | 'failed' | 'processing';
+    };
+    url: '/api/v1/transcript/';
+};
+
+export type TranscriptListResponses = {
+    200: PaginatedTranscriptArtifactList;
+};
+
+export type TranscriptListResponse = TranscriptListResponses[keyof TranscriptListResponses];
+
+export type TranscriptDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this transcript artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/transcript/{id}/';
+};
+
+export type TranscriptDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type TranscriptDestroyResponse = TranscriptDestroyResponses[keyof TranscriptDestroyResponses];
+
+export type TranscriptRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this transcript artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/transcript/{id}/';
+};
+
+export type TranscriptRetrieveResponses = {
+    200: TranscriptArtifact;
+};
+
+export type TranscriptRetrieveResponse = TranscriptRetrieveResponses[keyof TranscriptRetrieveResponses];

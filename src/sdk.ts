@@ -25,6 +25,16 @@ import type {
   CalendarsPartialUpdateData,
   CalendarsPartialUpdateResponse,
   CalendarsRetrieveResponse,
+  RecordingCreateTranscriptCreateData,
+  RecordingCreateTranscriptCreateResponse,
+  RecordingDestroyResponse,
+  RecordingListData,
+  RecordingListResponse,
+  RecordingRetrieveResponse,
+  TranscriptDestroyResponse,
+  TranscriptListData,
+  TranscriptListResponse,
+  TranscriptRetrieveResponse,
 } from './generated/types.gen'
 
 const DEFAULT_BASE_URL = 'https://us-east-1.recall.ai'
@@ -490,10 +500,132 @@ class CalendarModule {
   }
 }
 
+class RecordingModule {
+  constructor(private readonly sdk: GeneratedRecallSdk) {}
+
+  /**
+   * List Recordings
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  async list(
+    query?: RecordingListData['query'],
+  ): Promise<RecordingListResponse> {
+    const result = await this.sdk.recordingList<true>({
+      ...(query ? { query } : {}),
+    })
+    return result.data
+  }
+
+  /**
+   * Delete Recording
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async delete(
+    input: string | { recordingId: string },
+  ): Promise<RecordingDestroyResponse> {
+    const id = typeof input === 'string' ? input : input.recordingId
+    const result = await this.sdk.recordingDestroy<true>({
+      path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Retrieve Recording
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async retrieve(
+    input: string | { recordingId: string },
+  ): Promise<RecordingRetrieveResponse> {
+    const id = typeof input === 'string' ? input : input.recordingId
+    const result = await this.sdk.recordingRetrieve<true>({
+      path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Create Async Transcript
+   *
+   * This endpoint is rate limited to:
+   * - 5 requests per min per bot
+   */
+  async createTranscript(
+    input: string | { recordingId: string },
+    body: RecordingCreateTranscriptCreateData['body'],
+  ): Promise<RecordingCreateTranscriptCreateResponse> {
+    const id = typeof input === 'string' ? input : input.recordingId
+    const result = await this.sdk.recordingCreateTranscriptCreate<true>({
+      path: { id },
+      body,
+    })
+    return result.data
+  }
+}
+
+class TranscriptModule {
+  constructor(private readonly sdk: GeneratedRecallSdk) {}
+
+  /**
+   * List Transcript
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  async list(
+    query?: TranscriptListData['query'],
+  ): Promise<TranscriptListResponse> {
+    const result = await this.sdk.transcriptList<true>({
+      ...(query ? { query } : {}),
+    })
+    return result.data
+  }
+
+  /**
+   * Delete Transcript
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async delete(
+    input: string | { transcriptId: string },
+  ): Promise<TranscriptDestroyResponse> {
+    const id = typeof input === 'string' ? input : input.transcriptId
+    const result = await this.sdk.transcriptDestroy<true>({
+      path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Retrieve Transcript
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async retrieve(
+    input: string | { transcriptId: string },
+  ): Promise<TranscriptRetrieveResponse> {
+    const id = typeof input === 'string' ? input : input.transcriptId
+    const result = await this.sdk.transcriptRetrieve<true>({
+      path: { id },
+    })
+    return result.data
+  }
+}
+
 export class RecallSdk {
   private readonly _sdk: GeneratedRecallSdk
   public readonly bot: BotModule
   public readonly calendar: CalendarModule
+  public readonly recording: RecordingModule
+  public readonly transcript: TranscriptModule
 
   constructor({ baseUrl, apiKey }: RecallSdkOptions) {
     const authProvider = () => toBearerToken(apiKey)
@@ -508,5 +640,7 @@ export class RecallSdk {
     this._sdk = new GeneratedRecallSdk({ client: clientInstance })
     this.bot = new BotModule(this._sdk)
     this.calendar = new CalendarModule(this._sdk)
+    this.recording = new RecordingModule(this._sdk)
+    this.transcript = new TranscriptModule(this._sdk)
   }
 }
