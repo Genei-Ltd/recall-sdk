@@ -64,7 +64,7 @@ const ENDPOINT_SLUGS = [
   'transcript_list',
   'transcript_retrieve',
   'transcript_destroy',
-];
+]
 
 const ENDPOINTS: EndpointConfig[] = ENDPOINT_SLUGS.map((slug) => ({
   slug,

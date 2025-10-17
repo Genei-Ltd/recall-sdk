@@ -35,7 +35,7 @@ import type {
   TranscriptListData,
   TranscriptListResponse,
   TranscriptRetrieveResponse,
-} from "./generated/types.gen";
+} from './generated/types.gen'
 
 const DEFAULT_BASE_URL = 'https://us-east-1.recall.ai'
 
@@ -510,12 +510,12 @@ class RecordingModule {
    * - 60 requests per min per workspace
    */
   async list(
-    query?: RecordingListData["query"],
+    query?: RecordingListData['query'],
   ): Promise<RecordingListResponse> {
     const result = await this.sdk.recordingList<true>({
       ...(query ? { query } : {}),
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -527,11 +527,11 @@ class RecordingModule {
   async delete(
     input: string | { recordingId: string },
   ): Promise<RecordingDestroyResponse> {
-    const id = typeof input === "string" ? input : input.recordingId;
+    const id = typeof input === 'string' ? input : input.recordingId
     const result = await this.sdk.recordingDestroy<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -543,11 +543,11 @@ class RecordingModule {
   async retrieve(
     input: string | { recordingId: string },
   ): Promise<RecordingRetrieveResponse> {
-    const id = typeof input === "string" ? input : input.recordingId;
+    const id = typeof input === 'string' ? input : input.recordingId
     const result = await this.sdk.recordingRetrieve<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -558,14 +558,14 @@ class RecordingModule {
    */
   async createTranscript(
     input: string | { recordingId: string },
-    body: RecordingCreateTranscriptCreateData["body"],
+    body: RecordingCreateTranscriptCreateData['body'],
   ): Promise<RecordingCreateTranscriptCreateResponse> {
-    const id = typeof input === "string" ? input : input.recordingId;
+    const id = typeof input === 'string' ? input : input.recordingId
     const result = await this.sdk.recordingCreateTranscriptCreate<true>({
       path: { id },
       body,
-    });
-    return result.data;
+    })
+    return result.data
   }
 }
 
@@ -579,12 +579,12 @@ class TranscriptModule {
    * - 60 requests per min per workspace
    */
   async list(
-    query?: TranscriptListData["query"],
+    query?: TranscriptListData['query'],
   ): Promise<TranscriptListResponse> {
     const result = await this.sdk.transcriptList<true>({
       ...(query ? { query } : {}),
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -596,11 +596,11 @@ class TranscriptModule {
   async delete(
     input: string | { transcriptId: string },
   ): Promise<TranscriptDestroyResponse> {
-    const id = typeof input === "string" ? input : input.transcriptId;
+    const id = typeof input === 'string' ? input : input.transcriptId
     const result = await this.sdk.transcriptDestroy<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -612,11 +612,11 @@ class TranscriptModule {
   async retrieve(
     input: string | { transcriptId: string },
   ): Promise<TranscriptRetrieveResponse> {
-    const id = typeof input === "string" ? input : input.transcriptId;
+    const id = typeof input === 'string' ? input : input.transcriptId
     const result = await this.sdk.transcriptRetrieve<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 }
 
@@ -637,10 +637,10 @@ export class RecallSdk {
       throwOnError: true,
     })
 
-    this._sdk = new GeneratedRecallSdk({ client: clientInstance });
-    this.bot = new BotModule(this._sdk);
-    this.calendar = new CalendarModule(this._sdk);
-    this.recording = new RecordingModule(this._sdk);
-    this.transcript = new TranscriptModule(this._sdk);
+    this._sdk = new GeneratedRecallSdk({ client: clientInstance })
+    this.bot = new BotModule(this._sdk)
+    this.calendar = new CalendarModule(this._sdk)
+    this.recording = new RecordingModule(this._sdk)
+    this.transcript = new TranscriptModule(this._sdk)
   }
 }
