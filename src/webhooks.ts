@@ -686,9 +686,9 @@ export const BotLogEvent = z.object({
   /** The data payload of the log event */
   data: z.object({
     /** The unique identifier of the bot (present for all but async transcription job logs) */
-    bot_id: z.string().nullable(),
+    bot_id: z.string().nullish(),
     /** The unique identifier of the job (present for async transcription job logs) */
-    job_id: z.string().nullable(),
+    job_id: z.string().nullish(),
     /** The log information */
     log: LogDetails,
   }),
@@ -704,9 +704,9 @@ export const BotOutputLogEvent = z.object({
   /** The data payload of the log event */
   data: z.object({
     /** The unique identifier of the bot (present for all but async transcription job logs) */
-    bot_id: z.string().nullable(),
+    bot_id: z.string().nullish(),
     /** The unique identifier of the job (present for async transcription job logs) */
-    job_id: z.string().nullable(),
+    job_id: z.string().nullish(),
     /** The log information */
     log: LogDetails,
   }),
