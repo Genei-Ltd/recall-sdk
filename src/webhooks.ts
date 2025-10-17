@@ -204,7 +204,7 @@ export const StatusData = z.object({
   /** The status code */
   code: z.string(),
   /** Optional status sub-code */
-  sub_code: z.string().nullable(),
+  sub_code: z.string().nullish(),
   /** The timestamp when the status was updated */
   updated_at: z.iso.datetime({ offset: true }),
 })
@@ -228,7 +228,7 @@ export const StatusDataWithError = z.object({
   /** The status code */
   code: z.string(),
   /** Optional status sub-code */
-  sub_code: z.string().nullable(),
+  sub_code: z.string().nullish(),
   /** The timestamp when the status was updated */
   updated_at: z.iso.datetime({ offset: true }),
   /** Details about the error that occurred */
@@ -350,9 +350,9 @@ export const BotStatusDetails = z.object({
   /** The timestamp when the status was created */
   created_at: z.iso.datetime({ offset: true }),
   /** Optional status message */
-  message: z.string().nullable(),
+  message: z.string().nullish(),
   /** Optional status sub-code */
-  sub_code: z.string().nullable(),
+  sub_code: z.string().nullish(),
 })
 
 /**
