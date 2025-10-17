@@ -1,38 +1,29 @@
-import { createClient, type Client, type Config } from "./generated/client";
+import { createClient } from "./generated/client";
 import { GeneratedRecallSdk } from "./generated/sdk.gen";
-import type { Options as GeneratedRequestOptions } from "./generated/sdk.gen";
 import type {
   BotCreateData,
   BotCreateResponse,
-  BotDeleteMediaCreateData,
   BotDeleteMediaCreateResponse,
-  BotDestroyData,
   BotDestroyResponse,
   BotListData,
   BotListResponse,
   BotPartialUpdateData,
   BotPartialUpdateResponse,
-  BotRetrieveData,
   BotRetrieveResponse,
   CalendarEventsBotCreateData,
   CalendarEventsBotCreateResponse,
-  CalendarEventsBotDestroyData,
   CalendarEventsBotDestroyResponse,
   CalendarEventsListData,
   CalendarEventsListResponse,
-  CalendarEventsRetrieveData,
   CalendarEventsRetrieveResponse,
-  CalendarsAccessTokenCreateData,
   CalendarsAccessTokenCreateResponse,
   CalendarsCreateData,
   CalendarsCreateResponse,
-  CalendarsDestroyData,
   CalendarsDestroyResponse,
   CalendarsListData,
   CalendarsListResponse,
   CalendarsPartialUpdateData,
   CalendarsPartialUpdateResponse,
-  CalendarsRetrieveData,
   CalendarsRetrieveResponse,
 } from "./generated/types.gen";
 
@@ -41,9 +32,7 @@ const DEFAULT_BASE_URL = "https://us-east-1.recall.ai";
 const toBearerToken = (apiKey: string) =>
   apiKey.startsWith("Token ") ? apiKey : `Token ${apiKey}`;
 
-export type RecallSdkClientConfig = Partial<Omit<Config, "auth">>;
-
-export interface RecallSdkOptions extends RecallSdkClientConfig {
+export interface RecallSdkOptions {
   /**
    * Recall.ai API key. A `Bearer` prefix is added automatically when missing.
    */
@@ -52,24 +41,7 @@ export interface RecallSdkOptions extends RecallSdkClientConfig {
    * Base URL for the Recall.ai API. Defaults to https://us-east-1.recall.ai
    */
   baseUrl?: string;
-  /**
-   * Provide an existing client instance if you need custom wiring.
-   * When omitted, a new client will be created for this SDK instance.
-   */
-  client?: Client;
 }
-
-type RequestConfig<
-  TData extends {
-    body?: unknown;
-    path?: Record<string, unknown>;
-    query?: Record<string, unknown>;
-    url: string;
-  },
-> = Omit<
-  GeneratedRequestOptions<TData, true>,
-  "body" | "path" | "query" | "throwOnError" | "responseStyle"
->;
 
 class BotModule {
   constructor(private readonly sdk: GeneratedRecallSdk) {}
@@ -82,14 +54,9 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  async list(
-    query?: BotListData["query"],
-    options?: RequestConfig<BotListData>,
-  ): Promise<BotListResponse> {
+  async list(query?: BotListData["query"]): Promise<BotListResponse> {
     const result = await this.sdk.botList<true>({
-      ...(options ?? {}),
       ...(query ? { query } : {}),
-      throwOnError: true,
     });
     return result.data;
   }
@@ -102,14 +69,9 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  async create(
-    body: BotCreateData["body"],
-    options?: RequestConfig<BotCreateData>,
-  ): Promise<BotCreateResponse> {
+  async create(body: BotCreateData["body"]): Promise<BotCreateResponse> {
     const result = await this.sdk.botCreate<true>({
-      ...(options ?? {}),
       body,
-      throwOnError: true,
     });
     return result.data;
   }
@@ -124,13 +86,10 @@ class BotModule {
    */
   async retrieve(
     input: string | { botId: string },
-    options?: RequestConfig<BotRetrieveData>,
   ): Promise<BotRetrieveResponse> {
     const id = typeof input === "string" ? input : input.botId;
     const result = await this.sdk.botRetrieve<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -146,14 +105,11 @@ class BotModule {
   async update(
     input: string | { botId: string },
     body: BotPartialUpdateData["body"],
-    options?: RequestConfig<BotPartialUpdateData>,
   ): Promise<BotPartialUpdateResponse> {
     const id = typeof input === "string" ? input : input.botId;
     const result = await this.sdk.botPartialUpdate<true>({
-      ...(options ?? {}),
       path: { id },
       ...(body ? { body } : {}),
-      throwOnError: true,
     });
     return result.data;
   }
@@ -166,15 +122,10 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 300 requests per min per workspace
    */
-  async delete(
-    input: string | { botId: string },
-    options?: RequestConfig<BotDestroyData>,
-  ): Promise<BotDestroyResponse> {
+  async delete(input: string | { botId: string }): Promise<BotDestroyResponse> {
     const id = typeof input === "string" ? input : input.botId;
     const result = await this.sdk.botDestroy<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -189,13 +140,10 @@ class BotModule {
    */
   async deleteMedia(
     input: string | { botId: string },
-    options?: RequestConfig<BotDeleteMediaCreateData>,
   ): Promise<BotDeleteMediaCreateResponse> {
     const id = typeof input === "string" ? input : input.botId;
     const result = await this.sdk.botDeleteMediaCreate<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -214,12 +162,9 @@ class CalendarEventsModule {
    */
   async list(
     query?: CalendarEventsListData["query"],
-    options?: RequestConfig<CalendarEventsListData>,
   ): Promise<CalendarEventsListResponse> {
     const result = await this.sdk.calendarEventsList<true>({
-      ...(options ?? {}),
       ...(query ? { query } : {}),
-      throwOnError: true,
     });
     return result.data;
   }
@@ -234,13 +179,10 @@ class CalendarEventsModule {
    */
   async retrieve(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsRetrieveData>,
   ): Promise<CalendarEventsRetrieveResponse> {
     const id = typeof input === "string" ? input : input.eventId;
     const result = await this.sdk.calendarEventsRetrieve<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -256,14 +198,11 @@ class CalendarEventsModule {
   async scheduleBot(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData["body"],
-    options?: RequestConfig<CalendarEventsBotCreateData>,
   ): Promise<CalendarEventsBotCreateResponse> {
     const id = typeof input === "string" ? input : input.eventId;
     const result = await this.sdk.calendarEventsBotCreate<true>({
-      ...(options ?? {}),
       path: { id },
       body,
-      throwOnError: true,
     });
     return result.data;
   }
@@ -278,13 +217,10 @@ class CalendarEventsModule {
    */
   async unscheduleBot(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsBotDestroyData>,
   ): Promise<CalendarEventsBotDestroyResponse> {
     const id = typeof input === "string" ? input : input.eventId;
     const result = await this.sdk.calendarEventsBotDestroy<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -303,12 +239,9 @@ class CalendarAccountsModule {
    */
   async list(
     query?: CalendarsListData["query"],
-    options?: RequestConfig<CalendarsListData>,
   ): Promise<CalendarsListResponse> {
     const result = await this.sdk.calendarsList<true>({
-      ...(options ?? {}),
       ...(query ? { query } : {}),
-      throwOnError: true,
     });
     return result.data;
   }
@@ -323,12 +256,9 @@ class CalendarAccountsModule {
    */
   async create(
     body: CalendarsCreateData["body"],
-    options?: RequestConfig<CalendarsCreateData>,
   ): Promise<CalendarsCreateResponse> {
     const result = await this.sdk.calendarsCreate<true>({
-      ...(options ?? {}),
       body,
-      throwOnError: true,
     });
     return result.data;
   }
@@ -343,13 +273,10 @@ class CalendarAccountsModule {
    */
   async retrieve(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsRetrieveData>,
   ): Promise<CalendarsRetrieveResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
     const result = await this.sdk.calendarsRetrieve<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -365,14 +292,11 @@ class CalendarAccountsModule {
   async update(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData["body"],
-    options?: RequestConfig<CalendarsPartialUpdateData>,
   ): Promise<CalendarsPartialUpdateResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
     const result = await this.sdk.calendarsPartialUpdate<true>({
-      ...(options ?? {}),
       path: { id },
       body,
-      throwOnError: true,
     });
     return result.data;
   }
@@ -387,13 +311,10 @@ class CalendarAccountsModule {
    */
   async delete(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsDestroyData>,
   ): Promise<CalendarsDestroyResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
     const result = await this.sdk.calendarsDestroy<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -408,13 +329,10 @@ class CalendarAccountsModule {
    */
   async createAccessToken(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsAccessTokenCreateData>,
   ): Promise<CalendarsAccessTokenCreateResponse> {
     const id = typeof input === "string" ? input : input.calendarId;
     const result = await this.sdk.calendarsAccessTokenCreate<true>({
-      ...(options ?? {}),
       path: { id },
-      throwOnError: true,
     });
     return result.data;
   }
@@ -439,9 +357,8 @@ class CalendarModule {
    */
   listEvents(
     query?: CalendarEventsListData["query"],
-    options?: RequestConfig<CalendarEventsListData>,
   ): Promise<CalendarEventsListResponse> {
-    return this.events.list(query, options);
+    return this.events.list(query);
   }
 
   /**
@@ -454,9 +371,8 @@ class CalendarModule {
    */
   retrieveEvent(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsRetrieveData>,
   ): Promise<CalendarEventsRetrieveResponse> {
-    return this.events.retrieve(input, options);
+    return this.events.retrieve(input);
   }
 
   /**
@@ -470,9 +386,8 @@ class CalendarModule {
   scheduleBot(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData["body"],
-    options?: RequestConfig<CalendarEventsBotCreateData>,
   ): Promise<CalendarEventsBotCreateResponse> {
-    return this.events.scheduleBot(input, body, options);
+    return this.events.scheduleBot(input, body);
   }
 
   /**
@@ -485,9 +400,8 @@ class CalendarModule {
    */
   unscheduleBot(
     input: string | { eventId: string },
-    options?: RequestConfig<CalendarEventsBotDestroyData>,
   ): Promise<CalendarEventsBotDestroyResponse> {
-    return this.events.unscheduleBot(input, options);
+    return this.events.unscheduleBot(input);
   }
 
   /**
@@ -500,9 +414,8 @@ class CalendarModule {
    */
   listCalendars(
     query?: CalendarsListData["query"],
-    options?: RequestConfig<CalendarsListData>,
   ): Promise<CalendarsListResponse> {
-    return this.accounts.list(query, options);
+    return this.accounts.list(query);
   }
 
   /**
@@ -515,9 +428,8 @@ class CalendarModule {
    */
   createCalendar(
     body: CalendarsCreateData["body"],
-    options?: RequestConfig<CalendarsCreateData>,
   ): Promise<CalendarsCreateResponse> {
-    return this.accounts.create(body, options);
+    return this.accounts.create(body);
   }
 
   /**
@@ -530,9 +442,8 @@ class CalendarModule {
    */
   retrieveCalendar(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsRetrieveData>,
   ): Promise<CalendarsRetrieveResponse> {
-    return this.accounts.retrieve(input, options);
+    return this.accounts.retrieve(input);
   }
 
   /**
@@ -546,9 +457,8 @@ class CalendarModule {
   updateCalendar(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData["body"],
-    options?: RequestConfig<CalendarsPartialUpdateData>,
   ): Promise<CalendarsPartialUpdateResponse> {
-    return this.accounts.update(input, body, options);
+    return this.accounts.update(input, body);
   }
 
   /**
@@ -561,9 +471,8 @@ class CalendarModule {
    */
   deleteCalendar(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsDestroyData>,
   ): Promise<CalendarsDestroyResponse> {
-    return this.accounts.delete(input, options);
+    return this.accounts.delete(input);
   }
 
   /**
@@ -576,9 +485,8 @@ class CalendarModule {
    */
   createCalendarAccessToken(
     input: string | { calendarId: string },
-    options?: RequestConfig<CalendarsAccessTokenCreateData>,
   ): Promise<CalendarsAccessTokenCreateResponse> {
-    return this.accounts.createAccessToken(input, options);
+    return this.accounts.createAccessToken(input);
   }
 }
 
@@ -587,20 +495,14 @@ export class RecallSdk {
   public readonly bot: BotModule;
   public readonly calendar: CalendarModule;
 
-  constructor({ apiKey, client, ...options }: RecallSdkOptions) {
-    const clientInstance =
-      client ??
-      createClient({
-        baseUrl: options.baseUrl ?? DEFAULT_BASE_URL,
-      });
+  constructor({ baseUrl, apiKey }: RecallSdkOptions) {
     const authProvider = () => toBearerToken(apiKey);
-    const { throwOnError, responseStyle, ...config } = options;
 
-    clientInstance.setConfig({
-      ...config,
+    const clientInstance = createClient({
+      baseUrl: baseUrl ?? DEFAULT_BASE_URL,
       auth: authProvider,
-      responseStyle: responseStyle ?? "fields",
-      throwOnError: throwOnError ?? true,
+      responseStyle: "fields",
+      throwOnError: true,
     });
 
     this._sdk = new GeneratedRecallSdk({ client: clientInstance });
