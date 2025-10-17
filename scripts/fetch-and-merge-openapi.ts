@@ -57,7 +57,14 @@ const ENDPOINT_SLUGS = [
   'calendars_access_token_create',
   'calendars_partial_update',
   'calendars_destroy',
-]
+  'recording_list',
+  'recording_retrieve',
+  'recording_destroy',
+  'recording_create_transcript_create',
+  'transcript_list',
+  'transcript_retrieve',
+  'transcript_destroy',
+];
 
 const ENDPOINTS: EndpointConfig[] = ENDPOINT_SLUGS.map((slug) => ({
   slug,
