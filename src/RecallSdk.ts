@@ -1,5 +1,5 @@
-import { createClient } from "./generated/client";
-import { GeneratedRecallSdk } from "./generated/sdk.gen";
+import { createClient } from './generated/client'
+import { GeneratedRecallSdk } from './generated/sdk.gen'
 import type {
   BotCreateData,
   BotCreateResponse,
@@ -25,22 +25,22 @@ import type {
   CalendarsPartialUpdateData,
   CalendarsPartialUpdateResponse,
   CalendarsRetrieveResponse,
-} from "./generated/types.gen";
+} from './generated/types.gen'
 
-const DEFAULT_BASE_URL = "https://us-east-1.recall.ai";
+const DEFAULT_BASE_URL = 'https://us-east-1.recall.ai'
 
 const toBearerToken = (apiKey: string) =>
-  apiKey.startsWith("Token ") ? apiKey : `Token ${apiKey}`;
+  apiKey.startsWith('Token ') ? apiKey : `Token ${apiKey}`
 
-export interface RecallSdkOptions {
+export type RecallSdkOptions = {
   /**
    * Recall.ai API key. A `Bearer` prefix is added automatically when missing.
    */
-  apiKey: string;
+  apiKey: string
   /**
    * Base URL for the Recall.ai API. Defaults to https://us-east-1.recall.ai
    */
-  baseUrl?: string;
+  baseUrl?: string
 }
 
 class BotModule {
@@ -54,11 +54,11 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  async list(query?: BotListData["query"]): Promise<BotListResponse> {
+  async list(query?: BotListData['query']): Promise<BotListResponse> {
     const result = await this.sdk.botList<true>({
       ...(query ? { query } : {}),
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -69,11 +69,11 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  async create(body: BotCreateData["body"]): Promise<BotCreateResponse> {
+  async create(body: BotCreateData['body']): Promise<BotCreateResponse> {
     const result = await this.sdk.botCreate<true>({
       body,
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -87,11 +87,11 @@ class BotModule {
   async retrieve(
     input: string | { botId: string },
   ): Promise<BotRetrieveResponse> {
-    const id = typeof input === "string" ? input : input.botId;
+    const id = typeof input === 'string' ? input : input.botId
     const result = await this.sdk.botRetrieve<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -104,14 +104,14 @@ class BotModule {
    */
   async update(
     input: string | { botId: string },
-    body: BotPartialUpdateData["body"],
+    body: BotPartialUpdateData['body'],
   ): Promise<BotPartialUpdateResponse> {
-    const id = typeof input === "string" ? input : input.botId;
+    const id = typeof input === 'string' ? input : input.botId
     const result = await this.sdk.botPartialUpdate<true>({
       path: { id },
       ...(body ? { body } : {}),
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -123,11 +123,11 @@ class BotModule {
    * - 300 requests per min per workspace
    */
   async delete(input: string | { botId: string }): Promise<BotDestroyResponse> {
-    const id = typeof input === "string" ? input : input.botId;
+    const id = typeof input === 'string' ? input : input.botId
     const result = await this.sdk.botDestroy<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -141,11 +141,11 @@ class BotModule {
   async deleteMedia(
     input: string | { botId: string },
   ): Promise<BotDeleteMediaCreateResponse> {
-    const id = typeof input === "string" ? input : input.botId;
+    const id = typeof input === 'string' ? input : input.botId
     const result = await this.sdk.botDeleteMediaCreate<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 }
 
@@ -161,12 +161,12 @@ class CalendarEventsModule {
    * - 60 requests per min per workspace
    */
   async list(
-    query?: CalendarEventsListData["query"],
+    query?: CalendarEventsListData['query'],
   ): Promise<CalendarEventsListResponse> {
     const result = await this.sdk.calendarEventsList<true>({
       ...(query ? { query } : {}),
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -180,11 +180,11 @@ class CalendarEventsModule {
   async retrieve(
     input: string | { eventId: string },
   ): Promise<CalendarEventsRetrieveResponse> {
-    const id = typeof input === "string" ? input : input.eventId;
+    const id = typeof input === 'string' ? input : input.eventId
     const result = await this.sdk.calendarEventsRetrieve<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -197,14 +197,14 @@ class CalendarEventsModule {
    */
   async scheduleBot(
     input: string | { eventId: string },
-    body: CalendarEventsBotCreateData["body"],
+    body: CalendarEventsBotCreateData['body'],
   ): Promise<CalendarEventsBotCreateResponse> {
-    const id = typeof input === "string" ? input : input.eventId;
+    const id = typeof input === 'string' ? input : input.eventId
     const result = await this.sdk.calendarEventsBotCreate<true>({
       path: { id },
       body,
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -218,11 +218,11 @@ class CalendarEventsModule {
   async unscheduleBot(
     input: string | { eventId: string },
   ): Promise<CalendarEventsBotDestroyResponse> {
-    const id = typeof input === "string" ? input : input.eventId;
+    const id = typeof input === 'string' ? input : input.eventId
     const result = await this.sdk.calendarEventsBotDestroy<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 }
 
@@ -238,12 +238,12 @@ class CalendarAccountsModule {
    * - 60 requests per min per workspace
    */
   async list(
-    query?: CalendarsListData["query"],
+    query?: CalendarsListData['query'],
   ): Promise<CalendarsListResponse> {
     const result = await this.sdk.calendarsList<true>({
       ...(query ? { query } : {}),
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -255,12 +255,12 @@ class CalendarAccountsModule {
    * - 300 requests per min per workspace
    */
   async create(
-    body: CalendarsCreateData["body"],
+    body: CalendarsCreateData['body'],
   ): Promise<CalendarsCreateResponse> {
     const result = await this.sdk.calendarsCreate<true>({
       body,
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -274,11 +274,11 @@ class CalendarAccountsModule {
   async retrieve(
     input: string | { calendarId: string },
   ): Promise<CalendarsRetrieveResponse> {
-    const id = typeof input === "string" ? input : input.calendarId;
+    const id = typeof input === 'string' ? input : input.calendarId
     const result = await this.sdk.calendarsRetrieve<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -291,14 +291,14 @@ class CalendarAccountsModule {
    */
   async update(
     input: string | { calendarId: string },
-    body: CalendarsPartialUpdateData["body"],
+    body: CalendarsPartialUpdateData['body'],
   ): Promise<CalendarsPartialUpdateResponse> {
-    const id = typeof input === "string" ? input : input.calendarId;
+    const id = typeof input === 'string' ? input : input.calendarId
     const result = await this.sdk.calendarsPartialUpdate<true>({
       path: { id },
       body,
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -312,11 +312,11 @@ class CalendarAccountsModule {
   async delete(
     input: string | { calendarId: string },
   ): Promise<CalendarsDestroyResponse> {
-    const id = typeof input === "string" ? input : input.calendarId;
+    const id = typeof input === 'string' ? input : input.calendarId
     const result = await this.sdk.calendarsDestroy<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 
   /**
@@ -330,21 +330,21 @@ class CalendarAccountsModule {
   async createAccessToken(
     input: string | { calendarId: string },
   ): Promise<CalendarsAccessTokenCreateResponse> {
-    const id = typeof input === "string" ? input : input.calendarId;
+    const id = typeof input === 'string' ? input : input.calendarId
     const result = await this.sdk.calendarsAccessTokenCreate<true>({
       path: { id },
-    });
-    return result.data;
+    })
+    return result.data
   }
 }
 
 class CalendarModule {
-  public readonly events: CalendarEventsModule;
-  public readonly accounts: CalendarAccountsModule;
+  public readonly events: CalendarEventsModule
+  public readonly accounts: CalendarAccountsModule
 
   constructor(private readonly sdk: GeneratedRecallSdk) {
-    this.events = new CalendarEventsModule(this.sdk);
-    this.accounts = new CalendarAccountsModule(this.sdk);
+    this.events = new CalendarEventsModule(this.sdk)
+    this.accounts = new CalendarAccountsModule(this.sdk)
   }
 
   /**
@@ -356,9 +356,9 @@ class CalendarModule {
    * - 60 requests per min per workspace
    */
   listEvents(
-    query?: CalendarEventsListData["query"],
+    query?: CalendarEventsListData['query'],
   ): Promise<CalendarEventsListResponse> {
-    return this.events.list(query);
+    return this.events.list(query)
   }
 
   /**
@@ -372,7 +372,7 @@ class CalendarModule {
   retrieveEvent(
     input: string | { eventId: string },
   ): Promise<CalendarEventsRetrieveResponse> {
-    return this.events.retrieve(input);
+    return this.events.retrieve(input)
   }
 
   /**
@@ -385,9 +385,9 @@ class CalendarModule {
    */
   scheduleBot(
     input: string | { eventId: string },
-    body: CalendarEventsBotCreateData["body"],
+    body: CalendarEventsBotCreateData['body'],
   ): Promise<CalendarEventsBotCreateResponse> {
-    return this.events.scheduleBot(input, body);
+    return this.events.scheduleBot(input, body)
   }
 
   /**
@@ -401,7 +401,7 @@ class CalendarModule {
   unscheduleBot(
     input: string | { eventId: string },
   ): Promise<CalendarEventsBotDestroyResponse> {
-    return this.events.unscheduleBot(input);
+    return this.events.unscheduleBot(input)
   }
 
   /**
@@ -413,9 +413,9 @@ class CalendarModule {
    * - 60 requests per min per workspace
    */
   listCalendars(
-    query?: CalendarsListData["query"],
+    query?: CalendarsListData['query'],
   ): Promise<CalendarsListResponse> {
-    return this.accounts.list(query);
+    return this.accounts.list(query)
   }
 
   /**
@@ -427,9 +427,9 @@ class CalendarModule {
    * - 300 requests per min per workspace
    */
   createCalendar(
-    body: CalendarsCreateData["body"],
+    body: CalendarsCreateData['body'],
   ): Promise<CalendarsCreateResponse> {
-    return this.accounts.create(body);
+    return this.accounts.create(body)
   }
 
   /**
@@ -443,7 +443,7 @@ class CalendarModule {
   retrieveCalendar(
     input: string | { calendarId: string },
   ): Promise<CalendarsRetrieveResponse> {
-    return this.accounts.retrieve(input);
+    return this.accounts.retrieve(input)
   }
 
   /**
@@ -456,9 +456,9 @@ class CalendarModule {
    */
   updateCalendar(
     input: string | { calendarId: string },
-    body: CalendarsPartialUpdateData["body"],
+    body: CalendarsPartialUpdateData['body'],
   ): Promise<CalendarsPartialUpdateResponse> {
-    return this.accounts.update(input, body);
+    return this.accounts.update(input, body)
   }
 
   /**
@@ -472,7 +472,7 @@ class CalendarModule {
   deleteCalendar(
     input: string | { calendarId: string },
   ): Promise<CalendarsDestroyResponse> {
-    return this.accounts.delete(input);
+    return this.accounts.delete(input)
   }
 
   /**
@@ -486,27 +486,27 @@ class CalendarModule {
   createCalendarAccessToken(
     input: string | { calendarId: string },
   ): Promise<CalendarsAccessTokenCreateResponse> {
-    return this.accounts.createAccessToken(input);
+    return this.accounts.createAccessToken(input)
   }
 }
 
 export class RecallSdk {
-  private readonly _sdk: GeneratedRecallSdk;
-  public readonly bot: BotModule;
-  public readonly calendar: CalendarModule;
+  private readonly _sdk: GeneratedRecallSdk
+  public readonly bot: BotModule
+  public readonly calendar: CalendarModule
 
   constructor({ baseUrl, apiKey }: RecallSdkOptions) {
-    const authProvider = () => toBearerToken(apiKey);
+    const authProvider = () => toBearerToken(apiKey)
 
     const clientInstance = createClient({
       baseUrl: baseUrl ?? DEFAULT_BASE_URL,
       auth: authProvider,
-      responseStyle: "fields",
+      responseStyle: 'fields',
       throwOnError: true,
-    });
+    })
 
-    this._sdk = new GeneratedRecallSdk({ client: clientInstance });
-    this.bot = new BotModule(this._sdk);
-    this.calendar = new CalendarModule(this._sdk);
+    this._sdk = new GeneratedRecallSdk({ client: clientInstance })
+    this.bot = new BotModule(this._sdk)
+    this.calendar = new CalendarModule(this._sdk)
   }
 }

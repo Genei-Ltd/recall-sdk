@@ -13,39 +13,39 @@ npm install @coloop-ai/recall-sdk
 ## Quick start
 
 ```ts
-import { RecallSdk } from '@coloop-ai/recall-sdk';
+import { RecallSdk } from '@coloop-ai/recall-sdk'
 
 const recall = new RecallSdk({
   apiKey: process.env.RECALL_API_KEY!,
   // baseUrl: 'https://eu-central-1.recall.ai', // optionally target a different region
-});
+})
 
 const bot = await recall.bot.create({
   meeting_url: 'https://zoom.us/j/123456789',
   bot_name: 'Demo bot',
-});
+})
 
 const bots = await recall.bot.list({
   status: ['ready', 'joining_call'],
-});
-console.log(bots.results?.map((entry) => entry.id));
+})
+console.log(bots.results?.map((entry) => entry.id))
 
 await recall.bot.update(bot.id, {
   metadata: { source: 'docs-example' },
-});
+})
 
 const events = await recall.calendar.listEvents({
   start_time__gte: new Date().toISOString(),
-});
+})
 
-const nextEvent = events.results?.[0];
+const nextEvent = events.results?.[0]
 if (nextEvent) {
   await recall.calendar.scheduleBot(nextEvent.id, {
     deduplication_key: nextEvent.id,
     bot_config: {
       join_offset: 60,
     },
-  });
+  })
 }
 ```
 
@@ -68,19 +68,47 @@ Every helper takes lightweight identifiers (`botId`, `eventId`, `calendarId`, et
 If you need full control over request options (custom headers, alternative response styles, retries), you can work with the generated client directly:
 
 ```ts
-import { GeneratedRecallSdk, sdk } from '@coloop-ai/recall-sdk';
+import { GeneratedRecallSdk, sdk } from '@coloop-ai/recall-sdk'
 
 const client = sdk.createClient({
   baseUrl: 'https://us-east-1.recall.ai',
   auth: () => `Token ${process.env.RECALL_API_KEY}`,
   responseStyle: 'body',
-});
+})
 
-const raw = new GeneratedRecallSdk({ client });
-const response = await raw.botList({ query: { status: ['ready'] } });
+const raw = new GeneratedRecallSdk({ client })
+const response = await raw.botList({ query: { status: ['ready'] } })
 ```
 
 All request/response types are exported from `@coloop-ai/recall-sdk` so you can statically type your integrations even when using the low-level surface.
+
+## Webhooks
+
+Recall's webhook payloads (bot lifecycle and Calendar v2 notifications) are not included in the public OpenAPI definitions, so their schemas are hand-crafted in this SDK. You can rely on the exported unions to drive type-safe handlers:
+
+```ts
+import type { RecallWebhookEvent } from '@coloop-ai/recall-sdk'
+
+export function handleWebhook(event: RecallWebhookEvent) {
+  switch (event.event) {
+    case 'bot.status_change': {
+      const { code, sub_code } = event.data.status
+      if (code === 'call_ended') {
+        // `sub_code` is narrowed to a CallEndedSubCode while still accepting future values.
+        console.log(sub_code)
+      }
+      break
+    }
+    case 'calendar.sync_events': {
+      const { calendar_id, last_updated_ts } = event.data
+      console.log('Sync calendar', calendar_id, 'since', last_updated_ts)
+      break
+    }
+  }
+}
+```
+
+Helper constants such as `BOT_STATUS_CODES`, `CALL_ENDED_SUB_CODES`, and `RECALL_WEBHOOK_EVENT_NAMES` are exported to keep your own matching logic aligned with Recall's current surface, while the unions fall back to `string` so your code keeps compiling if new values ship.
 
 ## Scripts
 

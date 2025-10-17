@@ -1,18 +1,18 @@
-import { defineConfig } from "@hey-api/openapi-ts";
+import { defineConfig } from '@hey-api/openapi-ts'
 
 export default defineConfig({
-  input: "./schemas/openapi.json",
-  output: "./src/generated",
+  input: './schemas/openapi.json',
+  output: './src/generated',
   plugins: [
-    "@hey-api/typescript",
+    '@hey-api/typescript',
     {
-      name: "@hey-api/client-fetch",
+      name: '@hey-api/client-fetch',
     },
     {
-      classStructure: "off",
-      client: "@hey-api/client-fetch",
-      instance: "GeneratedRecallSdk",
-      name: "@hey-api/sdk",
+      classStructure: 'off',
+      client: '@hey-api/client-fetch',
+      instance: 'GeneratedRecallSdk',
+      name: '@hey-api/sdk',
     },
   ],
-});
+})

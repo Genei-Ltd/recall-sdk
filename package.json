@@ -24,6 +24,8 @@
     "build": "tsdown --config tsdown.config.ts",
     "generate": "bash ./scripts/generate.sh",
     "lint": "eslint .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
     "openapi-ts": "openapi-ts",
     "prepublishOnly": "npm run build",
     "tc": "tsc -p tsconfig.json --pretty --noEmit",
@@ -34,7 +36,13 @@
     "@hey-api/openapi-ts": "^0.85.2",
     "@types/node": "^24.8.1",
     "tsdown": "^0.15.7",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@typescript-eslint/eslint-plugin": "^8.46.1",
+    "@typescript-eslint/parser": "^8.46.1",
+    "eslint": "^9.37.0",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2"
   },
   "publishConfig": {
     "access": "public"
