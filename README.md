@@ -82,14 +82,14 @@ const raw = new GeneratedRecallSdk({ client })
 const response = await raw.botList({ query: { status: ['ready'] } })
 ```
 
-All request/response types are exported from `@coloop-ai/recall-sdk` so you can statically type your integrations even when using the low-level surface.
+All request/response types are exported from `@coloop-ai/recall-sdk`, while webhook schemas live under `@coloop-ai/recall-sdk/webhooks`, so you can statically type your integrations even when using the low-level surface.
 
 ## Webhooks
 
 Recall's webhook payloads (bot lifecycle and Calendar v2 notifications) are not included in the public OpenAPI definitions, so their schemas are hand-crafted in this SDK. You can rely on the exported unions to drive type-safe handlers:
 
 ```ts
-import type { RecallWebhookEvent } from '@coloop-ai/recall-sdk'
+import type { RecallWebhookEvent } from '@coloop-ai/recall-sdk/webhooks'
 
 export function handleWebhook(event: RecallWebhookEvent) {
   switch (event.event) {
