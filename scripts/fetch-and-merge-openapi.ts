@@ -294,8 +294,9 @@ function removeNullEnumFromArray(array: unknown[]): {
 }
 
 // Recall's OpenAPI snippets model nullability via a `NullEnum` reference.
-// Collapse those constructs into the standard `nullable: true` form so client
-// generators avoid emitting duplicate null helper types.
+// Rewrite those helpers into the standard `nullable: true` form so the merged
+// schema stays valid OpenAPI and downstream tooling doesn't need to special-case
+// Recall-specific constructs.
 function normalizeNullEnumValues(value: unknown): boolean {
   let removedReference = false;
 
