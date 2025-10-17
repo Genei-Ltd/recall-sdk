@@ -82,22 +82,35 @@ const raw = new GeneratedRecallSdk({ client })
 const response = await raw.botList({ query: { status: ['ready'] } })
 ```
 
-All request/response types are exported from `@coloop-ai/recall-sdk` so you can statically type your integrations even when using the low-level surface.
+All request/response types are exported from `@coloop-ai/recall-sdk`, while webhook schemas live under `@coloop-ai/recall-sdk/webhooks`, so you can statically type your integrations even when using the low-level surface.
 
 ## Webhooks
 
-Recall's webhook payloads (bot lifecycle and Calendar v2 notifications) are not included in the public OpenAPI definitions, so their schemas are hand-crafted in this SDK. You can rely on the exported unions to drive type-safe handlers:
+Recall's webhook payloads (bot lifecycle, Calendar v2 notifications, desktop upload lifecycle, etc.) are not included in the public OpenAPI definitions, so their schemas are hand-crafted in this SDK. The `@coloop-ai/recall-sdk/webhooks` entry point exports runtime validators and TypeScript types powered by Zod:
 
 ```ts
-import type { RecallWebhookEvent } from '@coloop-ai/recall-sdk'
+import {
+  WebhookEvent,
+  BotStatusCode,
+  CallEndedSubCode,
+} from '@coloop-ai/recall-sdk/webhooks'
 
-export function handleWebhook(event: RecallWebhookEvent) {
+export function handleWebhook(payload: unknown) {
+  const parsed = WebhookEvent.safeParse(payload)
+  if (!parsed.success) {
+    console.warn('Unhandled webhook payload', parsed.error)
+    return
+  }
+
+  const event = parsed.data
   switch (event.event) {
     case 'bot.status_change': {
       const { code, sub_code } = event.data.status
-      if (code === 'call_ended') {
-        // `sub_code` is narrowed to a CallEndedSubCode while still accepting future values.
-        console.log(sub_code)
+      if (code === BotStatusCode.enum.call_ended && sub_code) {
+        const reason = CallEndedSubCode.safeParse(sub_code)
+        if (reason.success) {
+          console.log('Call ended with reason', reason.data)
+        }
       }
       break
     }
@@ -110,7 +123,7 @@ export function handleWebhook(event: RecallWebhookEvent) {
 }
 ```
 
-Helper constants such as `BOT_STATUS_CODES`, `CALL_ENDED_SUB_CODES`, and `RECALL_WEBHOOK_EVENT_NAMES` are exported to keep your own matching logic aligned with Recall's current surface, while the unions fall back to `string` so your code keeps compiling if new values ship.
+`WebhookEvent` doubles as the discriminated-union type (`import type { WebhookEvent }`) and the union validator (`WebhookEvent.safeParse`). Supporting enums such as `BotStatusCode`, `CallEndedSubCode`, `FatalSubCode`, `ZoomRecordingPermissionDeniedSubCode`, and others keep your matching logic aligned with Recall's surface, while the underlying payload fields still accept future string values so integrations keep compiling when Recall ships new codes.
 
 ## Scripts
 
