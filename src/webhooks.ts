@@ -1553,3 +1553,18 @@ export const WebhookEvent = z.discriminatedUnion('event', [
   VideoSeparateFailedEvent,
   VideoSeparateProcessingEvent,
 ])
+
+// ============================================================================
+// Unknown Webhook Event
+// ============================================================================
+
+/**
+ * Generic webhook event for unknown event types
+ */
+export type UnknownWebhookEvent = z.infer<typeof UnknownWebhookEvent>
+export const UnknownWebhookEvent = z.object({
+  /** The type of the event */
+  event: z.string(),
+  /** The data payload of the event */
+  data: z.unknown(),
+})
