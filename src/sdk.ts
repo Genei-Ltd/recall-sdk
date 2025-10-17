@@ -621,11 +621,11 @@ class TranscriptModule {
 }
 
 export class RecallSdk {
-  private readonly _sdk: GeneratedRecallSdk;
-  public readonly bot: BotModule;
-  public readonly calendar: CalendarModule;
-  public readonly recording: RecordingModule;
-  public readonly transcript: TranscriptModule;
+  private readonly _sdk: GeneratedRecallSdk
+  public readonly bot: BotModule
+  public readonly calendar: CalendarModule
+  public readonly recording: RecordingModule
+  public readonly transcript: TranscriptModule
 
   constructor({ baseUrl, apiKey }: RecallSdkOptions) {
     const authProvider = () => toBearerToken(apiKey)
