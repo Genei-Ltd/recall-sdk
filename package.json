@@ -20,22 +20,23 @@
     "schemas/openapi.json"
   ],
   "scripts": {
+    "prebuild": "npm run generate",
     "build": "tsdown --config tsdown.config.ts",
     "generate": "bash ./scripts/generate.sh",
     "lint": "eslint .",
     "openapi-ts": "openapi-ts",
-    "prebuild": "npm run generate",
     "prepublishOnly": "npm run build",
     "tc": "tsc -p tsconfig.json --pretty --noEmit",
     "test": "vitest"
   },
-  "publishConfig": {
-    "access": "public"
-  },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^12.1.0",
     "@hey-api/openapi-ts": "^0.85.2",
+    "@types/node": "^24.8.1",
     "tsdown": "^0.15.7",
     "typescript": "^5.8.3"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

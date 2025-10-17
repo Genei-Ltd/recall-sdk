@@ -39,73 +39,29 @@ type ComponentsObject = {
   pathItems?: Record<string, unknown>;
   [segment: string]: Record<string, unknown> | undefined;
 };
-
-const ENDPOINTS: EndpointConfig[] = [
-  {
-    slug: "bot_list",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/bot_list?dereference=false&reduce=true",
-  },
-  {
-    slug: "bot_create",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/bot_create?dereference=false&reduce=true",
-  },
-  {
-    slug: "bot_retrieve",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/bot_retrieve?dereference=false&reduce=true",
-  },
-  {
-    slug: "bot_partial_update",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/bot_partial_update?dereference=false&reduce=true",
-  },
-  {
-    slug: "bot_destroy",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/bot_destroy?dereference=false&reduce=true",
-  },
-  {
-    slug: "bot_delete_media_create",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/bot_delete_media_create?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendar_events_list",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendar_events_list?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendar_events_retrieve",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendar_events_retrieve?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendar_events_bot_create",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendar_events_bot_create?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendar_events_bot_destroy",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendar_events_bot_destroy?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendars_list",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendars_list?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendars_create",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendars_create?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendars_retrieve",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendars_retrieve?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendars_access_token_create",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendars_access_token_create?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendars_partial_update",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendars_partial_update?dereference=false&reduce=true",
-  },
-  {
-    slug: "calendars_destroy",
-    url: "https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/calendars_destroy?dereference=false&reduce=true",
-  },
+const ENDPOINT_SLUGS = [
+  "bot_list",
+  "bot_create",
+  "bot_retrieve",
+  "bot_partial_update",
+  "bot_destroy",
+  "bot_delete_media_create",
+  "calendar_events_list",
+  "calendar_events_retrieve",
+  "calendar_events_bot_create",
+  "calendar_events_bot_destroy",
+  "calendars_list",
+  "calendars_create",
+  "calendars_retrieve",
+  "calendars_access_token_create",
+  "calendars_partial_update",
+  "calendars_destroy",
 ];
+
+const ENDPOINTS: EndpointConfig[] = ENDPOINT_SLUGS.map((slug) => ({
+  slug,
+  url: `https://docs.recall.ai/recallai/api-next/v2/branches/1.11/reference/${slug}?dereference=false&reduce=true`,
+}));
 
 const OUTPUT_DIR = resolve("schemas");
 const MERGED_SCHEMA_PATH = resolve(OUTPUT_DIR, "openapi.json");
