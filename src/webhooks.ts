@@ -367,7 +367,7 @@ export const LogDetails = z.object({
   /** The content of the log message */
   message: z.string(),
   /** Optional identifier for the output */
-  output_id: z.string().nullable(),
+  output_id: z.string().nullish(),
 })
 
 // ============================================================================
