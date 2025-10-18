@@ -38,6 +38,23 @@ import type {
 } from './generated/types.gen'
 
 const DEFAULT_BASE_URL = 'https://us-east-1.recall.ai'
+const IDEMPOTENCY_HEADER_NAME = 'Idempotency-Key'
+
+export type IdempotentRequestOptions = {
+  /**
+   * Optional idempotency token sent via the `Idempotency-Key` header.
+   */
+  idempotencyKey?: string
+}
+
+const withIdempotencyKey = (options?: IdempotentRequestOptions) =>
+  options?.idempotencyKey
+    ? ({
+        headers: {
+          [IDEMPOTENCY_HEADER_NAME]: options.idempotencyKey,
+        },
+      } as const)
+    : {}
 
 const toBearerToken = (apiKey: string) =>
   apiKey.startsWith('Token ') ? apiKey : `Token ${apiKey}`
@@ -79,9 +96,13 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  async create(body: BotCreateData['body']): Promise<BotCreateResponse> {
+  async create(
+    body: BotCreateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<BotCreateResponse> {
     const result = await this.sdk.botCreate<true>({
       body,
+      ...withIdempotencyKey(options),
     })
     return result.data
   }
@@ -115,11 +136,13 @@ class BotModule {
   async update(
     input: string | { botId: string },
     body: BotPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<BotPartialUpdateResponse> {
     const id = typeof input === 'string' ? input : input.botId
     const result = await this.sdk.botPartialUpdate<true>({
       path: { id },
       ...(body ? { body } : {}),
+      ...withIdempotencyKey(options),
     })
     return result.data
   }
@@ -150,10 +173,12 @@ class BotModule {
    */
   async deleteMedia(
     input: string | { botId: string },
+    options?: IdempotentRequestOptions,
   ): Promise<BotDeleteMediaCreateResponse> {
     const id = typeof input === 'string' ? input : input.botId
     const result = await this.sdk.botDeleteMediaCreate<true>({
       path: { id },
+      ...withIdempotencyKey(options),
     })
     return result.data
   }
@@ -208,11 +233,13 @@ class CalendarEventsModule {
   async scheduleBot(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarEventsBotCreateResponse> {
     const id = typeof input === 'string' ? input : input.eventId
     const result = await this.sdk.calendarEventsBotCreate<true>({
       path: { id },
       body,
+      ...withIdempotencyKey(options),
     })
     return result.data
   }
@@ -266,9 +293,11 @@ class CalendarAccountsModule {
    */
   async create(
     body: CalendarsCreateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarsCreateResponse> {
     const result = await this.sdk.calendarsCreate<true>({
       body,
+      ...withIdempotencyKey(options),
     })
     return result.data
   }
@@ -302,11 +331,13 @@ class CalendarAccountsModule {
   async update(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarsPartialUpdateResponse> {
     const id = typeof input === 'string' ? input : input.calendarId
     const result = await this.sdk.calendarsPartialUpdate<true>({
       path: { id },
       body,
+      ...withIdempotencyKey(options),
     })
     return result.data
   }
@@ -339,10 +370,12 @@ class CalendarAccountsModule {
    */
   async createAccessToken(
     input: string | { calendarId: string },
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarsAccessTokenCreateResponse> {
     const id = typeof input === 'string' ? input : input.calendarId
     const result = await this.sdk.calendarsAccessTokenCreate<true>({
       path: { id },
+      ...withIdempotencyKey(options),
     })
     return result.data
   }
@@ -396,8 +429,9 @@ class CalendarModule {
   scheduleBot(
     input: string | { eventId: string },
     body: CalendarEventsBotCreateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarEventsBotCreateResponse> {
-    return this.events.scheduleBot(input, body)
+    return this.events.scheduleBot(input, body, options)
   }
 
   /**
@@ -438,8 +472,9 @@ class CalendarModule {
    */
   createCalendar(
     body: CalendarsCreateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarsCreateResponse> {
-    return this.accounts.create(body)
+    return this.accounts.create(body, options)
   }
 
   /**
@@ -467,8 +502,9 @@ class CalendarModule {
   updateCalendar(
     input: string | { calendarId: string },
     body: CalendarsPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarsPartialUpdateResponse> {
-    return this.accounts.update(input, body)
+    return this.accounts.update(input, body, options)
   }
 
   /**
@@ -495,8 +531,9 @@ class CalendarModule {
    */
   createCalendarAccessToken(
     input: string | { calendarId: string },
+    options?: IdempotentRequestOptions,
   ): Promise<CalendarsAccessTokenCreateResponse> {
-    return this.accounts.createAccessToken(input)
+    return this.accounts.createAccessToken(input, options)
   }
 }
 
@@ -559,11 +596,13 @@ class RecordingModule {
   async createTranscript(
     input: string | { recordingId: string },
     body: RecordingCreateTranscriptCreateData['body'],
+    options?: IdempotentRequestOptions,
   ): Promise<RecordingCreateTranscriptCreateResponse> {
     const id = typeof input === 'string' ? input : input.recordingId
     const result = await this.sdk.recordingCreateTranscriptCreate<true>({
       path: { id },
       body,
+      ...withIdempotencyKey(options),
     })
     return result.data
   }

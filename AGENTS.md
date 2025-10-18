@@ -9,6 +9,7 @@ This document keeps track of the manual steps we expect every agent to perform a
 - **Update the `RecallSdk` wrapper**
   - Ensure the high-level modules (`bot`, `calendar.events`, `calendar.accounts`, etc.) expose any newly generated operations.
   - Adjust method signatures to mirror schema updates (e.g., new required properties, renamed path params).
+  - When adding or updating mutating helpers (POST/PATCH/PUT), keep the `IdempotentRequestOptions` signature and forward `idempotencyKey` headers so retries stay safe.
   - Copy endpoint docstrings (description, rate limits, etc.) from `src/generated/sdk.gen.ts` into the corresponding wrapper JSDoc so the surfaced helpers stay documented.
   - Run `npm run tc` to confirm TypeScript stays happy. If meaningful behavior changed, add/update tests.
 

@@ -1,6 +1,6 @@
 # @coloop-ai/recall-sdk
 
-Type-safe client bindings for the Recall.ai meeting bot API. Operations are generated from the provider's OpenAPI fragments and wrapped in a small ergonomic helper.
+Type-safe client bindings for the Recall.ai meeting bot API. Operations are generated from the provider's OpenAPI fragments and wrapped in an ergonomic SDK.
 
 > ⚠️ This project is maintained by Coloop and is not affiliated with or endorsed by Recall.ai — review their API terms before use.
 
@@ -51,19 +51,33 @@ if (nextEvent) {
 
 The `RecallSdk` automatically adds the `Token` prefix to your API key when missing, throws for non-success responses, and returns the typed response payload for each call.
 
-## High-level helpers
+## Idempotent requests
+
+Methods that issue `POST`, `PUT`, or `PATCH` calls accept an optional `IdempotentRequestOptions` argument. Provide an `idempotencyKey` to send the `Idempotency-Key` header and safely retry requests as described in Recall's [idempotency guide](https://docs.recall.ai/reference/idempotency).
+
+```ts
+await recall.bot.create(
+  {
+    meeting_url: 'https://zoom.us/j/123456789',
+    bot_name: 'Demo bot',
+  },
+  { idempotencyKey: 'my-idempotency-key' },
+)
+```
+
+## High-level methods
 
 `RecallSdk` mirrors the most common Recall.ai workflows and groups operations into modules:
 
 - `recall.bot` – manage meeting bots (`list`, `create`, `retrieve`, `update`, `delete`, `deleteMedia`).
-- `recall.calendar` – convenience entry point with helpers:
+- `recall.calendar` – convenience entry point with methods:
   - Calendar events: `listEvents`, `retrieveEvent`, `scheduleBot`, `unscheduleBot`.
   - Calendar accounts: `listCalendars`, `createCalendar`, `retrieveCalendar`, `updateCalendar`, `deleteCalendar`, `createCalendarAccessToken`.
   - Nested modules (`recall.calendar.events` and `recall.calendar.accounts`) expose the same methods if you prefer an explicit namespace.
 - `recall.recording` – work with meeting recordings (`list`, `retrieve`, `delete`, `createTranscript`).
 - `recall.transcript` – inspect transcript artifacts (`list`, `retrieve`, `delete`).
 
-Every helper takes lightweight identifiers (`botId`, `eventId`, `calendarId`, etc.) with optional request bodies or query objects that match the generated TypeScript types.
+Every method takes lightweight identifiers (`botId`, `eventId`, `calendarId`, etc.) with optional request bodies or query objects that match the generated TypeScript types.
 
 ## Generated client access
 
