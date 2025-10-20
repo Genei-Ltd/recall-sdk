@@ -49,6 +49,29 @@ if (nextEvent) {
 }
 ```
 
+Once a recording finishes processing you can mirror what Recall surfaces in the dashboard:
+
+```ts
+const recording = await recall.recording.retrieve(bot.recording_id!)
+
+if (recording.shortcuts?.video_mixed?.id) {
+  const video = await recall.video.mixed.retrieve(
+    recording.shortcuts.video_mixed.id,
+  )
+  console.log('Download mixed video from', video.data.download_url)
+}
+
+const audioSeparate = await recall.audio.separate.list({
+  recording_id: recording.id,
+})
+const firstParticipantTrack = audioSeparate.results?.[0]
+if (firstParticipantTrack) {
+  await recall.audio.separate.update(firstParticipantTrack.id, {
+    metadata: { exported_by: 'sample-app' },
+  })
+}
+```
+
 The `RecallSdk` automatically adds the `Token` prefix to your API key when missing, throws for non-success responses, and returns the typed response payload for each call.
 
 ## Idempotent requests
@@ -75,7 +98,9 @@ await recall.bot.create(
   - Calendar accounts: `listCalendars`, `createCalendar`, `retrieveCalendar`, `updateCalendar`, `deleteCalendar`, `createCalendarAccessToken`.
   - Nested modules (`recall.calendar.events` and `recall.calendar.accounts`) expose the same methods if you prefer an explicit namespace.
 - `recall.recording` – work with meeting recordings (`list`, `retrieve`, `delete`, `createTranscript`).
-- `recall.transcript` – inspect transcript artifacts (`list`, `retrieve`, `delete`).
+- `recall.transcript` – inspect transcript artifacts (`list`, `retrieve`, `delete`, `update`).
+- `recall.audio` – manage audio artifacts. Convenience helpers (`listMixed`, `retrieveMixed`, `updateMixed`, `deleteMixed`, `listSeparate`, `retrieveSeparate`, `updateSeparate`, `deleteSeparate`) delegate to nested modules (`recall.audio.mixed`, `recall.audio.separate`).
+- `recall.video` – manage video artifacts via the same helper pattern used for audio.
 
 Every method takes lightweight identifiers (`botId`, `eventId`, `calendarId`, etc.) with optional request bodies or query objects that match the generated TypeScript types.
 

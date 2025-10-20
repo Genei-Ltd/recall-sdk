@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { BotCreateData, BotCreateErrors, BotCreateResponses, BotDeleteMediaCreateData, BotDeleteMediaCreateResponses, BotDestroyData, BotDestroyResponses, BotListData, BotListResponses, BotPartialUpdateData, BotPartialUpdateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses, RecordingCreateTranscriptCreateData, RecordingCreateTranscriptCreateResponses, RecordingDestroyData, RecordingDestroyResponses, RecordingListData, RecordingListResponses, RecordingRetrieveData, RecordingRetrieveResponses, TranscriptDestroyData, TranscriptDestroyResponses, TranscriptListData, TranscriptListResponses, TranscriptRetrieveData, TranscriptRetrieveResponses } from './types.gen';
+import type { AudioMixedDestroyData, AudioMixedDestroyResponses, AudioMixedListData, AudioMixedListResponses, AudioMixedPartialUpdateData, AudioMixedPartialUpdateResponses, AudioMixedRetrieveData, AudioMixedRetrieveResponses, AudioSeparateDestroyData, AudioSeparateDestroyResponses, AudioSeparateListData, AudioSeparateListResponses, AudioSeparatePartialUpdateData, AudioSeparatePartialUpdateResponses, AudioSeparateRetrieveData, AudioSeparateRetrieveResponses, BotCreateData, BotCreateErrors, BotCreateResponses, BotDeleteMediaCreateData, BotDeleteMediaCreateResponses, BotDestroyData, BotDestroyResponses, BotListData, BotListResponses, BotPartialUpdateData, BotPartialUpdateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses, RecordingCreateTranscriptCreateData, RecordingCreateTranscriptCreateResponses, RecordingDestroyData, RecordingDestroyResponses, RecordingListData, RecordingListResponses, RecordingRetrieveData, RecordingRetrieveResponses, TranscriptDestroyData, TranscriptDestroyResponses, TranscriptListData, TranscriptListResponses, TranscriptPartialUpdateData, TranscriptPartialUpdateResponses, TranscriptRetrieveData, TranscriptRetrieveResponses, VideoMixedDestroyData, VideoMixedDestroyResponses, VideoMixedListData, VideoMixedListResponses, VideoMixedPartialUpdateData, VideoMixedPartialUpdateResponses, VideoMixedRetrieveData, VideoMixedRetrieveResponses, VideoSeparateDestroyData, VideoSeparateDestroyResponses, VideoSeparateListData, VideoSeparateListResponses, VideoSeparatePartialUpdateData, VideoSeparatePartialUpdateResponses, VideoSeparateRetrieveData, VideoSeparateRetrieveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -521,6 +521,349 @@ export class GeneratedRecallSdk extends _HeyApiClient {
             ],
             url: '/api/v1/transcript/{id}/',
             ...options
+        });
+    }
+    
+    /**
+     * Update Transcript
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public transcriptPartialUpdate<ThrowOnError extends boolean = false>(options: Options<TranscriptPartialUpdateData, ThrowOnError>) {
+        return (options.client ?? this._client).patch<TranscriptPartialUpdateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/transcript/{id}/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * List Audio Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public audioMixedList<ThrowOnError extends boolean = false>(options?: Options<AudioMixedListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<AudioMixedListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_mixed/',
+            ...options
+        });
+    }
+    
+    /**
+     * Delete Audio Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public audioMixedDestroy<ThrowOnError extends boolean = false>(options: Options<AudioMixedDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<AudioMixedDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_mixed/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Audio Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public audioMixedRetrieve<ThrowOnError extends boolean = false>(options: Options<AudioMixedRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<AudioMixedRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_mixed/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Update Audio Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public audioMixedPartialUpdate<ThrowOnError extends boolean = false>(options: Options<AudioMixedPartialUpdateData, ThrowOnError>) {
+        return (options.client ?? this._client).patch<AudioMixedPartialUpdateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_mixed/{id}/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * List Audio Separate
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public audioSeparateList<ThrowOnError extends boolean = false>(options?: Options<AudioSeparateListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<AudioSeparateListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_separate/',
+            ...options
+        });
+    }
+    
+    /**
+     * Delete Audio Separate
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public audioSeparateDestroy<ThrowOnError extends boolean = false>(options: Options<AudioSeparateDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<AudioSeparateDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_separate/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Audio Separate
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public audioSeparateRetrieve<ThrowOnError extends boolean = false>(options: Options<AudioSeparateRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<AudioSeparateRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_separate/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Update Audio Separate
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public audioSeparatePartialUpdate<ThrowOnError extends boolean = false>(options: Options<AudioSeparatePartialUpdateData, ThrowOnError>) {
+        return (options.client ?? this._client).patch<AudioSeparatePartialUpdateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/audio_separate/{id}/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * List Video Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public videoMixedList<ThrowOnError extends boolean = false>(options?: Options<VideoMixedListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<VideoMixedListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_mixed/',
+            ...options
+        });
+    }
+    
+    /**
+     * Delete Video Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public videoMixedDestroy<ThrowOnError extends boolean = false>(options: Options<VideoMixedDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<VideoMixedDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_mixed/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Video Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public videoMixedRetrieve<ThrowOnError extends boolean = false>(options: Options<VideoMixedRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<VideoMixedRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_mixed/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Update Video Mixed
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public videoMixedPartialUpdate<ThrowOnError extends boolean = false>(options: Options<VideoMixedPartialUpdateData, ThrowOnError>) {
+        return (options.client ?? this._client).patch<VideoMixedPartialUpdateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_mixed/{id}/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
+        });
+    }
+    
+    /**
+     * List Video Separate
+     *
+     * This endpoint is rate limited to:
+     * - 60 requests per min per workspace
+     */
+    public videoSeparateList<ThrowOnError extends boolean = false>(options?: Options<VideoSeparateListData, ThrowOnError>) {
+        return (options?.client ?? this._client).get<VideoSeparateListResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_separate/',
+            ...options
+        });
+    }
+    
+    /**
+     * Delete Video Separate
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public videoSeparateDestroy<ThrowOnError extends boolean = false>(options: Options<VideoSeparateDestroyData, ThrowOnError>) {
+        return (options.client ?? this._client).delete<VideoSeparateDestroyResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_separate/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Retrieve Video Separate
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public videoSeparateRetrieve<ThrowOnError extends boolean = false>(options: Options<VideoSeparateRetrieveData, ThrowOnError>) {
+        return (options.client ?? this._client).get<VideoSeparateRetrieveResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_separate/{id}/',
+            ...options
+        });
+    }
+    
+    /**
+     * Update Video Separate
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public videoSeparatePartialUpdate<ThrowOnError extends boolean = false>(options: Options<VideoSeparatePartialUpdateData, ThrowOnError>) {
+        return (options.client ?? this._client).patch<VideoSeparatePartialUpdateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/video_separate/{id}/',
+            ...options,
+            headers: {
+                'Content-Type': 'application/json',
+                ...options.headers
+            }
         });
     }
 }

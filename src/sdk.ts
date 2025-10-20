@@ -1,6 +1,18 @@
 import { createClient } from './generated/client'
 import { GeneratedRecallSdk } from './generated/sdk.gen'
 import type {
+  AudioMixedDestroyResponse,
+  AudioMixedListData,
+  AudioMixedListResponse,
+  AudioMixedPartialUpdateData,
+  AudioMixedPartialUpdateResponse,
+  AudioMixedRetrieveResponse,
+  AudioSeparateDestroyResponse,
+  AudioSeparateListData,
+  AudioSeparateListResponse,
+  AudioSeparatePartialUpdateData,
+  AudioSeparatePartialUpdateResponse,
+  AudioSeparateRetrieveResponse,
   BotCreateData,
   BotCreateResponse,
   BotDeleteMediaCreateResponse,
@@ -34,7 +46,21 @@ import type {
   TranscriptDestroyResponse,
   TranscriptListData,
   TranscriptListResponse,
+  TranscriptPartialUpdateData,
+  TranscriptPartialUpdateResponse,
   TranscriptRetrieveResponse,
+  VideoMixedDestroyResponse,
+  VideoMixedListData,
+  VideoMixedListResponse,
+  VideoMixedPartialUpdateData,
+  VideoMixedPartialUpdateResponse,
+  VideoMixedRetrieveResponse,
+  VideoSeparateDestroyResponse,
+  VideoSeparateListData,
+  VideoSeparateListResponse,
+  VideoSeparatePartialUpdateData,
+  VideoSeparatePartialUpdateResponse,
+  VideoSeparateRetrieveResponse,
 } from './generated/types.gen'
 
 const DEFAULT_BASE_URL = 'https://us-east-1.recall.ai'
@@ -657,6 +683,550 @@ class TranscriptModule {
     })
     return result.data
   }
+
+  /**
+   * Update Transcript
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async update(
+    input: string | { transcriptId: string },
+    body: TranscriptPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<TranscriptPartialUpdateResponse> {
+    const id = typeof input === 'string' ? input : input.transcriptId
+    const result = await this.sdk.transcriptPartialUpdate<true>({
+      path: { id },
+      ...(body ? { body } : {}),
+      ...withIdempotencyKey(options),
+    })
+    return result.data
+  }
+}
+
+class AudioMixedModule {
+  constructor(private readonly sdk: GeneratedRecallSdk) {}
+
+  /**
+   * List Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  async list(
+    query?: AudioMixedListData['query'],
+  ): Promise<AudioMixedListResponse> {
+    const result = await this.sdk.audioMixedList<true>({
+      ...(query ? { query } : {}),
+    })
+    return result.data
+  }
+
+  /**
+   * Retrieve Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async retrieve(
+    input: string | { audioMixedArtifactId: string },
+  ): Promise<AudioMixedRetrieveResponse> {
+    const id =
+      typeof input === 'string' ? input : input.audioMixedArtifactId
+    const result = await this.sdk.audioMixedRetrieve<true>({
+      path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Update Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async update(
+    input: string | { audioMixedArtifactId: string },
+    body: AudioMixedPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<AudioMixedPartialUpdateResponse> {
+    const id =
+      typeof input === 'string' ? input : input.audioMixedArtifactId
+    const result = await this.sdk.audioMixedPartialUpdate<true>({
+      path: { id },
+      ...(body ? { body } : {}),
+      ...withIdempotencyKey(options),
+    })
+    return result.data
+  }
+
+  /**
+   * Delete Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async delete(
+    input: string | { audioMixedArtifactId: string },
+  ): Promise<AudioMixedDestroyResponse> {
+    const id =
+      typeof input === 'string' ? input : input.audioMixedArtifactId
+    const result = await this.sdk.audioMixedDestroy<true>({
+      path: { id },
+    })
+    return result.data
+  }
+}
+
+class AudioSeparateModule {
+  constructor(private readonly sdk: GeneratedRecallSdk) {}
+
+  /**
+   * List Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  async list(
+    query?: AudioSeparateListData['query'],
+  ): Promise<AudioSeparateListResponse> {
+    const result = await this.sdk.audioSeparateList<true>({
+      ...(query ? { query } : {}),
+    })
+    return result.data
+  }
+
+  /**
+   * Retrieve Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async retrieve(
+    input: string | { audioSeparateArtifactId: string },
+  ): Promise<AudioSeparateRetrieveResponse> {
+    const id =
+      typeof input === 'string' ? input : input.audioSeparateArtifactId
+    const result = await this.sdk.audioSeparateRetrieve<true>({
+      path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Update Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async update(
+    input: string | { audioSeparateArtifactId: string },
+    body: AudioSeparatePartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<AudioSeparatePartialUpdateResponse> {
+    const id =
+      typeof input === 'string'
+        ? input
+        : input.audioSeparateArtifactId
+    const result = await this.sdk.audioSeparatePartialUpdate<true>({
+      path: { id },
+      ...(body ? { body } : {}),
+      ...withIdempotencyKey(options),
+    })
+    return result.data
+  }
+
+  /**
+   * Delete Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async delete(
+    input: string | { audioSeparateArtifactId: string },
+  ): Promise<AudioSeparateDestroyResponse> {
+    const id =
+      typeof input === 'string'
+        ? input
+        : input.audioSeparateArtifactId
+    const result = await this.sdk.audioSeparateDestroy<true>({
+      path: { id },
+    })
+    return result.data
+  }
+}
+
+class AudioModule {
+  public readonly mixed: AudioMixedModule
+  public readonly separate: AudioSeparateModule
+
+  constructor(private readonly sdk: GeneratedRecallSdk) {
+    this.mixed = new AudioMixedModule(this.sdk)
+    this.separate = new AudioSeparateModule(this.sdk)
+  }
+
+  /**
+   * List Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  listMixed(
+    query?: AudioMixedListData['query'],
+  ): Promise<AudioMixedListResponse> {
+    return this.mixed.list(query)
+  }
+
+  /**
+   * Retrieve Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  retrieveMixed(
+    input: string | { audioMixedArtifactId: string },
+  ): Promise<AudioMixedRetrieveResponse> {
+    return this.mixed.retrieve(input)
+  }
+
+  /**
+   * Update Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  updateMixed(
+    input: string | { audioMixedArtifactId: string },
+    body: AudioMixedPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<AudioMixedPartialUpdateResponse> {
+    return this.mixed.update(input, body, options)
+  }
+
+  /**
+   * Delete Audio Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  deleteMixed(
+    input: string | { audioMixedArtifactId: string },
+  ): Promise<AudioMixedDestroyResponse> {
+    return this.mixed.delete(input)
+  }
+
+  /**
+   * List Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  listSeparate(
+    query?: AudioSeparateListData['query'],
+  ): Promise<AudioSeparateListResponse> {
+    return this.separate.list(query)
+  }
+
+  /**
+   * Retrieve Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  retrieveSeparate(
+    input: string | { audioSeparateArtifactId: string },
+  ): Promise<AudioSeparateRetrieveResponse> {
+    return this.separate.retrieve(input)
+  }
+
+  /**
+   * Update Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  updateSeparate(
+    input: string | { audioSeparateArtifactId: string },
+    body: AudioSeparatePartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<AudioSeparatePartialUpdateResponse> {
+    return this.separate.update(input, body, options)
+  }
+
+  /**
+   * Delete Audio Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  deleteSeparate(
+    input: string | { audioSeparateArtifactId: string },
+  ): Promise<AudioSeparateDestroyResponse> {
+    return this.separate.delete(input)
+  }
+}
+
+class VideoMixedModule {
+  constructor(private readonly sdk: GeneratedRecallSdk) {}
+
+  /**
+   * List Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  async list(
+    query?: VideoMixedListData['query'],
+  ): Promise<VideoMixedListResponse> {
+    const result = await this.sdk.videoMixedList<true>({
+      ...(query ? { query } : {}),
+    })
+    return result.data
+  }
+
+  /**
+   * Retrieve Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async retrieve(
+    input: string | { videoMixedArtifactId: string },
+  ): Promise<VideoMixedRetrieveResponse> {
+    const id =
+      typeof input === 'string' ? input : input.videoMixedArtifactId
+    const result = await this.sdk.videoMixedRetrieve<true>({
+      path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Update Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async update(
+    input: string | { videoMixedArtifactId: string },
+    body: VideoMixedPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<VideoMixedPartialUpdateResponse> {
+    const id =
+      typeof input === 'string' ? input : input.videoMixedArtifactId
+    const result = await this.sdk.videoMixedPartialUpdate<true>({
+      path: { id },
+      ...(body ? { body } : {}),
+      ...withIdempotencyKey(options),
+    })
+    return result.data
+  }
+
+  /**
+   * Delete Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async delete(
+    input: string | { videoMixedArtifactId: string },
+  ): Promise<VideoMixedDestroyResponse> {
+    const id =
+      typeof input === 'string' ? input : input.videoMixedArtifactId
+    const result = await this.sdk.videoMixedDestroy<true>({
+      path: { id },
+    })
+    return result.data
+  }
+}
+
+class VideoSeparateModule {
+  constructor(private readonly sdk: GeneratedRecallSdk) {}
+
+  /**
+   * List Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  async list(
+    query?: VideoSeparateListData['query'],
+  ): Promise<VideoSeparateListResponse> {
+    const result = await this.sdk.videoSeparateList<true>({
+      ...(query ? { query } : {}),
+    })
+    return result.data
+  }
+
+  /**
+   * Retrieve Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async retrieve(
+    input: string | { videoSeparateArtifactId: string },
+  ): Promise<VideoSeparateRetrieveResponse> {
+    const id =
+      typeof input === 'string' ? input : input.videoSeparateArtifactId
+    const result = await this.sdk.videoSeparateRetrieve<true>({
+      path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Update Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async update(
+    input: string | { videoSeparateArtifactId: string },
+    body: VideoSeparatePartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<VideoSeparatePartialUpdateResponse> {
+    const id =
+      typeof input === 'string'
+        ? input
+        : input.videoSeparateArtifactId
+    const result = await this.sdk.videoSeparatePartialUpdate<true>({
+      path: { id },
+      ...(body ? { body } : {}),
+      ...withIdempotencyKey(options),
+    })
+    return result.data
+  }
+
+  /**
+   * Delete Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async delete(
+    input: string | { videoSeparateArtifactId: string },
+  ): Promise<VideoSeparateDestroyResponse> {
+    const id =
+      typeof input === 'string'
+        ? input
+        : input.videoSeparateArtifactId
+    const result = await this.sdk.videoSeparateDestroy<true>({
+      path: { id },
+    })
+    return result.data
+  }
+}
+
+class VideoModule {
+  public readonly mixed: VideoMixedModule
+  public readonly separate: VideoSeparateModule
+
+  constructor(private readonly sdk: GeneratedRecallSdk) {
+    this.mixed = new VideoMixedModule(this.sdk)
+    this.separate = new VideoSeparateModule(this.sdk)
+  }
+
+  /**
+   * List Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  listMixed(
+    query?: VideoMixedListData['query'],
+  ): Promise<VideoMixedListResponse> {
+    return this.mixed.list(query)
+  }
+
+  /**
+   * Retrieve Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  retrieveMixed(
+    input: string | { videoMixedArtifactId: string },
+  ): Promise<VideoMixedRetrieveResponse> {
+    return this.mixed.retrieve(input)
+  }
+
+  /**
+   * Update Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  updateMixed(
+    input: string | { videoMixedArtifactId: string },
+    body: VideoMixedPartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<VideoMixedPartialUpdateResponse> {
+    return this.mixed.update(input, body, options)
+  }
+
+  /**
+   * Delete Video Mixed
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  deleteMixed(
+    input: string | { videoMixedArtifactId: string },
+  ): Promise<VideoMixedDestroyResponse> {
+    return this.mixed.delete(input)
+  }
+
+  /**
+   * List Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 60 requests per min per workspace
+   */
+  listSeparate(
+    query?: VideoSeparateListData['query'],
+  ): Promise<VideoSeparateListResponse> {
+    return this.separate.list(query)
+  }
+
+  /**
+   * Retrieve Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  retrieveSeparate(
+    input: string | { videoSeparateArtifactId: string },
+  ): Promise<VideoSeparateRetrieveResponse> {
+    return this.separate.retrieve(input)
+  }
+
+  /**
+   * Update Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  updateSeparate(
+    input: string | { videoSeparateArtifactId: string },
+    body: VideoSeparatePartialUpdateData['body'],
+    options?: IdempotentRequestOptions,
+  ): Promise<VideoSeparatePartialUpdateResponse> {
+    return this.separate.update(input, body, options)
+  }
+
+  /**
+   * Delete Video Separate
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  deleteSeparate(
+    input: string | { videoSeparateArtifactId: string },
+  ): Promise<VideoSeparateDestroyResponse> {
+    return this.separate.delete(input)
+  }
 }
 
 export class RecallSdk {
@@ -665,6 +1235,8 @@ export class RecallSdk {
   public readonly calendar: CalendarModule
   public readonly recording: RecordingModule
   public readonly transcript: TranscriptModule
+  public readonly audio: AudioModule
+  public readonly video: VideoModule
 
   constructor({ baseUrl, apiKey }: RecallSdkOptions) {
     const authProvider = () => toBearerToken(apiKey)
@@ -681,5 +1253,7 @@ export class RecallSdk {
     this.calendar = new CalendarModule(this._sdk)
     this.recording = new RecordingModule(this._sdk)
     this.transcript = new TranscriptModule(this._sdk)
+    this.audio = new AudioModule(this._sdk)
+    this.video = new VideoModule(this._sdk)
   }
 }

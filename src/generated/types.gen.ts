@@ -3748,6 +3748,211 @@ export type PaginatedTranscriptArtifactList = {
     results?: Array<TranscriptArtifact>;
 };
 
+export type PatchedTranscriptArtifact = {
+    readonly id?: string;
+    recording?: RecordingMinimal;
+    readonly created_at?: string;
+    status?: ArtifactStatus;
+    metadata?: {
+        [key: string]: string | null;
+    };
+    data?: TranscriptArtifactData;
+    diarization?: TranscriptArtifactDiarization | null;
+    provider?: TranscriptArtifactProvider;
+};
+
+export type AudioMixedArtifact = {
+    readonly id: string;
+    recording: RecordingMinimal;
+    readonly created_at: string;
+    status: ArtifactStatus;
+    metadata: {
+        [key: string]: string | null;
+    };
+    data: AudioMixedArtifactData;
+    /**
+     * Format of the mixed audio file
+     *
+     * * `mp3` - Mp3
+     * * `raw` - Raw
+     */
+    format: Format33bEnum;
+};
+
+export type PaginatedAudioMixedArtifactList = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AudioMixedArtifact>;
+};
+
+export type PatchedAudioMixedArtifact = {
+    readonly id?: string;
+    recording?: RecordingMinimal;
+    readonly created_at?: string;
+    status?: ArtifactStatus;
+    metadata?: {
+        [key: string]: string | null;
+    };
+    data?: AudioMixedArtifactData;
+    /**
+     * Format of the mixed audio file
+     *
+     * * `mp3` - Mp3
+     * * `raw` - Raw
+     */
+    format?: Format33bEnum;
+};
+
+export type AudioSeparateArtifact = {
+    readonly id: string;
+    recording: RecordingMinimal;
+    readonly created_at: string;
+    status: ArtifactStatus;
+    metadata: {
+        [key: string]: string | null;
+    };
+    data: AudioSeparateArtifactData;
+    /**
+     * Format of the participant separated audio files
+     *
+     * * `raw` - Raw
+     * * `ogg` - Ogg
+     */
+    format: AudioSeparateArtifactFormatEnum;
+};
+
+export type AudioSeparateArtifactData = {
+    /**
+     * Download all audio separate parts for the recording. **[See response format here](https://docs.recall.ai/docs/download-schemas#json-audio-separate-download-url)**
+     */
+    readonly download_url: string | null;
+};
+
+/**
+ * * `raw` - Raw
+ * * `ogg` - Ogg
+ */
+export type AudioSeparateArtifactFormatEnum = 'raw' | 'ogg';
+
+export type PaginatedAudioSeparateArtifactList = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AudioSeparateArtifact>;
+};
+
+export type PatchedAudioSeparateArtifact = {
+    readonly id?: string;
+    recording?: RecordingMinimal;
+    readonly created_at?: string;
+    status?: ArtifactStatus;
+    metadata?: {
+        [key: string]: string | null;
+    };
+    data?: AudioSeparateArtifactData;
+    /**
+     * Format of the participant separated audio files
+     *
+     * * `raw` - Raw
+     * * `ogg` - Ogg
+     */
+    format?: AudioSeparateArtifactFormatEnum;
+};
+
+export type PaginatedVideoMixedArtifactList = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<VideoMixedArtifact>;
+};
+
+export type VideoMixedArtifact = {
+    readonly id: string;
+    recording: RecordingMinimal;
+    readonly created_at: string;
+    status: ArtifactStatus;
+    metadata: {
+        [key: string]: string | null;
+    };
+    data: VideoMixedArtifactData;
+    /**
+     * Format of the mixed video file
+     *
+     * * `mp4` - Mp4
+     */
+    format: Format3B3Enum;
+};
+
+export type PatchedVideoMixedArtifact = {
+    readonly id?: string;
+    recording?: RecordingMinimal;
+    readonly created_at?: string;
+    status?: ArtifactStatus;
+    metadata?: {
+        [key: string]: string | null;
+    };
+    data?: VideoMixedArtifactData;
+    /**
+     * Format of the mixed video file
+     *
+     * * `mp4` - Mp4
+     */
+    format?: Format3B3Enum;
+};
+
+export type PaginatedVideoSeparateArtifactList = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<VideoSeparateArtifact>;
+};
+
+export type VideoSeparateArtifact = {
+    readonly id: string;
+    recording: RecordingMinimal;
+    readonly created_at: string;
+    status: ArtifactStatus;
+    metadata: {
+        [key: string]: string | null;
+    };
+    data: VideoSeparateArtifactData;
+    /**
+     * Format of the participant separated video files
+     *
+     * * `mp4` - Mp4
+     * * `h264` - H264
+     */
+    format: VideoSeparateArtifactFormatEnum;
+};
+
+export type VideoSeparateArtifactData = {
+    /**
+     * Download all video separate parts for the recording. **[See response format here](https://docs.recall.ai/docs/download-schemas#json-video-separate-download-url)**
+     */
+    readonly download_url: string | null;
+};
+
+/**
+ * * `mp4` - Mp4
+ * * `h264` - H264
+ */
+export type VideoSeparateArtifactFormatEnum = 'mp4' | 'h264';
+
+export type PatchedVideoSeparateArtifact = {
+    readonly id?: string;
+    recording?: RecordingMinimal;
+    readonly created_at?: string;
+    status?: ArtifactStatus;
+    metadata?: {
+        [key: string]: string | null;
+    };
+    data?: VideoSeparateArtifactData;
+    /**
+     * Format of the participant separated video files
+     *
+     * * `mp4` - Mp4
+     * * `h264` - H264
+     */
+    format?: VideoSeparateArtifactFormatEnum;
+};
+
 export type AudioMixedArtifactShortcutWritable = {
     metadata: {
         [key: string]: string | null;
@@ -5549,6 +5754,60 @@ export type TranscriptArtifactWritable = {
     };
 };
 
+export type PatchedTranscriptArtifactWritable = {
+    metadata?: {
+        [key: string]: string | null;
+    };
+};
+
+export type AudioMixedArtifactWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type PatchedAudioMixedArtifactWritable = {
+    metadata?: {
+        [key: string]: string | null;
+    };
+};
+
+export type AudioSeparateArtifactWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type PatchedAudioSeparateArtifactWritable = {
+    metadata?: {
+        [key: string]: string | null;
+    };
+};
+
+export type VideoMixedArtifactWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type PatchedVideoMixedArtifactWritable = {
+    metadata?: {
+        [key: string]: string | null;
+    };
+};
+
+export type VideoSeparateArtifactWritable = {
+    metadata: {
+        [key: string]: string | null;
+    };
+};
+
+export type PatchedVideoSeparateArtifactWritable = {
+    metadata?: {
+        [key: string]: string | null;
+    };
+};
+
 export type BotListData = {
     body?: never;
     path?: never;
@@ -6054,3 +6313,357 @@ export type TranscriptRetrieveResponses = {
 };
 
 export type TranscriptRetrieveResponse = TranscriptRetrieveResponses[keyof TranscriptRetrieveResponses];
+
+export type TranscriptPartialUpdateData = {
+    body?: PatchedTranscriptArtifactWritable;
+    path: {
+        /**
+         * A UUID string identifying this transcript artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/transcript/{id}/';
+};
+
+export type TranscriptPartialUpdateResponses = {
+    200: TranscriptArtifact;
+};
+
+export type TranscriptPartialUpdateResponse = TranscriptPartialUpdateResponses[keyof TranscriptPartialUpdateResponses];
+
+export type AudioMixedListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created_at_after?: string;
+        created_at_before?: string;
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+        recording_id?: string;
+        /**
+         * * `processing` - Processing
+         * * `done` - Done
+         * * `failed` - Failed
+         */
+        status_code?: 'done' | 'failed' | 'processing';
+    };
+    url: '/api/v1/audio_mixed/';
+};
+
+export type AudioMixedListResponses = {
+    200: PaginatedAudioMixedArtifactList;
+};
+
+export type AudioMixedListResponse = AudioMixedListResponses[keyof AudioMixedListResponses];
+
+export type AudioMixedDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this audio mixed artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/audio_mixed/{id}/';
+};
+
+export type AudioMixedDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AudioMixedDestroyResponse = AudioMixedDestroyResponses[keyof AudioMixedDestroyResponses];
+
+export type AudioMixedRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this audio mixed artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/audio_mixed/{id}/';
+};
+
+export type AudioMixedRetrieveResponses = {
+    200: AudioMixedArtifact;
+};
+
+export type AudioMixedRetrieveResponse = AudioMixedRetrieveResponses[keyof AudioMixedRetrieveResponses];
+
+export type AudioMixedPartialUpdateData = {
+    body?: PatchedAudioMixedArtifactWritable;
+    path: {
+        /**
+         * A UUID string identifying this audio mixed artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/audio_mixed/{id}/';
+};
+
+export type AudioMixedPartialUpdateResponses = {
+    200: AudioMixedArtifact;
+};
+
+export type AudioMixedPartialUpdateResponse = AudioMixedPartialUpdateResponses[keyof AudioMixedPartialUpdateResponses];
+
+export type AudioSeparateListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created_at_after?: string;
+        created_at_before?: string;
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+        recording_id?: string;
+        /**
+         * * `processing` - Processing
+         * * `done` - Done
+         * * `failed` - Failed
+         */
+        status_code?: 'done' | 'failed' | 'processing';
+    };
+    url: '/api/v1/audio_separate/';
+};
+
+export type AudioSeparateListResponses = {
+    200: PaginatedAudioSeparateArtifactList;
+};
+
+export type AudioSeparateListResponse = AudioSeparateListResponses[keyof AudioSeparateListResponses];
+
+export type AudioSeparateDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this audio separate artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/audio_separate/{id}/';
+};
+
+export type AudioSeparateDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type AudioSeparateDestroyResponse = AudioSeparateDestroyResponses[keyof AudioSeparateDestroyResponses];
+
+export type AudioSeparateRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this audio separate artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/audio_separate/{id}/';
+};
+
+export type AudioSeparateRetrieveResponses = {
+    200: AudioSeparateArtifact;
+};
+
+export type AudioSeparateRetrieveResponse = AudioSeparateRetrieveResponses[keyof AudioSeparateRetrieveResponses];
+
+export type AudioSeparatePartialUpdateData = {
+    body?: PatchedAudioSeparateArtifactWritable;
+    path: {
+        /**
+         * A UUID string identifying this audio separate artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/audio_separate/{id}/';
+};
+
+export type AudioSeparatePartialUpdateResponses = {
+    200: AudioSeparateArtifact;
+};
+
+export type AudioSeparatePartialUpdateResponse = AudioSeparatePartialUpdateResponses[keyof AudioSeparatePartialUpdateResponses];
+
+export type VideoMixedListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created_at_after?: string;
+        created_at_before?: string;
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+        recording_id?: string;
+        /**
+         * * `processing` - Processing
+         * * `done` - Done
+         * * `failed` - Failed
+         */
+        status_code?: 'done' | 'failed' | 'processing';
+    };
+    url: '/api/v1/video_mixed/';
+};
+
+export type VideoMixedListResponses = {
+    200: PaginatedVideoMixedArtifactList;
+};
+
+export type VideoMixedListResponse = VideoMixedListResponses[keyof VideoMixedListResponses];
+
+export type VideoMixedDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this video mixed artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/video_mixed/{id}/';
+};
+
+export type VideoMixedDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type VideoMixedDestroyResponse = VideoMixedDestroyResponses[keyof VideoMixedDestroyResponses];
+
+export type VideoMixedRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this video mixed artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/video_mixed/{id}/';
+};
+
+export type VideoMixedRetrieveResponses = {
+    200: VideoMixedArtifact;
+};
+
+export type VideoMixedRetrieveResponse = VideoMixedRetrieveResponses[keyof VideoMixedRetrieveResponses];
+
+export type VideoMixedPartialUpdateData = {
+    body?: PatchedVideoMixedArtifactWritable;
+    path: {
+        /**
+         * A UUID string identifying this video mixed artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/video_mixed/{id}/';
+};
+
+export type VideoMixedPartialUpdateResponses = {
+    200: VideoMixedArtifact;
+};
+
+export type VideoMixedPartialUpdateResponse = VideoMixedPartialUpdateResponses[keyof VideoMixedPartialUpdateResponses];
+
+export type VideoSeparateListData = {
+    body?: never;
+    path?: never;
+    query?: {
+        created_at_after?: string;
+        created_at_before?: string;
+        /**
+         * The pagination cursor value.
+         */
+        cursor?: string;
+        recording_id?: string;
+        /**
+         * * `processing` - Processing
+         * * `done` - Done
+         * * `failed` - Failed
+         */
+        status_code?: 'done' | 'failed' | 'processing';
+    };
+    url: '/api/v1/video_separate/';
+};
+
+export type VideoSeparateListResponses = {
+    200: PaginatedVideoSeparateArtifactList;
+};
+
+export type VideoSeparateListResponse = VideoSeparateListResponses[keyof VideoSeparateListResponses];
+
+export type VideoSeparateDestroyData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this video separate artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/video_separate/{id}/';
+};
+
+export type VideoSeparateDestroyResponses = {
+    /**
+     * No response body
+     */
+    204: void;
+};
+
+export type VideoSeparateDestroyResponse = VideoSeparateDestroyResponses[keyof VideoSeparateDestroyResponses];
+
+export type VideoSeparateRetrieveData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this video separate artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/video_separate/{id}/';
+};
+
+export type VideoSeparateRetrieveResponses = {
+    200: VideoSeparateArtifact;
+};
+
+export type VideoSeparateRetrieveResponse = VideoSeparateRetrieveResponses[keyof VideoSeparateRetrieveResponses];
+
+export type VideoSeparatePartialUpdateData = {
+    body?: PatchedVideoSeparateArtifactWritable;
+    path: {
+        /**
+         * A UUID string identifying this video separate artifact.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/video_separate/{id}/';
+};
+
+export type VideoSeparatePartialUpdateResponses = {
+    200: VideoSeparateArtifact;
+};
+
+export type VideoSeparatePartialUpdateResponse = VideoSeparatePartialUpdateResponses[keyof VideoSeparatePartialUpdateResponses];
