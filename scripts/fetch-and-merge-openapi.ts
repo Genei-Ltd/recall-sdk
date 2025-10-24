@@ -546,18 +546,6 @@ function applyMeetingUrlPatch(document: OpenAPIDocument): void {
       nullable: false,
       acceptsRawStringInput: true,
     },
-    {
-      schemaName: 'CalendarEvent',
-      readOnly: true,
-      nullable: true,
-      acceptsRawStringInput: false,
-    },
-    {
-      schemaName: 'CalendarEventBot',
-      readOnly: true,
-      nullable: false,
-      acceptsRawStringInput: false,
-    },
   ] as const
 
   for (const target of targets) {

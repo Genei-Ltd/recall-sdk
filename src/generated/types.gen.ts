@@ -3496,7 +3496,7 @@ export type CalendarEvent = {
     readonly platform_id: string;
     readonly ical_uid: string;
     meeting_platform: MeetingPlatformEnum;
-    meeting_url: MeetingUrl;
+    readonly meeting_url: string | null;
     readonly created_at: string;
     readonly updated_at: string;
     readonly is_deleted: boolean;
@@ -3507,7 +3507,7 @@ export type CalendarEventBot = {
     readonly bot_id: string;
     readonly start_time: string;
     readonly deduplication_key: string;
-    meeting_url: MeetingUrl;
+    readonly meeting_url: string;
 };
 
 /**
@@ -4949,12 +4949,10 @@ export type PatchedBotWritable = {
     };
 };
 
-export type CalendarEventWritable = {
-    [key: string]: unknown;
-};
-
-export type CalendarEventBotWritable = {
-    [key: string]: unknown;
+export type PaginatedCalendarEventListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<unknown>;
 };
 
 export type CalendarWritable = {
