@@ -1,0 +1,590 @@
+{
+  "components": {
+    "schemas": {
+      "CalendarEvent": {
+        "properties": {
+          "raw": {
+            "readOnly": true,
+            "description": "Raw event payload from the calendar provider. Only Microsoft Outlook and Google Calendar payloads are currently surfaced.",
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/CalendarEventRawMicrosoftOutlook"
+              },
+              {
+                "$ref": "#/components/schemas/CalendarEventRawGoogleCalendar"
+              }
+            ]
+          }
+        }
+      },
+      "CalendarEventRawMicrosoftOutlook": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "end": {
+            "type": "object",
+            "properties": {
+              "dateTime": {
+                "type": "string"
+              },
+              "timeZone": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "dateTime",
+              "timeZone"
+            ]
+          },
+          "uid": {
+            "type": "string"
+          },
+          "body": {
+            "type": "object",
+            "properties": {
+              "content": {
+                "type": "string"
+              },
+              "contentType": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "content",
+              "contentType"
+            ]
+          },
+          "type": {
+            "type": "string"
+          },
+          "start": {
+            "type": "object",
+            "properties": {
+              "dateTime": {
+                "type": "string"
+              },
+              "timeZone": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "dateTime",
+              "timeZone"
+            ]
+          },
+          "showAs": {
+            "type": "string"
+          },
+          "iCalUId": {
+            "type": "string"
+          },
+          "subject": {
+            "type": "string"
+          },
+          "webLink": {
+            "type": "string",
+            "format": "uri"
+          },
+          "isAllDay": {
+            "type": "boolean"
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "uniqueId": {
+                "type": "string"
+              },
+              "displayName": {
+                "type": "string"
+              },
+              "locationType": {
+                "type": "string"
+              },
+              "uniqueIdType": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "attendees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "object",
+                  "properties": {
+                    "response": {
+                      "type": "string"
+                    },
+                    "time": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "response",
+                    "time"
+                  ]
+                },
+                "emailAddress": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "address": {
+                      "type": "string",
+                      "format": "email"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "address"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "changeKey": {
+            "type": "string"
+          },
+          "locations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "uniqueId": {
+                  "type": "string"
+                },
+                "displayName": {
+                  "type": "string"
+                },
+                "locationType": {
+                  "type": "string"
+                },
+                "uniqueIdType": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "organizer": {
+            "type": "object",
+            "properties": {
+              "emailAddress": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "address": {
+                    "type": "string",
+                    "format": "email"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "name",
+                  "address"
+                ]
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "emailAddress"
+            ]
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "importance": {
+            "type": "string"
+          },
+          "recurrence": {
+            "type": "object",
+            "properties": {
+              "range": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "endDate": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "startDate": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "recurrenceTimeZone": {
+                    "type": "string"
+                  },
+                  "numberOfOccurrences": {
+                    "type": "integer"
+                  }
+                },
+                "additionalProperties": false
+              },
+              "pattern": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "index": {
+                    "type": "string"
+                  },
+                  "month": {
+                    "type": "integer"
+                  },
+                  "interval": {
+                    "type": "integer"
+                  },
+                  "dayOfMonth": {
+                    "type": "integer"
+                  },
+                  "firstDayOfWeek": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "additionalProperties": false,
+            "nullable": true
+          },
+          "@odata.etag": {
+            "type": "string"
+          },
+          "@odata.type": {
+            "type": "string"
+          },
+          "bodyPreview": {
+            "type": "string"
+          },
+          "isDraft": {
+            "type": "boolean"
+          },
+          "isCancelled": {
+            "type": "boolean"
+          },
+          "isOrganizer": {
+            "type": "boolean"
+          },
+          "sensitivity": {
+            "type": "string"
+          },
+          "isReminderOn": {
+            "type": "boolean"
+          },
+          "occurrenceId": {
+            "type": "string",
+            "nullable": true
+          },
+          "hideAttendees": {
+            "type": "boolean"
+          },
+          "onlineMeeting": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "nullable": true
+          },
+          "originalStart": {
+            "type": "object",
+            "properties": {},
+            "additionalProperties": true,
+            "nullable": true
+          },
+          "transactionId": {
+            "type": "string"
+          },
+          "hasAttachments": {
+            "type": "boolean"
+          },
+          "responseStatus": {
+            "type": "object",
+            "properties": {
+              "time": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "response": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "time",
+              "response"
+            ]
+          },
+          "seriesMasterId": {
+            "type": "string"
+          },
+          "createdDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "isOnlineMeeting": {
+            "type": "boolean"
+          },
+          "onlineMeetingUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "responseRequested": {
+            "type": "boolean"
+          },
+          "originalEndTimeZone": {
+            "type": "string"
+          },
+          "lastModifiedDateTime": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "onlineMeetingProvider": {
+            "type": "string"
+          },
+          "originalStartTimeZone": {
+            "type": "string"
+          },
+          "reminderMinutesBeforeStart": {
+            "type": "integer"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "end",
+          "uid",
+          "body",
+          "type",
+          "start",
+          "showAs",
+          "iCalUId",
+          "subject",
+          "webLink",
+          "isAllDay",
+          "organizer",
+          "importance",
+          "recurrence",
+          "@odata.etag",
+          "@odata.type",
+          "isCancelled",
+          "isOrganizer",
+          "sensitivity",
+          "isReminderOn",
+          "hideAttendees",
+          "transactionId",
+          "hasAttachments",
+          "responseStatus",
+          "seriesMasterId",
+          "createdDateTime",
+          "responseRequested",
+          "originalEndTimeZone",
+          "lastModifiedDateTime",
+          "onlineMeetingProvider",
+          "originalStartTimeZone",
+          "reminderMinutesBeforeStart"
+        ],
+        "description": "Microsoft Outlook calendar event payload. Reference: https://learn.microsoft.com/en-us/graph/api/resources/event?view=graph-rest-1.0"
+      },
+      "CalendarEventRawGoogleCalendar": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "end": {
+            "type": "object",
+            "properties": {
+              "dateTime": {
+                "type": "string"
+              },
+              "timeZone": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "dateTime",
+              "timeZone"
+            ]
+          },
+          "etag": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "calendar#event"
+            ]
+          },
+          "start": {
+            "type": "object",
+            "properties": {
+              "dateTime": {
+                "type": "string"
+              },
+              "timeZone": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "dateTime",
+              "timeZone"
+            ]
+          },
+          "status": {
+            "type": "string"
+          },
+          "created": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "creator": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "displayName": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "iCalUID": {
+            "type": "string"
+          },
+          "summary": {
+            "type": "string"
+          },
+          "updated": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "htmlLink": {
+            "type": "string",
+            "format": "uri"
+          },
+          "sequence": {
+            "type": "integer"
+          },
+          "attendees": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "type": "string",
+                  "format": "email"
+                },
+                "organizer": {
+                  "type": "boolean"
+                },
+                "responseStatus": {
+                  "type": "string"
+                },
+                "displayName": {
+                  "type": "string"
+                },
+                "self": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "eventType": {
+            "type": "string"
+          },
+          "organizer": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email"
+              },
+              "displayName": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          },
+          "reminders": {
+            "type": "object",
+            "properties": {
+              "useDefault": {
+                "type": "boolean"
+              }
+            },
+            "additionalProperties": false
+          },
+          "recurringEventId": {
+            "type": "string"
+          },
+          "originalStartTime": {
+            "type": "object",
+            "properties": {
+              "dateTime": {
+                "type": "string"
+              },
+              "timeZone": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "dateTime",
+              "timeZone"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "end",
+          "kind",
+          "start",
+          "status",
+          "created",
+          "creator",
+          "iCalUID",
+          "summary",
+          "updated",
+          "htmlLink",
+          "sequence",
+          "attendees",
+          "eventType",
+          "organizer",
+          "reminders",
+          "recurringEventId",
+          "originalStartTime"
+        ],
+        "description": "Google Calendar event payload. Reference: https://developers.google.com/workspace/calendar/api/v3/reference/events"
+      }
+    }
+  }
+}

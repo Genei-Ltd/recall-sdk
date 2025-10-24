@@ -3491,7 +3491,10 @@ export type CalendarEvent = {
     readonly start_time: string;
     readonly end_time: string;
     readonly calendar_id: string;
-    readonly raw: unknown;
+    /**
+     * Raw event payload from the calendar provider. Only Microsoft Outlook and Google Calendar payloads are currently surfaced.
+     */
+    raw: CalendarEventRawMicrosoftOutlook | CalendarEventRawGoogleCalendar;
     readonly platform: string;
     readonly platform_id: string;
     readonly ical_uid: string;
@@ -4054,6 +4057,161 @@ export type MeetingUrl = {
      * Constant identifier for GoTo meetings.
      */
     platform: 'goto_meeting';
+};
+
+/**
+ * Microsoft Outlook calendar event payload. Reference: https://learn.microsoft.com/en-us/graph/api/resources/event?view=graph-rest-1.0
+ */
+export type CalendarEventRawMicrosoftOutlook = {
+    id: string;
+    end: {
+        dateTime: string;
+        timeZone: string;
+    };
+    uid: string;
+    body: {
+        content: string;
+        contentType: string;
+    };
+    type: string;
+    start: {
+        dateTime: string;
+        timeZone: string;
+    };
+    showAs: string;
+    iCalUId: string;
+    subject: string;
+    webLink: string;
+    isAllDay: boolean;
+    location?: {
+        uniqueId?: string;
+        displayName?: string;
+        locationType?: string;
+        uniqueIdType?: string;
+    };
+    attendees?: Array<{
+        type?: string;
+        status?: {
+            response: string;
+            time: string;
+        };
+        emailAddress?: {
+            name: string;
+            address: string;
+        };
+    }>;
+    changeKey?: string;
+    locations?: Array<{
+        uniqueId?: string;
+        displayName?: string;
+        locationType?: string;
+        uniqueIdType?: string;
+    }>;
+    organizer: {
+        emailAddress: {
+            name: string;
+            address: string;
+        };
+    };
+    categories?: Array<string>;
+    importance: string;
+    recurrence: {
+        range?: {
+            type?: string;
+            endDate?: string;
+            startDate?: string;
+            recurrenceTimeZone?: string;
+            numberOfOccurrences?: number;
+        };
+        pattern?: {
+            type?: string;
+            index?: string;
+            month?: number;
+            interval?: number;
+            dayOfMonth?: number;
+            firstDayOfWeek?: string;
+        };
+    } | null;
+    '@odata.etag': string;
+    '@odata.type': string;
+    bodyPreview?: string;
+    isDraft?: boolean;
+    isCancelled: boolean;
+    isOrganizer: boolean;
+    sensitivity: string;
+    isReminderOn: boolean;
+    occurrenceId?: string | null;
+    hideAttendees: boolean;
+    onlineMeeting?: {
+        [key: string]: unknown;
+    } | null;
+    originalStart?: {
+        [key: string]: unknown;
+    } | null;
+    transactionId: string;
+    hasAttachments: boolean;
+    responseStatus: {
+        time: string;
+        response: string;
+    };
+    seriesMasterId: string;
+    createdDateTime: string;
+    isOnlineMeeting?: boolean;
+    onlineMeetingUrl?: string | null;
+    responseRequested: boolean;
+    originalEndTimeZone: string;
+    lastModifiedDateTime: string;
+    onlineMeetingProvider: string;
+    originalStartTimeZone: string;
+    reminderMinutesBeforeStart: number;
+};
+
+/**
+ * Google Calendar event payload. Reference: https://developers.google.com/workspace/calendar/api/v3/reference/events
+ */
+export type CalendarEventRawGoogleCalendar = {
+    id: string;
+    end: {
+        dateTime: string;
+        timeZone: string;
+    };
+    etag?: string;
+    kind: 'calendar#event';
+    start: {
+        dateTime: string;
+        timeZone: string;
+    };
+    status: string;
+    created: string;
+    creator: {
+        email?: string;
+        displayName?: string;
+    };
+    iCalUID: string;
+    summary: string;
+    updated: string;
+    htmlLink: string;
+    sequence: number;
+    attendees: Array<{
+        email?: string;
+        organizer?: boolean;
+        responseStatus?: string;
+        displayName?: string;
+        self?: boolean;
+    }>;
+    eventType: string;
+    organizer: {
+        email?: string;
+        displayName?: string;
+    };
+    reminders: {
+        useDefault?: boolean;
+    };
+    recurringEventId: string;
+    originalStartTime: {
+        dateTime: string;
+        timeZone: string;
+    };
 };
 
 export type AudioMixedArtifactShortcutWritable = {
@@ -4949,10 +5107,8 @@ export type PatchedBotWritable = {
     };
 };
 
-export type PaginatedCalendarEventListWritable = {
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<unknown>;
+export type CalendarEventWritable = {
+    [key: string]: unknown;
 };
 
 export type CalendarWritable = {
