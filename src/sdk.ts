@@ -17,6 +17,7 @@ import type {
   BotCreateResponse,
   BotDeleteMediaCreateResponse,
   BotDestroyResponse,
+  BotLeaveCallCreateResponse,
   BotListData,
   BotListResponse,
   BotPartialUpdateData,
@@ -185,6 +186,26 @@ class BotModule {
     const id = typeof input === 'string' ? input : input.botId
     const result = await this.sdk.botDestroy<true>({
       path: { id },
+    })
+    return result.data
+  }
+
+  /**
+   * Remove Bot From Call
+   *
+   * Removes the bot from the meeting. This is irreversable.
+   *
+   * This endpoint is rate limited to:
+   * - 300 requests per min per workspace
+   */
+  async leaveCall(
+    input: string | { botId: string },
+    options?: IdempotentRequestOptions,
+  ): Promise<BotLeaveCallCreateResponse> {
+    const id = typeof input === 'string' ? input : input.botId
+    const result = await this.sdk.botLeaveCallCreate<true>({
+      path: { id },
+      ...withIdempotencyKey(options),
     })
     return result.data
   }

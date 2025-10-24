@@ -47,6 +47,7 @@ const ENDPOINT_SLUGS = [
   'bot_partial_update',
   'bot_destroy',
   'bot_delete_media_create',
+  'bot_leave_call_create',
   'calendar_events_list',
   'calendar_events_retrieve',
   'calendar_events_bot_create',

@@ -6058,6 +6058,24 @@ export type BotDeleteMediaCreateResponses = {
 
 export type BotDeleteMediaCreateResponse = BotDeleteMediaCreateResponses[keyof BotDeleteMediaCreateResponses];
 
+export type BotLeaveCallCreateData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this bot.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/bot/{id}/leave_call/';
+};
+
+export type BotLeaveCallCreateResponses = {
+    200: Bot;
+};
+
+export type BotLeaveCallCreateResponse = BotLeaveCallCreateResponses[keyof BotLeaveCallCreateResponses];
+
 export type CalendarEventsListData = {
     body?: never;
     path?: never;
