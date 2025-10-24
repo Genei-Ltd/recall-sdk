@@ -41,7 +41,7 @@
   },
   "devDependencies": {
     "@apidevtools/swagger-parser": "^12.1.0",
-    "@hey-api/openapi-ts": "^0.85.2",
+    "@hey-api/openapi-ts": "^0.86.3",
     "@types/node": "^24.8.1",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
