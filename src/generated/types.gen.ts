@@ -183,9 +183,9 @@ export type AutomaticVideoOutput = {
 export type Bot = {
     readonly id: string;
     /**
-     * The url of the meeting. For example, https://zoom.us/j/123?pwd=456. This field will be cleared a few days after the bot has joined a call.
+     * Structured meeting URL metadata for the associated platform.
      */
-    meeting_url: string;
+    meeting_url: MeetingUrl;
     /**
      * The name of the bot that will be displayed in the call.
      * *(Note: Authenticated Google Meet bots will use the Google account name and this field will be ignored.)*
@@ -3424,9 +3424,9 @@ export type JoinSpecificRoomModeEnum = 'join_specific_room';
 export type PatchedBot = {
     readonly id?: string;
     /**
-     * The url of the meeting. For example, https://zoom.us/j/123?pwd=456. This field will be cleared a few days after the bot has joined a call.
+     * Structured meeting URL metadata for the associated platform.
      */
-    meeting_url?: string;
+    meeting_url?: MeetingUrl;
     /**
      * The name of the bot that will be displayed in the call.
      * *(Note: Authenticated Google Meet bots will use the Google account name and this field will be ignored.)*
@@ -3496,7 +3496,7 @@ export type CalendarEvent = {
     readonly platform_id: string;
     readonly ical_uid: string;
     meeting_platform: MeetingPlatformEnum;
-    readonly meeting_url: string | null;
+    meeting_url: MeetingUrl;
     readonly created_at: string;
     readonly updated_at: string;
     readonly is_deleted: boolean;
@@ -3507,7 +3507,7 @@ export type CalendarEventBot = {
     readonly bot_id: string;
     readonly start_time: string;
     readonly deduplication_key: string;
-    readonly meeting_url: string;
+    meeting_url: MeetingUrl;
 };
 
 /**
@@ -3953,6 +3953,109 @@ export type PatchedVideoSeparateArtifact = {
     format?: VideoSeparateArtifactFormatEnum;
 };
 
+/**
+ * Structured meeting URL metadata. The available fields depend on the meeting platform.
+ */
+export type MeetingUrl = {
+    /**
+     * Zoom meeting ID extracted from the meeting URL.
+     */
+    meeting_id: string;
+    /**
+     * Zoom meeting password component, if the meeting URL includes one.
+     */
+    meeting_password?: string | null;
+    /**
+     * Constant identifier for Zoom meetings.
+     */
+    platform: 'zoom';
+} | {
+    /**
+     * Google Meet meeting ID.
+     */
+    meeting_id: string;
+    /**
+     * Constant identifier for Google Meet meetings.
+     */
+    platform: 'google_meet';
+} | {
+    /**
+     * Teams meeting identifier. Certain Teams variants do not supply this field.
+     */
+    meeting_id: string | null;
+    /**
+     * Meeting password if included in the Teams URL.
+     */
+    meeting_password: string | null;
+    /**
+     * Organizer identifier embedded in the Teams URL.
+     */
+    organizer_id: string | null;
+    /**
+     * Tenant identifier embedded in the Teams URL.
+     */
+    tenant_id: string | null;
+    /**
+     * Message identifier embedded in the Teams URL.
+     */
+    message_id: string | null;
+    /**
+     * Thread identifier embedded in the Teams URL.
+     */
+    thread_id: string | null;
+    /**
+     * Business meeting identifier for Teams for Business URLs.
+     */
+    business_meeting_id: string | null;
+    /**
+     * Business meeting password for Teams for Business URLs when present.
+     */
+    business_meeting_password: string | null;
+    /**
+     * Distinguishes between Teams (business) and Teams Live meetings.
+     */
+    platform: 'microsoft_teams' | 'microsoft_teams_live';
+} | {
+    /**
+     * Customer subdomain extracted from the Webex URL.
+     */
+    meeting_subdomain: string;
+    /**
+     * Webex meeting identifier (mtid).
+     */
+    meeting_mtid: string;
+    /**
+     * Webex meeting resource path.
+     */
+    meeting_path: string;
+    /**
+     * Constant identifier for Webex meetings.
+     */
+    platform: 'webex';
+} | {
+    /**
+     * Customer subdomain extracted from the Webex URL.
+     */
+    meeting_subdomain: string;
+    /**
+     * Personal room identifier embedded in the Webex URL.
+     */
+    meeting_personal_room_id: string;
+    /**
+     * Constant identifier for Webex meetings.
+     */
+    platform: 'webex';
+} | {
+    /**
+     * GoTo meeting identifier.
+     */
+    meeting_id: string;
+    /**
+     * Constant identifier for GoTo meetings.
+     */
+    platform: 'goto_meeting';
+};
+
 export type AudioMixedArtifactShortcutWritable = {
     metadata: {
         [key: string]: string | null;
@@ -3974,7 +4077,7 @@ export type AudioOutputDataWritable = {
 
 export type BotWritable = {
     /**
-     * The url of the meeting. For example, https://zoom.us/j/123?pwd=456. This field will be cleared a few days after the bot has joined a call.
+     * Canonical meeting URL string accepted when scheduling or updating bots.
      */
     meeting_url: string;
     /**
@@ -4791,7 +4894,7 @@ export type VideoOutputWritable = {
 
 export type PatchedBotWritable = {
     /**
-     * The url of the meeting. For example, https://zoom.us/j/123?pwd=456. This field will be cleared a few days after the bot has joined a call.
+     * Canonical meeting URL string accepted when scheduling or updating bots.
      */
     meeting_url?: string;
     /**
@@ -4846,10 +4949,12 @@ export type PatchedBotWritable = {
     };
 };
 
-export type PaginatedCalendarEventListWritable = {
-    next?: string | null;
-    previous?: string | null;
-    results?: Array<unknown>;
+export type CalendarEventWritable = {
+    [key: string]: unknown;
+};
+
+export type CalendarEventBotWritable = {
+    [key: string]: unknown;
 };
 
 export type CalendarWritable = {
