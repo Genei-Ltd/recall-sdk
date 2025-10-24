@@ -1,5 +1,6 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readdir, readFile, writeFile } from 'node:fs/promises'
 import { resolve } from 'node:path'
+import type { Dirent } from 'node:fs'
 
 type EndpointSlug = string
 
@@ -91,6 +92,7 @@ const ENDPOINTS: EndpointConfig[] = ENDPOINT_SLUGS.map((slug) => ({
 
 const OUTPUT_DIR = resolve('schemas')
 const MERGED_SCHEMA_PATH = resolve(OUTPUT_DIR, 'openapi.json')
+const OVERRIDES_DIR = resolve(OUTPUT_DIR, 'overrides')
 
 function sortKeys(value: unknown): unknown {
   if (Array.isArray(value)) {
@@ -590,6 +592,73 @@ function applyMeetingUrlPatch(document: OpenAPIDocument): void {
   }
 }
 
+function mergeOverrideObject(
+  target: Record<string, unknown>,
+  override: Record<string, unknown>,
+): void {
+  for (const [key, value] of Object.entries(override)) {
+    if (isRecord(value)) {
+      const existing = target[key]
+      if (isRecord(existing)) {
+        mergeOverrideObject(existing, value)
+      } else {
+        const replacement: Record<string, unknown> = {}
+        mergeOverrideObject(replacement, value)
+        target[key] = replacement
+      }
+      continue
+    }
+
+    target[key] = value
+  }
+}
+
+async function applyOpenApiOverrides(document: OpenAPIDocument): Promise<void> {
+  let entries: Dirent[]
+  try {
+    entries = await readdir(OVERRIDES_DIR, { withFileTypes: true })
+  } catch (error) {
+    const nodeError = error as NodeJS.ErrnoException
+    if (nodeError?.code === 'ENOENT') {
+      return
+    }
+    throw error
+  }
+
+  const files = entries
+    .filter((entry) => entry.isFile() && entry.name.endsWith('.json'))
+    .map((entry) => entry.name)
+    .sort()
+
+  if (files.length === 0) {
+    return
+  }
+
+  const target = document as unknown as Record<string, unknown>
+
+  for (const fileName of files) {
+    const filePath = resolve(OVERRIDES_DIR, fileName)
+    const contents = await readFile(filePath, 'utf8')
+
+    let parsed: unknown
+    try {
+      parsed = JSON.parse(contents) as Record<string, unknown>
+    } catch (error) {
+      throw new Error(
+        `Failed to parse OpenAPI override ${fileName}: ${(error as Error).message}`,
+      )
+    }
+
+    if (!isRecord(parsed)) {
+      throw new Error(
+        `OpenAPI override ${fileName} must be a JSON object at the top level.`,
+      )
+    }
+
+    mergeOverrideObject(target, parsed)
+  }
+}
+
 async function fetchEndpointPayload(
   config: EndpointConfig,
 ): Promise<EndpointDocument> {
@@ -630,6 +699,7 @@ async function main(): Promise<void> {
     removeNullEnumSchema(merged)
   }
   applyMeetingUrlPatch(merged)
+  await applyOpenApiOverrides(merged)
   await writeJsonFile(MERGED_SCHEMA_PATH, merged)
   console.log(`Merged schema written to ${MERGED_SCHEMA_PATH}`)
 }
