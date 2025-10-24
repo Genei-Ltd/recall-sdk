@@ -1,5 +1,12 @@
 # @coloop-ai/recall-sdk
 
+[![npm version](https://img.shields.io/npm/v/@coloop-ai/recall-sdk.svg)](https://www.npmjs.com/package/@coloop-ai/recall-sdk)
+[![npm downloads](https://img.shields.io/npm/dm/@coloop-ai/recall-sdk.svg)](https://www.npmjs.com/package/@coloop-ai/recall-sdk)
+[![npm bundle size](https://img.shields.io/bundlephobia/min/@coloop-ai/recall-sdk)](https://bundlephobia.com/package/@coloop-ai/recall-sdk)
+[![License: MIT](https://img.shields.io/npm/l/@coloop-ai/recall-sdk.svg)](https://github.com/Genei-Ltd/recall-sdk/blob/main/LICENSE)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![GitHub stars](https://img.shields.io/github/stars/Genei-Ltd/recall-sdk?style=social)](https://github.com/Genei-Ltd/recall-sdk)
+
 Type-safe client bindings for the Recall.ai meeting bot API. Operations are generated from the provider's OpenAPI fragments and wrapped in an ergonomic SDK.
 
 > ⚠️ This project is maintained by Coloop and is not affiliated with or endorsed by Recall.ai — review their API terms before use.
