@@ -40,7 +40,7 @@ export type AudioMixedArtifactShortcut = {
 };
 
 export type AudioOutput = {
-    data: AudioOutputDataWritable;
+    data: AudioOutputData;
     /**
      * Specify this parameter if you want the audio to be replayed when additional participants join the call.
      */
@@ -173,11 +173,11 @@ export type AutomaticVideoOutput = {
     /**
      * The video that will be automatically output when the bot is in the **in_call_recording** state.
      */
-    in_call_recording?: VideoOutputWritable;
+    in_call_recording?: VideoOutput;
     /**
      * The video that will be automatically output when the bot is in the **in_call_not_recording** state. If not specified the bot will fallback to in_call_recording output if available.
      */
-    in_call_not_recording?: VideoOutputWritable;
+    in_call_not_recording?: VideoOutput;
 };
 
 export type Bot = {
@@ -6057,6 +6057,24 @@ export type BotDeleteMediaCreateResponses = {
 };
 
 export type BotDeleteMediaCreateResponse = BotDeleteMediaCreateResponses[keyof BotDeleteMediaCreateResponses];
+
+export type BotLeaveCallCreateData = {
+    body?: never;
+    path: {
+        /**
+         * A UUID string identifying this bot.
+         */
+        id: string;
+    };
+    query?: never;
+    url: '/api/v1/bot/{id}/leave_call/';
+};
+
+export type BotLeaveCallCreateResponses = {
+    200: Bot;
+};
+
+export type BotLeaveCallCreateResponse = BotLeaveCallCreateResponses[keyof BotLeaveCallCreateResponses];
 
 export type CalendarEventsListData = {
     body?: never;

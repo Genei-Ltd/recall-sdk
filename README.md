@@ -92,7 +92,7 @@ await recall.bot.create(
 
 `RecallSdk` mirrors the most common Recall.ai workflows and groups operations into modules:
 
-- `recall.bot` – manage meeting bots (`list`, `create`, `retrieve`, `update`, `delete`, `deleteMedia`).
+- `recall.bot` – manage meeting bots (`list`, `create`, `retrieve`, `update`, `delete`, `deleteMedia`, `leaveCall`).
 - `recall.calendar` – convenience entry point with methods:
   - Calendar events: `listEvents`, `retrieveEvent`, `scheduleBot`, `unscheduleBot`.
   - Calendar accounts: `listCalendars`, `createCalendar`, `retrieveCalendar`, `updateCalendar`, `deleteCalendar`, `createCalendarAccessToken`.

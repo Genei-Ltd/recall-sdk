@@ -2,7 +2,7 @@
 
 import type { Client, Options as Options2, TDataShape } from './client';
 import { client } from './client.gen';
-import type { AudioMixedDestroyData, AudioMixedDestroyResponses, AudioMixedListData, AudioMixedListResponses, AudioMixedPartialUpdateData, AudioMixedPartialUpdateResponses, AudioMixedRetrieveData, AudioMixedRetrieveResponses, AudioSeparateDestroyData, AudioSeparateDestroyResponses, AudioSeparateListData, AudioSeparateListResponses, AudioSeparatePartialUpdateData, AudioSeparatePartialUpdateResponses, AudioSeparateRetrieveData, AudioSeparateRetrieveResponses, BotCreateData, BotCreateErrors, BotCreateResponses, BotDeleteMediaCreateData, BotDeleteMediaCreateResponses, BotDestroyData, BotDestroyResponses, BotListData, BotListResponses, BotPartialUpdateData, BotPartialUpdateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses, RecordingCreateTranscriptCreateData, RecordingCreateTranscriptCreateResponses, RecordingDestroyData, RecordingDestroyResponses, RecordingListData, RecordingListResponses, RecordingRetrieveData, RecordingRetrieveResponses, TranscriptDestroyData, TranscriptDestroyResponses, TranscriptListData, TranscriptListResponses, TranscriptPartialUpdateData, TranscriptPartialUpdateResponses, TranscriptRetrieveData, TranscriptRetrieveResponses, VideoMixedDestroyData, VideoMixedDestroyResponses, VideoMixedListData, VideoMixedListResponses, VideoMixedPartialUpdateData, VideoMixedPartialUpdateResponses, VideoMixedRetrieveData, VideoMixedRetrieveResponses, VideoSeparateDestroyData, VideoSeparateDestroyResponses, VideoSeparateListData, VideoSeparateListResponses, VideoSeparatePartialUpdateData, VideoSeparatePartialUpdateResponses, VideoSeparateRetrieveData, VideoSeparateRetrieveResponses } from './types.gen';
+import type { AudioMixedDestroyData, AudioMixedDestroyResponses, AudioMixedListData, AudioMixedListResponses, AudioMixedPartialUpdateData, AudioMixedPartialUpdateResponses, AudioMixedRetrieveData, AudioMixedRetrieveResponses, AudioSeparateDestroyData, AudioSeparateDestroyResponses, AudioSeparateListData, AudioSeparateListResponses, AudioSeparatePartialUpdateData, AudioSeparatePartialUpdateResponses, AudioSeparateRetrieveData, AudioSeparateRetrieveResponses, BotCreateData, BotCreateErrors, BotCreateResponses, BotDeleteMediaCreateData, BotDeleteMediaCreateResponses, BotDestroyData, BotDestroyResponses, BotLeaveCallCreateData, BotLeaveCallCreateResponses, BotListData, BotListResponses, BotPartialUpdateData, BotPartialUpdateResponses, BotRetrieveData, BotRetrieveResponses, CalendarEventsBotCreateData, CalendarEventsBotCreateResponses, CalendarEventsBotDestroyData, CalendarEventsBotDestroyResponses, CalendarEventsListData, CalendarEventsListResponses, CalendarEventsRetrieveData, CalendarEventsRetrieveResponses, CalendarsAccessTokenCreateData, CalendarsAccessTokenCreateErrors, CalendarsAccessTokenCreateResponses, CalendarsCreateData, CalendarsCreateResponses, CalendarsDestroyData, CalendarsDestroyResponses, CalendarsListData, CalendarsListResponses, CalendarsPartialUpdateData, CalendarsPartialUpdateResponses, CalendarsRetrieveData, CalendarsRetrieveResponses, RecordingCreateTranscriptCreateData, RecordingCreateTranscriptCreateResponses, RecordingDestroyData, RecordingDestroyResponses, RecordingListData, RecordingListResponses, RecordingRetrieveData, RecordingRetrieveResponses, TranscriptDestroyData, TranscriptDestroyResponses, TranscriptListData, TranscriptListResponses, TranscriptPartialUpdateData, TranscriptPartialUpdateResponses, TranscriptRetrieveData, TranscriptRetrieveResponses, VideoMixedDestroyData, VideoMixedDestroyResponses, VideoMixedListData, VideoMixedListResponses, VideoMixedPartialUpdateData, VideoMixedPartialUpdateResponses, VideoMixedRetrieveData, VideoMixedRetrieveResponses, VideoSeparateDestroyData, VideoSeparateDestroyResponses, VideoSeparateListData, VideoSeparateListResponses, VideoSeparatePartialUpdateData, VideoSeparatePartialUpdateResponses, VideoSeparateRetrieveData, VideoSeparateRetrieveResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean> = Options2<TData, ThrowOnError> & {
     /**
@@ -161,6 +161,27 @@ export class GeneratedRecallSdk extends _HeyApiClient {
                 }
             ],
             url: '/api/v1/bot/{id}/delete_media/',
+            ...options
+        });
+    }
+    
+    /**
+     * Remove Bot From Call
+     *
+     * Removes the bot from the meeting. This is irreversable.
+     *
+     * This endpoint is rate limited to:
+     * - 300 requests per min per workspace
+     */
+    public botLeaveCallCreate<ThrowOnError extends boolean = false>(options: Options<BotLeaveCallCreateData, ThrowOnError>) {
+        return (options.client ?? this._client).post<BotLeaveCallCreateResponses, unknown, ThrowOnError>({
+            security: [
+                {
+                    name: 'Authorization',
+                    type: 'apiKey'
+                }
+            ],
+            url: '/api/v1/bot/{id}/leave_call/',
             ...options
         });
     }
