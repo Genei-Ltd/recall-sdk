@@ -243,6 +243,7 @@ function mergeDocuments(documents: OpenAPIDocument[]): OpenAPIDocument {
 }
 
 const NULL_ENUM_REF = '#/components/schemas/NullEnum'
+const MEETING_URL_SCHEMA_REF = '#/components/schemas/MeetingUrl'
 
 function isNullEnumReference(value: unknown): boolean {
   if (isRecord(value)) {
@@ -350,6 +351,244 @@ function removeNullEnumSchema(document: OpenAPIDocument): void {
   }
 }
 
+function applyMeetingUrlPatch(document: OpenAPIDocument): void {
+  const components = (document.components ??= {})
+  const schemas = (components.schemas ??= {})
+
+  const meetingUrlVariants: Record<string, unknown>[] = [
+    {
+      description: 'Zoom meeting URL metadata.',
+      type: 'object',
+      required: ['meeting_id', 'platform'],
+      properties: {
+        meeting_id: {
+          type: 'string',
+          description: 'Zoom meeting ID extracted from the meeting URL.',
+        },
+        meeting_password: {
+          type: 'string',
+          nullable: true,
+          description:
+            'Zoom meeting password component, if the meeting URL includes one.',
+        },
+        platform: {
+          type: 'string',
+          enum: ['zoom'],
+          description: 'Constant identifier for Zoom meetings.',
+        },
+      },
+      additionalProperties: false,
+    },
+    {
+      description: 'Google Meet meeting URL metadata.',
+      type: 'object',
+      required: ['meeting_id', 'platform'],
+      properties: {
+        meeting_id: {
+          type: 'string',
+          description: 'Google Meet meeting ID.',
+        },
+        platform: {
+          type: 'string',
+          enum: ['google_meet'],
+          description: 'Constant identifier for Google Meet meetings.',
+        },
+      },
+      additionalProperties: false,
+    },
+    {
+      description: 'Microsoft Teams meeting URL metadata.',
+      type: 'object',
+      required: [
+        'meeting_id',
+        'meeting_password',
+        'organizer_id',
+        'tenant_id',
+        'message_id',
+        'thread_id',
+        'business_meeting_id',
+        'business_meeting_password',
+        'platform',
+      ],
+      properties: {
+        meeting_id: {
+          type: 'string',
+          nullable: true,
+          description:
+            'Teams meeting identifier. Certain Teams variants do not supply this field.',
+        },
+        meeting_password: {
+          type: 'string',
+          nullable: true,
+          description: 'Meeting password if included in the Teams URL.',
+        },
+        organizer_id: {
+          type: 'string',
+          nullable: true,
+          description: 'Organizer identifier embedded in the Teams URL.',
+        },
+        tenant_id: {
+          type: 'string',
+          nullable: true,
+          description: 'Tenant identifier embedded in the Teams URL.',
+        },
+        message_id: {
+          type: 'string',
+          nullable: true,
+          description: 'Message identifier embedded in the Teams URL.',
+        },
+        thread_id: {
+          type: 'string',
+          nullable: true,
+          description: 'Thread identifier embedded in the Teams URL.',
+        },
+        business_meeting_id: {
+          type: 'string',
+          nullable: true,
+          description: 'Business meeting identifier for Teams for Business URLs.',
+        },
+        business_meeting_password: {
+          type: 'string',
+          nullable: true,
+          description:
+            'Business meeting password for Teams for Business URLs when present.',
+        },
+        platform: {
+          type: 'string',
+          enum: ['microsoft_teams', 'microsoft_teams_live'],
+          description:
+            'Distinguishes between Teams (business) and Teams Live meetings.',
+        },
+      },
+      additionalProperties: false,
+    },
+    {
+      description: 'Webex meeting URL metadata (standard room).',
+      type: 'object',
+      required: ['meeting_subdomain', 'meeting_mtid', 'meeting_path', 'platform'],
+      properties: {
+        meeting_subdomain: {
+          type: 'string',
+          description: 'Customer subdomain extracted from the Webex URL.',
+        },
+        meeting_mtid: {
+          type: 'string',
+          description: 'Webex meeting identifier (mtid).',
+        },
+        meeting_path: {
+          type: 'string',
+          description: 'Webex meeting resource path.',
+        },
+        platform: {
+          type: 'string',
+          enum: ['webex'],
+          description: 'Constant identifier for Webex meetings.',
+        },
+      },
+      additionalProperties: false,
+    },
+    {
+      description: 'Webex meeting URL metadata (personal room).',
+      type: 'object',
+      required: ['meeting_subdomain', 'meeting_personal_room_id', 'platform'],
+      properties: {
+        meeting_subdomain: {
+          type: 'string',
+          description: 'Customer subdomain extracted from the Webex URL.',
+        },
+        meeting_personal_room_id: {
+          type: 'string',
+          description: 'Personal room identifier embedded in the Webex URL.',
+        },
+        platform: {
+          type: 'string',
+          enum: ['webex'],
+          description: 'Constant identifier for Webex meetings.',
+        },
+      },
+      additionalProperties: false,
+    },
+    {
+      description: 'GoTo meeting URL metadata.',
+      type: 'object',
+      required: ['meeting_id', 'platform'],
+      properties: {
+        meeting_id: {
+          type: 'string',
+          description: 'GoTo meeting identifier.',
+        },
+        platform: {
+          type: 'string',
+          enum: ['goto_meeting'],
+          description: 'Constant identifier for GoTo meetings.',
+        },
+      },
+      additionalProperties: false,
+    },
+  ]
+
+  schemas.MeetingUrl = {
+    description:
+      'Structured meeting URL metadata. The available fields depend on the meeting platform.',
+    oneOf: meetingUrlVariants,
+  }
+
+  const targets = [
+    {
+      schemaName: 'Bot',
+      readOnly: false,
+      nullable: false,
+      acceptsRawStringInput: true,
+    },
+    {
+      schemaName: 'PatchedBot',
+      readOnly: false,
+      nullable: false,
+      acceptsRawStringInput: true,
+    },
+  ] as const
+
+  for (const target of targets) {
+    const schema = schemas[target.schemaName]
+    if (!isRecord(schema) || !('properties' in schema) || !isRecord(schema.properties)) {
+      continue
+    }
+
+    const properties = schema.properties as Record<string, unknown>
+    const property: Record<string, unknown> = {
+      description:
+        'Structured meeting URL metadata for the associated platform.',
+    }
+
+    if (target.acceptsRawStringInput) {
+      property.oneOf = [
+        {
+          type: 'string',
+          description:
+            'Canonical meeting URL string accepted when scheduling or updating bots.',
+          writeOnly: true,
+        },
+        {
+          allOf: [{ $ref: MEETING_URL_SCHEMA_REF }],
+          readOnly: true,
+        },
+      ]
+    } else {
+      property.$ref = MEETING_URL_SCHEMA_REF
+    }
+
+    if (target.readOnly) {
+      property.readOnly = true
+    }
+
+    if (target.nullable) {
+      property.nullable = true
+    }
+
+    properties.meeting_url = property
+  }
+}
+
 async function fetchEndpointPayload(
   config: EndpointConfig,
 ): Promise<EndpointDocument> {
@@ -389,6 +628,7 @@ async function main(): Promise<void> {
   if (nullEnumRemoved) {
     removeNullEnumSchema(merged)
   }
+  applyMeetingUrlPatch(merged)
   await writeJsonFile(MERGED_SCHEMA_PATH, merged)
   console.log(`Merged schema written to ${MERGED_SCHEMA_PATH}`)
 }
