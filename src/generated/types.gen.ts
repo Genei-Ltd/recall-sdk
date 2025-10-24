@@ -40,7 +40,7 @@ export type AudioMixedArtifactShortcut = {
 };
 
 export type AudioOutput = {
-    data: AudioOutputData;
+    data: AudioOutputDataWritable;
     /**
      * Specify this parameter if you want the audio to be replayed when additional participants join the call.
      */
@@ -173,11 +173,11 @@ export type AutomaticVideoOutput = {
     /**
      * The video that will be automatically output when the bot is in the **in_call_recording** state.
      */
-    in_call_recording?: VideoOutput;
+    in_call_recording?: VideoOutputWritable;
     /**
      * The video that will be automatically output when the bot is in the **in_call_not_recording** state. If not specified the bot will fallback to in_call_recording output if available.
      */
-    in_call_not_recording?: VideoOutput;
+    in_call_not_recording?: VideoOutputWritable;
 };
 
 export type Bot = {
