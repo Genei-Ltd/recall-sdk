@@ -74,7 +74,7 @@ const ENDPOINT_SLUGS = [
   'audio_separate_partial_update',
   'audio_separate_destroy',
   'video_mixed_list',
-  'video_mixed_retrieve-1',
+  'video_mixed_retrieve',
   'video_mixed_partial_update',
   'video_mixed_destroy',
   'video_separate_list',
