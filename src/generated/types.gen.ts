@@ -40,7 +40,7 @@ export type AudioMixedArtifactShortcut = {
 };
 
 export type AudioOutput = {
-    data: AudioOutputDataWritable;
+    data: AudioOutputData;
     /**
      * Specify this parameter if you want the audio to be replayed when additional participants join the call.
      */
@@ -173,11 +173,11 @@ export type AutomaticVideoOutput = {
     /**
      * The video that will be automatically output when the bot is in the **in_call_recording** state.
      */
-    in_call_recording?: VideoOutputWritable;
+    in_call_recording?: VideoOutput;
     /**
      * The video that will be automatically output when the bot is in the **in_call_not_recording** state. If not specified the bot will fallback to in_call_recording output if available.
      */
-    in_call_not_recording?: VideoOutputWritable;
+    in_call_not_recording?: VideoOutput;
 };
 
 export type Bot = {
@@ -1473,6 +1473,7 @@ export type GoogleMeet = {
  * * `fi` - fi
  * * `fr` - fr
  * * `hi` - hi
+ * * `hr` - hr
  * * `hu` - hu
  * * `id` - id
  * * `it` - it
@@ -1495,7 +1496,7 @@ export type GoogleMeet = {
  * * `vi` - vi
  * * `zh` - zh
  */
-export type LanguageCodeEnum = 'auto' | 'bg' | 'ca' | 'cs' | 'da' | 'de' | 'el' | 'en' | 'en_au' | 'en_uk' | 'en_us' | 'es' | 'et' | 'fi' | 'fr' | 'hi' | 'hu' | 'id' | 'it' | 'ja' | 'ko' | 'lt' | 'lv' | 'ms' | 'nl' | 'no' | 'pl' | 'pt' | 'ro' | 'ru' | 'sk' | 'sv' | 'th' | 'tr' | 'uk' | 'vi' | 'zh';
+export type LanguageCodeEnum = 'auto' | 'bg' | 'ca' | 'cs' | 'da' | 'de' | 'el' | 'en' | 'en_au' | 'en_uk' | 'en_us' | 'es' | 'et' | 'fi' | 'fr' | 'hi' | 'hr' | 'hu' | 'id' | 'it' | 'ja' | 'ko' | 'lt' | 'lv' | 'ms' | 'nl' | 'no' | 'pl' | 'pt' | 'ro' | 'ru' | 'sk' | 'sv' | 'th' | 'tr' | 'uk' | 'vi' | 'zh';
 
 export type MeetingMetadataArtifactData = {
     readonly title: string | null;
@@ -1605,6 +1606,7 @@ export type RecallaiStreamingTranscription = {
      * * `fi` - fi
      * * `fr` - fr
      * * `hi` - hi
+     * * `hr` - hr
      * * `hu` - hu
      * * `id` - id
      * * `it` - it
@@ -2570,6 +2572,7 @@ export type TranscriptArtifactProvider = {
          * * `fi` - fi
          * * `fr` - fr
          * * `hi` - hi
+         * * `hr` - hr
          * * `hu` - hu
          * * `id` - id
          * * `it` - it
@@ -2592,7 +2595,7 @@ export type TranscriptArtifactProvider = {
          * * `vi` - vi
          * * `zh` - zh
          */
-        language_code?: 'auto' | 'bg' | 'ca' | 'cs' | 'da' | 'de' | 'el' | 'en' | 'en_au' | 'en_uk' | 'en_us' | 'es' | 'et' | 'fi' | 'fr' | 'hi' | 'hu' | 'id' | 'it' | 'ja' | 'ko' | 'lt' | 'lv' | 'ms' | 'nl' | 'no' | 'pl' | 'pt' | 'ro' | 'ru' | 'sk' | 'sv' | 'th' | 'tr' | 'uk' | 'vi' | 'zh';
+        language_code?: 'auto' | 'bg' | 'ca' | 'cs' | 'da' | 'de' | 'el' | 'en' | 'en_au' | 'en_uk' | 'en_us' | 'es' | 'et' | 'fi' | 'fr' | 'hi' | 'hr' | 'hu' | 'id' | 'it' | 'ja' | 'ko' | 'lt' | 'lv' | 'ms' | 'nl' | 'no' | 'pl' | 'pt' | 'ro' | 'ru' | 'sk' | 'sv' | 'th' | 'tr' | 'uk' | 'vi' | 'zh';
         /**
          * List of text strings to find/replace in the transcript.
          */
@@ -3679,6 +3682,7 @@ export type RecallaiAsyncTranscription = {
      * * `fi` - fi
      * * `fr` - fr
      * * `hi` - hi
+     * * `hr` - hr
      * * `hu` - hu
      * * `id` - id
      * * `it` - it
@@ -4220,6 +4224,14 @@ export type AudioMixedArtifactShortcutWritable = {
     };
 };
 
+export type AudioOutputWritable = {
+    data: AudioOutputDataWritable;
+    /**
+     * Specify this parameter if you want the audio to be replayed when additional participants join the call.
+     */
+    replay_on_participant_join?: AudioOutputReplay;
+};
+
 export type AudioOutputDataWritable = {
     /**
      * The kind of data encoded in b64_data
@@ -4231,6 +4243,21 @@ export type AudioOutputDataWritable = {
      * Data encoded in Base64 format, using the standard alphabet (specified here: https://datatracker.ietf.org/doc/html/rfc4648#section-4)
      */
     b64_data: string;
+};
+
+export type AutomaticAudioOutputWritable = {
+    in_call_recording: AudioOutputWritable;
+};
+
+export type AutomaticVideoOutputWritable = {
+    /**
+     * The video that will be automatically output when the bot is in the **in_call_recording** state.
+     */
+    in_call_recording?: VideoOutputWritable;
+    /**
+     * The video that will be automatically output when the bot is in the **in_call_not_recording** state. If not specified the bot will fallback to in_call_recording output if available.
+     */
+    in_call_not_recording?: VideoOutputWritable;
 };
 
 export type BotWritable = {
@@ -4258,11 +4285,11 @@ export type BotWritable = {
     /**
      * Settings for the bot to output video. Image should be 16:9. Recommended resolution is 640x360.
      */
-    automatic_video_output?: AutomaticVideoOutput | null;
+    automatic_video_output?: AutomaticVideoOutputWritable | null;
     /**
      * Settings for the bot to output audio.
      */
-    automatic_audio_output?: AutomaticAudioOutput | null;
+    automatic_audio_output?: AutomaticAudioOutputWritable | null;
     /**
      * Settings for the bot to send chat messages.
      * *(Note: Chat functionality is only supported for Zoom, Google Meet and Microsoft Teams currently.)*
@@ -4307,6 +4334,13 @@ export type MeetingMetadataArtifactShortcutWritable = {
     metadata: {
         [key: string]: string | null;
     };
+};
+
+export type PaginatedBotListWritable = {
+    count?: number;
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<BotWritable>;
 };
 
 export type ParticipantEventsArtifactShortcutWritable = {
@@ -5075,11 +5109,11 @@ export type PatchedBotWritable = {
     /**
      * Settings for the bot to output video. Image should be 16:9. Recommended resolution is 640x360.
      */
-    automatic_video_output?: AutomaticVideoOutput | null;
+    automatic_video_output?: AutomaticVideoOutputWritable | null;
     /**
      * Settings for the bot to output audio.
      */
-    automatic_audio_output?: AutomaticAudioOutput | null;
+    automatic_audio_output?: AutomaticAudioOutputWritable | null;
     /**
      * Settings for the bot to send chat messages.
      * *(Note: Chat functionality is only supported for Zoom, Google Meet and Microsoft Teams currently.)*
@@ -5111,6 +5145,12 @@ export type CalendarEventWritable = {
     [key: string]: unknown;
 };
 
+export type PaginatedCalendarEventListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<CalendarEventWritable>;
+};
+
 export type CalendarWritable = {
     oauth_client_id: string;
     oauth_client_secret: string;
@@ -5121,6 +5161,12 @@ export type CalendarWritable = {
      */
     webhook_url?: string;
     oauth_email?: string;
+};
+
+export type PaginatedCalendarListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<CalendarWritable>;
 };
 
 export type PatchedCalendarWritable = {
@@ -5145,6 +5191,12 @@ export type DesktopSdkUploadMinimalWritable = {
     metadata: {
         [key: string]: string | null;
     };
+};
+
+export type PaginatedRecordingListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<RecordingWritable>;
 };
 
 export type RealtimeEndpointMinimalWritable = {
@@ -6013,6 +6065,12 @@ export type TranscriptArtifactWritable = {
     };
 };
 
+export type PaginatedTranscriptArtifactListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<TranscriptArtifactWritable>;
+};
+
 export type PatchedTranscriptArtifactWritable = {
     metadata?: {
         [key: string]: string | null;
@@ -6023,6 +6081,12 @@ export type AudioMixedArtifactWritable = {
     metadata: {
         [key: string]: string | null;
     };
+};
+
+export type PaginatedAudioMixedArtifactListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AudioMixedArtifactWritable>;
 };
 
 export type PatchedAudioMixedArtifactWritable = {
@@ -6037,10 +6101,22 @@ export type AudioSeparateArtifactWritable = {
     };
 };
 
+export type PaginatedAudioSeparateArtifactListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<AudioSeparateArtifactWritable>;
+};
+
 export type PatchedAudioSeparateArtifactWritable = {
     metadata?: {
         [key: string]: string | null;
     };
+};
+
+export type PaginatedVideoMixedArtifactListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<VideoMixedArtifactWritable>;
 };
 
 export type VideoMixedArtifactWritable = {
@@ -6053,6 +6129,12 @@ export type PatchedVideoMixedArtifactWritable = {
     metadata?: {
         [key: string]: string | null;
     };
+};
+
+export type PaginatedVideoSeparateArtifactListWritable = {
+    next?: string | null;
+    previous?: string | null;
+    results?: Array<VideoSeparateArtifactWritable>;
 };
 
 export type VideoSeparateArtifactWritable = {
