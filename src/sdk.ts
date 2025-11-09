@@ -782,8 +782,7 @@ class AudioMixedModule {
   async retrieve(
     input: string | { audioMixedArtifactId: string },
   ): Promise<AudioMixedRetrieveResponse> {
-    const id =
-      typeof input === 'string' ? input : input.audioMixedArtifactId
+    const id = typeof input === 'string' ? input : input.audioMixedArtifactId
     const result = await this.sdk.audioMixedRetrieve<true>({
       path: { id },
     })
@@ -801,8 +800,7 @@ class AudioMixedModule {
     body: AudioMixedPartialUpdateData['body'],
     options?: IdempotentRequestOptions,
   ): Promise<AudioMixedPartialUpdateResponse> {
-    const id =
-      typeof input === 'string' ? input : input.audioMixedArtifactId
+    const id = typeof input === 'string' ? input : input.audioMixedArtifactId
     const result = await this.sdk.audioMixedPartialUpdate<true>({
       path: { id },
       ...(body ? { body } : {}),
@@ -820,8 +818,7 @@ class AudioMixedModule {
   async delete(
     input: string | { audioMixedArtifactId: string },
   ): Promise<AudioMixedDestroyResponse> {
-    const id =
-      typeof input === 'string' ? input : input.audioMixedArtifactId
+    const id = typeof input === 'string' ? input : input.audioMixedArtifactId
     const result = await this.sdk.audioMixedDestroy<true>({
       path: { id },
     })
@@ -856,8 +853,7 @@ class AudioSeparateModule {
   async retrieve(
     input: string | { audioSeparateArtifactId: string },
   ): Promise<AudioSeparateRetrieveResponse> {
-    const id =
-      typeof input === 'string' ? input : input.audioSeparateArtifactId
+    const id = typeof input === 'string' ? input : input.audioSeparateArtifactId
     const result = await this.sdk.audioSeparateRetrieve<true>({
       path: { id },
     })
@@ -875,10 +871,7 @@ class AudioSeparateModule {
     body: AudioSeparatePartialUpdateData['body'],
     options?: IdempotentRequestOptions,
   ): Promise<AudioSeparatePartialUpdateResponse> {
-    const id =
-      typeof input === 'string'
-        ? input
-        : input.audioSeparateArtifactId
+    const id = typeof input === 'string' ? input : input.audioSeparateArtifactId
     const result = await this.sdk.audioSeparatePartialUpdate<true>({
       path: { id },
       ...(body ? { body } : {}),
@@ -896,10 +889,7 @@ class AudioSeparateModule {
   async delete(
     input: string | { audioSeparateArtifactId: string },
   ): Promise<AudioSeparateDestroyResponse> {
-    const id =
-      typeof input === 'string'
-        ? input
-        : input.audioSeparateArtifactId
+    const id = typeof input === 'string' ? input : input.audioSeparateArtifactId
     const result = await this.sdk.audioSeparateDestroy<true>({
       path: { id },
     })
@@ -1044,8 +1034,7 @@ class VideoMixedModule {
   async retrieve(
     input: string | { videoMixedArtifactId: string },
   ): Promise<VideoMixedRetrieveResponse> {
-    const id =
-      typeof input === 'string' ? input : input.videoMixedArtifactId
+    const id = typeof input === 'string' ? input : input.videoMixedArtifactId
     const result = await this.sdk.videoMixedRetrieve<true>({
       path: { id },
     })
@@ -1063,8 +1052,7 @@ class VideoMixedModule {
     body: VideoMixedPartialUpdateData['body'],
     options?: IdempotentRequestOptions,
   ): Promise<VideoMixedPartialUpdateResponse> {
-    const id =
-      typeof input === 'string' ? input : input.videoMixedArtifactId
+    const id = typeof input === 'string' ? input : input.videoMixedArtifactId
     const result = await this.sdk.videoMixedPartialUpdate<true>({
       path: { id },
       ...(body ? { body } : {}),
@@ -1082,8 +1070,7 @@ class VideoMixedModule {
   async delete(
     input: string | { videoMixedArtifactId: string },
   ): Promise<VideoMixedDestroyResponse> {
-    const id =
-      typeof input === 'string' ? input : input.videoMixedArtifactId
+    const id = typeof input === 'string' ? input : input.videoMixedArtifactId
     const result = await this.sdk.videoMixedDestroy<true>({
       path: { id },
     })
@@ -1118,8 +1105,7 @@ class VideoSeparateModule {
   async retrieve(
     input: string | { videoSeparateArtifactId: string },
   ): Promise<VideoSeparateRetrieveResponse> {
-    const id =
-      typeof input === 'string' ? input : input.videoSeparateArtifactId
+    const id = typeof input === 'string' ? input : input.videoSeparateArtifactId
     const result = await this.sdk.videoSeparateRetrieve<true>({
       path: { id },
     })
@@ -1137,10 +1123,7 @@ class VideoSeparateModule {
     body: VideoSeparatePartialUpdateData['body'],
     options?: IdempotentRequestOptions,
   ): Promise<VideoSeparatePartialUpdateResponse> {
-    const id =
-      typeof input === 'string'
-        ? input
-        : input.videoSeparateArtifactId
+    const id = typeof input === 'string' ? input : input.videoSeparateArtifactId
     const result = await this.sdk.videoSeparatePartialUpdate<true>({
       path: { id },
       ...(body ? { body } : {}),
@@ -1158,10 +1141,7 @@ class VideoSeparateModule {
   async delete(
     input: string | { videoSeparateArtifactId: string },
   ): Promise<VideoSeparateDestroyResponse> {
-    const id =
-      typeof input === 'string'
-        ? input
-        : input.videoSeparateArtifactId
+    const id = typeof input === 'string' ? input : input.videoSeparateArtifactId
     const result = await this.sdk.videoSeparateDestroy<true>({
       path: { id },
     })
@@ -1308,6 +1288,8 @@ export class RecallSdk {
     })
 
     if (resolvedTimeoutMs !== undefined) {
+      // NOTE: SSE/streaming helpers aren't wired up today. Revisit this timeout
+      // plumbing before routing long-lived connections through the client.
       const inflightTimeouts = new WeakMap<Request, () => void>()
 
       const finalizeRequest = (request?: Request) => {
@@ -1319,7 +1301,7 @@ export class RecallSdk {
         inflightTimeouts.delete(request)
       }
 
-      clientInstance.interceptors.request.use((request) => {
+      clientInstance.interceptors.request.use((request, options) => {
         const controller = new AbortController()
         const originalSignal = request.signal
         let abortForwarder: (() => void) | undefined
@@ -1352,9 +1334,7 @@ export class RecallSdk {
             abortForwarder = () =>
               controller.abort(
                 originalSignal.reason ??
-                  createAbortError(
-                    'Request aborted before timeout elapsed',
-                  ),
+                  createAbortError('Request aborted before timeout elapsed'),
               )
             originalSignal.addEventListener('abort', abortForwarder, {
               once: true,
@@ -1362,16 +1342,31 @@ export class RecallSdk {
           }
         }
 
-        timeoutId = setTimeout(() => {
-          controller.abort(
-            createTimeoutAbortError(resolvedTimeoutMs, timedRequest ?? request),
-          )
-        }, resolvedTimeoutMs)
+        if (!controller.signal.aborted) {
+          timeoutId = setTimeout(() => {
+            controller.abort(
+              createTimeoutAbortError(
+                resolvedTimeoutMs,
+                timedRequest ?? request,
+              ),
+            )
+          }, resolvedTimeoutMs)
+        }
 
         timedRequest = new Request(request, {
           signal: controller.signal,
         })
         inflightTimeouts.set(timedRequest, cleanup)
+
+        const originalFetch = options.fetch ?? globalThis.fetch
+        options.fetch = async function timeoutAwareFetch(this, input, init) {
+          try {
+            return await originalFetch.call(this ?? globalThis, input, init)
+          } finally {
+            finalizeRequest(timedRequest)
+          }
+        }
+
         return timedRequest
       })
 

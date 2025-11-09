@@ -108,4 +108,50 @@ describe('RecallSdk request timeouts', () => {
     expect(request).toBeInstanceOf(Request)
     expect(request?.signal.aborted).toBe(false)
   })
+
+  it('does not leave pending timers when the caller signal is already aborted', async () => {
+    vi.useFakeTimers()
+
+    const abortReason = new Error('caller aborted')
+    abortReason.name = 'AbortError'
+
+    const fetchMock = vi.fn(() => Promise.reject(abortReason))
+    globalThis.fetch = fetchMock as typeof fetch
+
+    const sdk = new RecallSdk({
+      apiKey: 'test-api-key',
+      baseUrl: 'https://example.com',
+      timeoutMs: 1000,
+    })
+
+    const controller = new AbortController()
+    controller.abort(abortReason)
+
+    await expect(
+      // @ts-expect-error accessing internal sdk for signal support
+      sdk._sdk.botList({ signal: controller.signal }),
+    ).rejects.toBe(abortReason)
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(vi.getTimerCount()).toBe(0)
+  })
+
+  it('cleans up timers even when fetch rejects before producing a response', async () => {
+    vi.useFakeTimers()
+
+    const networkError = new Error('network down')
+    const fetchMock = vi.fn(() => Promise.reject(networkError))
+    globalThis.fetch = fetchMock as typeof fetch
+
+    const sdk = new RecallSdk({
+      apiKey: 'test-api-key',
+      baseUrl: 'https://example.com',
+      timeoutMs: 1000,
+    })
+
+    await expect(sdk.bot.list()).rejects.toBe(networkError)
+
+    expect(fetchMock).toHaveBeenCalledTimes(1)
+    expect(vi.getTimerCount()).toBe(0)
+  })
 })

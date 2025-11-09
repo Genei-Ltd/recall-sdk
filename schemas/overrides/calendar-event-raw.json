@@ -34,10 +34,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "dateTime",
-              "timeZone"
-            ]
+            "required": ["dateTime", "timeZone"]
           },
           "uid": {
             "type": "string"
@@ -53,10 +50,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "content",
-              "contentType"
-            ]
+            "required": ["content", "contentType"]
           },
           "type": {
             "type": "string"
@@ -72,10 +66,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "dateTime",
-              "timeZone"
-            ]
+            "required": ["dateTime", "timeZone"]
           },
           "showAs": {
             "type": "string"
@@ -131,10 +122,7 @@
                     }
                   },
                   "additionalProperties": false,
-                  "required": [
-                    "response",
-                    "time"
-                  ]
+                  "required": ["response", "time"]
                 },
                 "emailAddress": {
                   "type": "object",
@@ -148,10 +136,7 @@
                     }
                   },
                   "additionalProperties": false,
-                  "required": [
-                    "name",
-                    "address"
-                  ]
+                  "required": ["name", "address"]
                 }
               },
               "additionalProperties": false
@@ -196,16 +181,11 @@
                   }
                 },
                 "additionalProperties": false,
-                "required": [
-                  "name",
-                  "address"
-                ]
+                "required": ["name", "address"]
               }
             },
             "additionalProperties": false,
-            "required": [
-              "emailAddress"
-            ]
+            "required": ["emailAddress"]
           },
           "categories": {
             "type": "array",
@@ -331,10 +311,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "time",
-              "response"
-            ]
+            "required": ["time", "response"]
           },
           "seriesMasterId": {
             "type": "string"
@@ -425,19 +402,14 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "dateTime",
-              "timeZone"
-            ]
+            "required": ["dateTime", "timeZone"]
           },
           "etag": {
             "type": "string"
           },
           "kind": {
             "type": "string",
-            "enum": [
-              "calendar#event"
-            ]
+            "enum": ["calendar#event"]
           },
           "start": {
             "type": "object",
@@ -450,10 +422,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "dateTime",
-              "timeZone"
-            ]
+            "required": ["dateTime", "timeZone"]
           },
           "status": {
             "type": "string"
@@ -556,10 +525,7 @@
               }
             },
             "additionalProperties": false,
-            "required": [
-              "dateTime",
-              "timeZone"
-            ]
+            "required": ["dateTime", "timeZone"]
           }
         },
         "additionalProperties": false,

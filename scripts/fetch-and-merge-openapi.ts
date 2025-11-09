@@ -448,7 +448,8 @@ function applyMeetingUrlPatch(document: OpenAPIDocument): void {
         business_meeting_id: {
           type: 'string',
           nullable: true,
-          description: 'Business meeting identifier for Teams for Business URLs.',
+          description:
+            'Business meeting identifier for Teams for Business URLs.',
         },
         business_meeting_password: {
           type: 'string',
@@ -468,7 +469,12 @@ function applyMeetingUrlPatch(document: OpenAPIDocument): void {
     {
       description: 'Webex meeting URL metadata (standard room).',
       type: 'object',
-      required: ['meeting_subdomain', 'meeting_mtid', 'meeting_path', 'platform'],
+      required: [
+        'meeting_subdomain',
+        'meeting_mtid',
+        'meeting_path',
+        'platform',
+      ],
       properties: {
         meeting_subdomain: {
           type: 'string',
@@ -553,7 +559,11 @@ function applyMeetingUrlPatch(document: OpenAPIDocument): void {
 
   for (const target of targets) {
     const schema = schemas[target.schemaName]
-    if (!isRecord(schema) || !('properties' in schema) || !isRecord(schema.properties)) {
+    if (
+      !isRecord(schema) ||
+      !('properties' in schema) ||
+      !isRecord(schema.properties)
+    ) {
       continue
     }
 
