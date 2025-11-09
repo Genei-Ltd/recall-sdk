@@ -206,7 +206,7 @@ export type Bot = {
      */
     output_media?: OutputMedia | null;
     /**
-     * Settings for the bot to output video. Image should be 16:9. Recommended resolution is 640x360.
+     * Settings for the bot to output video. Image should be 16:9. Read more about this here: https://docs.recall.ai/docs/output-video-in-meetings
      */
     automatic_video_output?: AutomaticVideoOutput | null;
     /**
@@ -3450,7 +3450,7 @@ export type PatchedBot = {
      */
     output_media?: OutputMedia | null;
     /**
-     * Settings for the bot to output video. Image should be 16:9. Recommended resolution is 640x360.
+     * Settings for the bot to output video. Image should be 16:9. Read more about this here: https://docs.recall.ai/docs/output-video-in-meetings
      */
     automatic_video_output?: AutomaticVideoOutput | null;
     /**
@@ -4283,7 +4283,7 @@ export type BotWritable = {
      */
     output_media?: OutputMedia | null;
     /**
-     * Settings for the bot to output video. Image should be 16:9. Recommended resolution is 640x360.
+     * Settings for the bot to output video. Image should be 16:9. Read more about this here: https://docs.recall.ai/docs/output-video-in-meetings
      */
     automatic_video_output?: AutomaticVideoOutputWritable | null;
     /**
@@ -5107,7 +5107,7 @@ export type PatchedBotWritable = {
      */
     output_media?: OutputMedia | null;
     /**
-     * Settings for the bot to output video. Image should be 16:9. Recommended resolution is 640x360.
+     * Settings for the bot to output video. Image should be 16:9. Read more about this here: https://docs.recall.ai/docs/output-video-in-meetings
      */
     automatic_video_output?: AutomaticVideoOutputWritable | null;
     /**
