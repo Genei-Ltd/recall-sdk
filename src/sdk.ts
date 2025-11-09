@@ -63,7 +63,12 @@ import type {
   VideoSeparatePartialUpdateResponse,
   VideoSeparateRetrieveResponse,
 } from './generated/types.gen'
-import { RecallSdkError, isRecallSdkError } from './errors'
+import {
+  RecallSdkError,
+  RecallSdkTimeoutError,
+  isRecallSdkError,
+  isRecallSdkTimeoutError,
+} from './errors'
 
 const DEFAULT_BASE_URL = 'https://us-east-1.recall.ai'
 const IDEMPOTENCY_HEADER_NAME = 'Idempotency-Key'
@@ -87,6 +92,25 @@ const withIdempotencyKey = (options?: IdempotentRequestOptions) =>
 const toBearerToken = (apiKey: string) =>
   apiKey.startsWith('Token ') ? apiKey : `Token ${apiKey}`
 
+const createAbortError = (message: string) => {
+  if (typeof DOMException === 'function') {
+    return new DOMException(message, 'AbortError')
+  }
+
+  const error = new Error(message)
+  error.name = 'AbortError'
+  return error
+}
+
+const createTimeoutAbortError = (
+  timeoutMs: number,
+  request?: Request,
+): RecallSdkTimeoutError =>
+  new RecallSdkTimeoutError({
+    timeoutMs,
+    request,
+  })
+
 export type RecallSdkOptions = {
   /**
    * Recall.ai API key. A `Bearer` prefix is added automatically when missing.
@@ -96,6 +120,10 @@ export type RecallSdkOptions = {
    * Base URL for the Recall.ai API. Defaults to https://us-east-1.recall.ai
    */
   baseUrl?: string
+  /**
+   * Abort in-flight HTTP requests when they exceed this timeout (in milliseconds).
+   */
+  timeoutMs?: number
 }
 
 class BotModule {
@@ -1260,8 +1288,17 @@ export class RecallSdk {
   public readonly audio: AudioModule
   public readonly video: VideoModule
 
-  constructor({ baseUrl, apiKey }: RecallSdkOptions) {
+  constructor({ baseUrl, apiKey, timeoutMs }: RecallSdkOptions) {
     const authProvider = () => toBearerToken(apiKey)
+    const resolvedTimeoutMs =
+      timeoutMs === undefined ? undefined : Number(timeoutMs)
+
+    if (
+      resolvedTimeoutMs !== undefined &&
+      (!Number.isFinite(resolvedTimeoutMs) || resolvedTimeoutMs <= 0)
+    ) {
+      throw new Error('RecallSdk timeoutMs must be a positive number')
+    }
 
     const clientInstance = createClient({
       baseUrl: baseUrl ?? DEFAULT_BASE_URL,
@@ -1270,8 +1307,87 @@ export class RecallSdk {
       throwOnError: true,
     })
 
+    if (resolvedTimeoutMs !== undefined) {
+      const inflightTimeouts = new WeakMap<Request, () => void>()
+
+      const finalizeRequest = (request?: Request) => {
+        if (!request) {
+          return
+        }
+        const cleanup = inflightTimeouts.get(request)
+        cleanup?.()
+        inflightTimeouts.delete(request)
+      }
+
+      clientInstance.interceptors.request.use((request) => {
+        const controller = new AbortController()
+        const originalSignal = request.signal
+        let abortForwarder: (() => void) | undefined
+        let timeoutId: ReturnType<typeof setTimeout> | undefined
+        let timedRequest: Request | undefined
+        let cleanedUp = false
+
+        const cleanup = () => {
+          if (cleanedUp) {
+            return
+          }
+          cleanedUp = true
+          if (timeoutId !== undefined) {
+            clearTimeout(timeoutId)
+          }
+          if (originalSignal && abortForwarder) {
+            originalSignal.removeEventListener('abort', abortForwarder)
+          }
+        }
+
+        controller.signal.addEventListener('abort', cleanup, { once: true })
+
+        if (originalSignal) {
+          if (originalSignal.aborted) {
+            controller.abort(
+              originalSignal.reason ??
+                createAbortError('Request aborted before timeout was applied'),
+            )
+          } else {
+            abortForwarder = () =>
+              controller.abort(
+                originalSignal.reason ??
+                  createAbortError(
+                    'Request aborted before timeout elapsed',
+                  ),
+              )
+            originalSignal.addEventListener('abort', abortForwarder, {
+              once: true,
+            })
+          }
+        }
+
+        timeoutId = setTimeout(() => {
+          controller.abort(
+            createTimeoutAbortError(resolvedTimeoutMs, timedRequest ?? request),
+          )
+        }, resolvedTimeoutMs)
+
+        timedRequest = new Request(request, {
+          signal: controller.signal,
+        })
+        inflightTimeouts.set(timedRequest, cleanup)
+        return timedRequest
+      })
+
+      clientInstance.interceptors.response.use((response, request) => {
+        finalizeRequest(request)
+        return response
+      })
+
+      clientInstance.interceptors.error.use((error, response, request) => {
+        finalizeRequest(request)
+        return error
+      })
+    }
+
     clientInstance.interceptors.error.use((error, response, request) => {
-      if (isRecallSdkError(error)) {
+      if (isRecallSdkError(error) || isRecallSdkTimeoutError(error)) {
         return error
       }
 

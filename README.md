@@ -24,6 +24,7 @@ import { RecallSdk } from '@coloop-ai/recall-sdk'
 
 const recall = new RecallSdk({
   apiKey: process.env.RECALL_API_KEY!,
+  timeoutMs: 10_000, // abort requests that hang for 10s
   // baseUrl: 'https://eu-central-1.recall.ai', // optionally target a different region
 })
 
@@ -79,7 +80,7 @@ if (firstParticipantTrack) {
 }
 ```
 
-The `RecallSdk` automatically adds the `Token` prefix to your API key when missing, throws `RecallSdkError` for non-success responses, and returns the typed response payload for each call.
+The `RecallSdk` automatically adds the `Token` prefix to your API key when missing, throws `RecallSdkError` for non-success responses, and returns the typed response payload for each call, optionally aborting hung requests (and raising a `RecallSdkTimeoutError`) when `timeoutMs` is configured.
 
 ## Error handling
 
@@ -125,6 +126,28 @@ await recall.bot.create(
   },
   { idempotencyKey: 'my-idempotency-key' },
 )
+```
+
+## Request timeouts
+
+Set `timeoutMs` when instantiating the SDK to automatically abort requests that exceed the configured duration. The SDK rejects with a `RecallSdkTimeoutError`, which you can treat as a retryable failure:
+
+```ts
+import { RecallSdk, RecallSdkTimeoutError } from '@coloop-ai/recall-sdk'
+
+const recall = new RecallSdk({
+  apiKey: process.env.RECALL_API_KEY!,
+  timeoutMs: 5_000,
+})
+
+try {
+  await recall.bot.list()
+} catch (error) {
+  if (error instanceof RecallSdkTimeoutError) {
+    console.warn('Recall request timed out, retrying shortly')
+    // retry or surface to your queue
+  }
+}
 ```
 
 ## High-level methods

@@ -98,3 +98,28 @@ export class RecallSdkError<TPayload = unknown> extends Error {
 export const isRecallSdkError = (
   error: unknown,
 ): error is RecallSdkError<unknown> => error instanceof RecallSdkError
+
+export type RecallSdkTimeoutErrorOptions = {
+  timeoutMs: number
+  request?: Request
+}
+
+export class RecallSdkTimeoutError extends Error {
+  public readonly timeoutMs: number
+  public readonly request?: Request
+
+  constructor({ timeoutMs, request }: RecallSdkTimeoutErrorOptions) {
+    super(`Recall request aborted after exceeding timeout of ${timeoutMs}ms`)
+    this.name = 'RecallSdkTimeoutError'
+    this.timeoutMs = timeoutMs
+    this.request = request
+
+    if (typeof Error.captureStackTrace === 'function') {
+      Error.captureStackTrace(this, RecallSdkTimeoutError)
+    }
+  }
+}
+
+export const isRecallSdkTimeoutError = (
+  error: unknown,
+): error is RecallSdkTimeoutError => error instanceof RecallSdkTimeoutError
