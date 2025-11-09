@@ -79,7 +79,39 @@ if (firstParticipantTrack) {
 }
 ```
 
-The `RecallSdk` automatically adds the `Token` prefix to your API key when missing, throws for non-success responses, and returns the typed response payload for each call.
+The `RecallSdk` automatically adds the `Token` prefix to your API key when missing, throws `RecallSdkError` for non-success responses, and returns the typed response payload for each call.
+
+## Error handling
+
+Every helper raises a `RecallSdkError` when the Recall API responds with a non-2xx status. The error exposes the HTTP status code, Recall-specific `code` / `detail` fields (when present), original response/request objects, and the parsed payload so you can make retry vs. fail-fast decisions without adding your own type guards:
+
+```ts
+import { RecallSdk, isRecallSdkError } from '@coloop-ai/recall-sdk'
+
+try {
+  await recall.bot.create({
+    meeting_url: 'https://zoom.us/j/123456789',
+    bot_name: 'Demo bot',
+  })
+} catch (error) {
+  if (!isRecallSdkError(error)) throw error
+
+  if (error.status === 429) {
+    // Surface rate limit metadata to tracing/logging before retrying.
+    console.warn('Recall throttled request', error.payload)
+    return
+  }
+
+  if (error.status === 400) {
+    // Permanent failure — inspect error.detail/code for specifics.
+    throw new Error(
+      `Failed to create bot (${error.code ?? 'unknown'}): ${
+        error.detail ?? error.message
+      }`,
+    )
+  }
+}
+```
 
 ## Idempotent requests
 

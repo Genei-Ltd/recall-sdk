@@ -63,6 +63,7 @@ import type {
   VideoSeparatePartialUpdateResponse,
   VideoSeparateRetrieveResponse,
 } from './generated/types.gen'
+import { RecallSdkError, isRecallSdkError } from './errors'
 
 const DEFAULT_BASE_URL = 'https://us-east-1.recall.ai'
 const IDEMPOTENCY_HEADER_NAME = 'Idempotency-Key'
@@ -1267,6 +1268,18 @@ export class RecallSdk {
       auth: authProvider,
       responseStyle: 'fields',
       throwOnError: true,
+    })
+
+    clientInstance.interceptors.error.use((error, response, request) => {
+      if (isRecallSdkError(error)) {
+        return error
+      }
+
+      return new RecallSdkError({
+        payload: error,
+        response,
+        request,
+      })
     })
 
     this._sdk = new GeneratedRecallSdk({ client: clientInstance })

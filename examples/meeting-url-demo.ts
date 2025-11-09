@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import process from 'node:process'
 import readline from 'node:readline'
 import { createInterface } from 'node:readline/promises'
@@ -101,7 +103,9 @@ async function run(): Promise<void> {
   }
   process.stdin.resume()
 
-  console.log('\nPress "y" to fetch the bot status, or Ctrl+C to stop and remove the bot.')
+  console.log(
+    '\nPress "y" to fetch the bot status, or Ctrl+C to stop and remove the bot.',
+  )
 
   let fetching = false
 
