@@ -1,6 +1,7 @@
 import { createClient } from './generated/client'
 import { GeneratedRecallSdk } from './generated/sdk.gen'
 import type {
+  Bot,
   AudioMixedDestroyResponse,
   AudioMixedListData,
   AudioMixedListResponse,
@@ -134,6 +135,36 @@ const withCursorPagination = <T extends CursorPageFields>(payload: T): T => ({
   previous: extractCursorToken(payload.previous),
 })
 
+/** `bot.list` response with page numbers for the `page` query param. */
+export type BotListPage = {
+  count?: number
+  results?: Bot[]
+  next: number | null
+  previous: number | null
+}
+
+// Page-numbered endpoints (bots) link with `page=`, not `cursor=`.
+const extractPageNumber = (input?: string | null): number | null => {
+  if (!input) {
+    return null
+  }
+
+  try {
+    const page = new URL(input, DEFAULT_BASE_URL).searchParams.get('page')
+    // Recall omits `page` from links to the first page.
+    return page === null ? 1 : Number(page)
+  } catch {
+    return null
+  }
+}
+
+const toBotListPage = (payload: BotListResponse): BotListPage => ({
+  count: payload.count,
+  results: payload.results,
+  next: extractPageNumber(payload.next),
+  previous: extractPageNumber(payload.previous),
+})
+
 export type RecallSdkOptions = {
   /**
    * Recall.ai API key. A `Bearer` prefix is added automatically when missing.
@@ -160,11 +191,11 @@ class BotModule {
    * This endpoint is rate limited to:
    * - 60 requests per min per workspace
    */
-  async list(query?: BotListData['query']): Promise<BotListResponse> {
+  async list(query?: BotListData['query']): Promise<BotListPage> {
     const result = await this.sdk.botList<true>({
       ...(query ? { query } : {}),
     })
-    return withCursorPagination(result.data)
+    return toBotListPage(result.data)
   }
 
   /**

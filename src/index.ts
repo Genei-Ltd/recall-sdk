@@ -7,4 +7,8 @@ export {
   isRecallSdkTimeoutError,
 } from './errors'
 export { RecallSdk } from './sdk'
-export type { RecallSdkOptions, IdempotentRequestOptions } from './sdk'
+export type {
+  RecallSdkOptions,
+  IdempotentRequestOptions,
+  BotListPage,
+} from './sdk'
